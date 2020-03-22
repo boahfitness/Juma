@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "202351898027",
+    "firebase_url": "https://juma-ee630f.firebaseio.com",
+    "project_id": "juma-ee630f",
+    "storage_bucket": "juma-ee630f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202351898027:android:d5531dc1cef5b90d2ef6ee",
+        "android_client_info": {
+          "package_name": "com.boahfitness.juma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "202351898027-240vammssca6svtma5bpp2b3b673c5dq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOZWYsjoNtL16rdXKU30CARdpADh8vxtk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202351898027-240vammssca6svtma5bpp2b3b673c5dq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "202351898027-enbnlrujk1cje57an1clpc25uq19sdj4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.boahfitness.juma"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
