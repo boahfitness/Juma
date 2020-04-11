@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:juma/services/authService.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -6,6 +7,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  final AuthService _authService = AuthService();
+
   final email = TextEditingController();
   final password = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -127,10 +131,17 @@ class _LoginState extends State<Login> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (formKey.currentState.validate()) {
                         print(email.text);
                         print(password.text);
+                        var user = await _authService.signInAnon();
+                        if (user == null) {
+                          print('sign in error');
+                        }
+                        else {
+                          print(user);
+                        }
                       }
                     },
                   ),
