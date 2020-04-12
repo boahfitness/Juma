@@ -13,6 +13,7 @@ class Juma extends StatelessWidget {
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(
+        theme: ThemeData(fontFamily: 'Oswald'),
         home: Wrapper(),
       ),
     );

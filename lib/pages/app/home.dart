@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:juma/services/authService.dart';
 import 'package:juma/theme/Colors.dart';
+
+AuthService auth = AuthService();
 
 class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ColorTheme theme = ColorTheme.getTheme(ThemeType.gold);
+    ColorTheme theme = ColorTheme.getTheme(ThemeType.red);
     return Scaffold(
       body: Container(
         child: Stack(
           children: <Widget>[
+            // DECORATION
             ShaderMask(
               shaderCallback: (Rect bounds) {
                 return theme.gradient.createShader(bounds);
@@ -18,7 +22,7 @@ class Home extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/sageNaruto.jpg'),
+                    image: AssetImage('assets/russ.jpeg'),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(Colors.grey, BlendMode.saturation),
                   ),
@@ -38,8 +42,32 @@ class Home extends StatelessWidget {
             //     )
             //   ),
             // ),
+
+            // END OF DECORATION
+
+            // interactive content
             Scaffold(
               backgroundColor: Colors.transparent,
+              drawer: Drawer(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    DrawerHeader(
+                      child: SizedBox(height: 5,),
+                    ),
+                    ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Icon(Icons.person),
+                          Text("Sign Out")
+                        ],
+                      ),
+                      onTap: () {auth.signOut();},
+                    ),
+                  ],
+                ),
+              ),
               appBar: AppBar(
                 backgroundColor: Colors.transparent,
                 centerTitle: true,
@@ -83,6 +111,20 @@ class Home extends StatelessWidget {
               floatingActionButton: FloatingActionButton(
                 onPressed: () {},
                 backgroundColor: theme.solid,
+                child: Icon(
+                  Icons.play_arrow,
+                  color: Colors.white,
+                ),
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                backgroundColor: JumaColors.boahDarkGrey,
+                selectedItemColor: Colors.white,
+                unselectedItemColor: Colors.grey[600],
+                items: <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
+                  BottomNavigationBarItem(icon: Icon(Icons.style), title: Text("Programs")),
+                  BottomNavigationBarItem(icon: Icon(Icons.person), title: Text("Profile"))
+                ],
               ),
             ),
           ],
@@ -96,6 +138,6 @@ TextStyle wkText() {
   return TextStyle(
     color: Colors.white,
     fontWeight: FontWeight.bold,
-    fontSize: 40
+    fontSize: 36
   );
 }
