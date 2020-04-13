@@ -1,51 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:juma/models/user.dart';
 import 'package:juma/services/authService.dart';
 import 'package:juma/theme/Colors.dart';
+import 'package:juma/models/program.dart';
+import 'package:juma/widgets/programCard.dart';
 
 AuthService auth = AuthService();
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
 
   @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  
+  @override
   Widget build(BuildContext context) {
-    ColorTheme theme = ColorTheme.getTheme(ThemeType.red);
+    User testUser = User.test();
+    Program testProgram = testUser.currentProgram;
+    ColorTheme theme = testProgram.theme;
+
     return Scaffold(
       body: Container(
         child: Stack(
           children: <Widget>[
-            // DECORATION
-            ShaderMask(
-              shaderCallback: (Rect bounds) {
-                return theme.gradient.createShader(bounds);
-              },
-              blendMode: BlendMode.color,
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/russ.jpeg'),
-                    fit: BoxFit.cover,
-                    colorFilter: ColorFilter.mode(Colors.grey, BlendMode.saturation),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: theme.accentGradient
-              ),
-            ),
-            // Container(
-            //   decoration: BoxDecoration(
-            //     border: Border(
-            //       right: BorderSide(color: theme.solid, width: 6.0),
-            //       left: BorderSide(color: theme.solid, width: 6.0)
-            //     )
-            //   ),
-            // ),
 
-            // END OF DECORATION
-
-            // interactive content
+            ProgramCard(
+              testProgram,
+              showBorder: false,
+              showAuthor: false,
+              showTitle: false,
+            ),
+            
+            //interactive content
             Scaffold(
               backgroundColor: Colors.transparent,
               drawer: Drawer(
@@ -95,7 +83,7 @@ class Home extends StatelessWidget {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Text("SQUATS 5 X 5", style: wkText(),),
+                      child: Text("${testProgram.currentDay.firstExercise.name.toUpperCase()} 5 X 5", style: wkText(),),
                     ),
                     Expanded(
                       flex: 1,

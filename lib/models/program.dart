@@ -10,10 +10,23 @@ class Program {
   String pathToPicture; // this will be pulled from firebase
   ColorTheme theme;
 
+  // user instance variables
+  String userId;
+  DateTime completed;
+  int currentWeekNum = 0;
+
   Program(this.title, {this.weeks, this.programId, this.authorId, 
     this.authorName, this.description, this.pathToPicture, this.theme});
 
-  Program.sample() {
+  Week get currentWeek {
+    return weeks.elementAt(currentWeekNum);
+  }
+
+  Day get currentDay {
+    return this.currentWeek.currentDay;
+  }
+
+  Program.test() {
     title = "The Powerbuilding Program";
     programId = "0283rb878hrbos";
     authorId = "3k4e9hdbjafds89";
@@ -59,57 +72,39 @@ class Program {
   }
 }
 
-class UserProgram extends Program {
-  String userId;
-  DateTime completed;
-
-  UserProgram(String title, this.userId) : super(title);
-
-  UserProgram.fromProgram(Program p, this.userId) : super(p.title, 
-    weeks: p.weeks, programId: p.programId, authorId: p.authorId,
-    authorName: p.authorName, description: p.description, 
-    pathToPicture: p.pathToPicture, theme: p.theme);
-}
 
 class Week {
   Day day1, day2, day3, day4, day5, day6, day7;
+  int currentDayNum = 1;
+
   Week({this.day1, this.day2, this.day3, 
     this.day4, this.day5, this.day6, this.day7});
-  
-  CompletedWeek toCompletedWeek() {
-    return CompletedWeek.fromWeek(this);
-  }
-}
 
-class CompletedWeek extends Week {
-  CompletedWeek.fromWeek(Week w) {
-    this.day1 = w.day1;
-    this.day2 = w.day2;
-    this.day3 = w.day3;
-    this.day4 = w.day4;
-    this.day5 = w.day5;
-    this.day6 = w.day6;
-    this.day7 = w.day7;
+  Day get currentDay {
+    switch (currentDayNum) {
+      case 1:  return this.day1; break;
+      case 2: return this.day2; break;
+      case 3: return this.day3; break;
+      case 4: return this.day4; break;
+      case 5: return this.day5; break;
+      case 6: return this.day6; break;
+      case 7: return this.day7; break;
+      default: return null;
+    }
   }
 }
 
 class Day {
   DayType type;
   List<Exercise> exercises;
+  DateTime completed;
 
   Day({this.exercises, this.type=DayType.generic});
 
-  CompletedDay toCompletedDay() {
-    return CompletedDay.fromDay(this);
-  }
-}
-
-class CompletedDay extends Day {
-  DateTime completed;
-
-  CompletedDay.fromDay(Day d, {this.completed}) {
-    this.type = d.type;
-    this.exercises = d.exercises;
+  Exercise get firstExercise {
+    if (exercises != null && exercises.isNotEmpty)
+      return exercises[0];
+    else return null;
   }
 }
 
@@ -129,26 +124,33 @@ class Exercise {
   Duration rest;
   double percentage;
   String coachNotes;
+  String athleteNotes;
+  String pathToVideo;
 
   Exercise(this.name, {this.type=ExerciseType.generic, this.sets=0, this.reps=0, 
     this.rpe=RPE.seven, this.weight, this.duration, this.rest,
     this.percentage, this.coachNotes});
 
-  CompletedExercise toCompletedExercise() {
-    return CompletedExercise.fromExercise(this);
+  Exercise.squat() {
+    name = "Squat";
+    type = ExerciseType.mainLiftWithRPE;
+    sets = 5; reps = 5;
+    weight = Weight(pounds: 545);
   }
-}
 
-class CompletedExercise extends Exercise {
-  String pathToVideo; // might change to Path Type
-  String athleteNotes;
+  Exercise.bench() {
+    name = "Bench";
+    type = ExerciseType.mainLiftWithRPE;
+    sets = 5; reps = 5;
+    weight = Weight(pounds: 315);
+  }
 
-  CompletedExercise(String name, {this.pathToVideo, this.athleteNotes}) : super(name);
-
-  CompletedExercise.fromExercise(Exercise x, {this.athleteNotes, this.pathToVideo}) : super(x.name, type: x.type,
-    sets: x.sets, reps: x.reps, rpe: x.rpe, weight: x.weight,
-    duration: x.duration, rest: x.rest, percentage: x.percentage,
-    coachNotes: x.coachNotes);
+  Exercise.deadlift() {
+    name = "Deadlift";
+    type = ExerciseType.mainLiftWithRPE;
+    sets = 5; reps = 5;
+    weight = Weight(pounds: 600);
+  }
 }
 
 enum ExerciseType {
@@ -243,9 +245,13 @@ class PR extends Exercise {
   String userId;
   DateTime timeOfCompletion;
   PR previousPR;
-  PR(String name, this.timeOfCompletion) : super(name);
+  PR(String name, this.timeOfCompletion, int reps, Weight weight) : super(name, reps: reps, weight: weight);
+  PR.fromExercise(Exercise x, {this.userId, this.timeOfCompletion, this.previousPR}) : super(x.name) {
+    this.reps = x.reps;
+    this.weight = x.weight;
+  }
 }
 
 class OneRepMax extends PR {
-  OneRepMax(String name, DateTime timeOfCompletion) : super(name, timeOfCompletion);
+  OneRepMax(String name, DateTime timeOfCompletion, int reps, Weight weight) : super(name, timeOfCompletion, reps, weight);
 }
