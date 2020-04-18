@@ -8,10 +8,11 @@ class ProgramCard extends StatelessWidget {
   final bool showAuthor;
   final bool showBorder;
   final bool usePicture;
+  final ColorTheme customTheme;
 
   ProgramCard(this.program, 
     {this.showAuthor = true, this.showBorder = true, 
-    this.showTitle = true, this.usePicture = true});
+    this.showTitle = true, this.usePicture = true, this.customTheme});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,7 @@ class ProgramCard extends StatelessWidget {
       ? false : usePicture;
 
     ColorTheme theme = program.theme ?? ColorTheme.getTheme(null);
+    theme = customTheme ?? theme;
 
     return Container(
       child: LayoutBuilder(

@@ -19,6 +19,8 @@ class JumaColors {
   }
 }
 
+// TODO implement OrangeTheme and make it default in getTheme
+
 class GreenTheme implements ColorTheme{
   LinearGradient get gradient {
     return LinearGradient(

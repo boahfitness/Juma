@@ -60,12 +60,18 @@ class _HomeState extends State<Home> {
                 backgroundColor: Colors.transparent,
                 centerTitle: true,
                 elevation: 0,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset('assets/juma-logo-stroke-grad.png', width: 75,),
-                    Text("JUMA")
-                  ],
+                title: SizedBox(
+                  width: 50,
+                  height: 35,
+                  child: Container(
+                    color: Colors.white,
+                    child: Center(
+                      child: Text(
+                        "JUMA", 
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  )
                 ),
               ),
               body: Padding(
