@@ -10,8 +10,6 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
-  //final AuthService _authService = AuthService();
-
   final email = TextEditingController();
   final password = TextEditingController();
   final formKey = GlobalKey<FormState>();

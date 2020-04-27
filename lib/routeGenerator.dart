@@ -19,13 +19,14 @@ class RouteGenerator {
     switch(settings.name) {
       // on home route check if seen -> onboarding or authenticate
       case '/':
-        return MaterialPageRoute(builder: (_) => Splash());
+        //return MaterialPageRoute(builder: (_) => Splash());
+        return MaterialPageRoute(builder: (_) => Test());
       case '/onboarding':
         return MaterialPageRoute(builder: (_) => Onboarding());
       case '/home':
         return MaterialPageRoute(builder: (_) => Home());
       case '/auth':
-        return MaterialPageRoute(builder: (_) => Authenticate());
+        return MaterialPageRoute(builder: (_) => AuthChecker());
       case '/auth/login':
         return MaterialPageRoute(builder: (_) => Login());
       default:
