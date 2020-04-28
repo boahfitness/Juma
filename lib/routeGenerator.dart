@@ -11,18 +11,16 @@ class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
 
-    SharedPreferences prefs;
-    SharedPreferences.getInstance().then((value) {
-      prefs = value;
-    });
-
     switch(settings.name) {
       // on home route check if seen -> onboarding or authenticate
-      case '/':
+      case '/': {
         //return MaterialPageRoute(builder: (_) => Splash());
-        return MaterialPageRoute(builder: (_) => Test());
+        //return MaterialPageRoute(builder: (_) => Test());
+        return PageTransition(type: PageTransitionType.fade, child: Test());
+      }
       case '/onboarding':
-        return MaterialPageRoute(builder: (_) => Onboarding());
+        //return MaterialPageRoute(builder: (_) => Onboarding());
+        return PageTransition(type: PageTransitionType.fade, child: Onboarding());
       case '/home':
         return MaterialPageRoute(builder: (_) => Home());
       case '/auth':

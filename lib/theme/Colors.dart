@@ -5,6 +5,8 @@ class JumaColors {
 
   static Color get boahDarkGrey { return Color(0xff211f1d); }
 
+  static Color get boahLightGrey { return Color(0xff2d2d2d); }
+
   static Color get darkRed { return Color(0xfffa3d03); }
 
   static Color get lightOrange {return Color(0xffd88a25); }

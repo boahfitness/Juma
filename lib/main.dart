@@ -1,3 +1,4 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:juma/pages/app/home.dart';
 import 'package:juma/pages/authenticate/authenticate.dart';
@@ -37,22 +38,42 @@ class Test extends StatefulWidget {
 }
 
 class _TestState extends State<Test> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 5,
-      height: 5,
-      child: Image.asset("assets/juma-logo-stroke-grad.png",),
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.transparent,
-        boxShadow: [
-          BoxShadow(
-            color: JumaColors.boahOrange,
-            blurRadius: 15,
-            spreadRadius: 15
+        gradient: LinearGradient(
+          colors: [Color(0xff2d2d2d), Color(0xff383838)],
+          //stops: [0.0, 0.5],
+          begin: Alignment.bottomRight,
+          end: Alignment.topLeft
+        ),
+      ),
+      child: Stack(
+        children: <Widget>[
+          AnimatedPositioned(
+            duration: Duration(seconds: 1),
+            curve: Curves.easeInOut,
+            top: 200,
+            left: 50,
+            child: AnimatedContainer(
+              duration: Duration(seconds: 1),
+              height: 400,
+              width: 400,
+              curve: Curves.easeInOut,
+              child: FlareActor(
+                'assets/video/jumaLightDraw.flr',
+                animation: 'glowDraw',
+              ),
+            ),
           )
-        ]
+        ],
       ),
     );
   }
