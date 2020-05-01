@@ -19,6 +19,15 @@ class JumaColors {
             stops: [0.0, 0.5, 0.9],
           );
   }
+
+  static LinearGradient get lightGreyGradient {
+    return LinearGradient(
+      begin: Alignment.bottomRight,
+      end: Alignment.topLeft,
+      colors: [Color(0xff2d2d2d), Color(0xff383838)]
+    );
+  }
+  
 }
 
 // TODO implement OrangeTheme and make it default in getTheme
