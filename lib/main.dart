@@ -60,12 +60,12 @@ class _TestState extends State<Test> {
           AnimatedPositioned(
             duration: Duration(seconds: 1),
             curve: Curves.easeInOut,
-            top: 200,
-            left: 50,
+            top: MediaQuery.of(context).size.height / 2 - 100,
+            left: MediaQuery.of(context).size.width / 2 - 100,
             child: AnimatedContainer(
               duration: Duration(seconds: 1),
-              height: 400,
-              width: 400,
+              height: 200,
+              width: 200,
               curve: Curves.easeInOut,
               child: FlareActor(
                 'assets/video/jumaLightDraw.flr',
