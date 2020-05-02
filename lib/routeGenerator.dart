@@ -6,7 +6,7 @@ import 'package:juma/pages/authenticate/login.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:juma/welcomePage.dart';
 
-import 'package:juma/testWidget.dart';
+//import 'package:juma/testWidget.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -14,11 +14,10 @@ class RouteGenerator {
 
     switch(settings.name) {
       case '/': {
-        return MaterialPageRoute(builder: (_) => WelcomePage());
+        return PageTransition(type: PageTransitionType.fade, child: WelcomePage());
         //return MaterialPageRoute(builder: (_) => Test());
       }
       case '/onboarding':
-        //return MaterialPageRoute(builder: (_) => Onboarding());
         return PageTransition(type: PageTransitionType.fade, child: Onboarding());
       case '/home':
         return MaterialPageRoute(builder: (_) => Home());

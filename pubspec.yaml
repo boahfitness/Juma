@@ -66,17 +66,25 @@ flutter:
     - family: Oswald
       fonts:
         - asset: fonts/Oswald-Bold.ttf
+          weight: 700
         - asset: fonts/Oswald-Regular.ttf
         - asset: fonts/Oswald-Medium.ttf
+          weight: 500
         - asset: fonts/Oswald-Light.ttf
+          weight: 300
         - asset: fonts/Oswald-ExtraLight.ttf
+          weight: 200
     - family: Montserrat
       fonts:
         - asset: fonts/Montserrat/Montserrat-Bold.ttf
+          weight: 700
         - asset: fonts/Montserrat/Montserrat-Regular.ttf
         - asset: fonts/Montserrat/Montserrat-Medium.ttf
+          weight: 500
         - asset: fonts/Montserrat/Montserrat-Light.ttf
+          weight: 300
         - asset: fonts/Montserrat/Montserrat-ExtraLight.ttf
+          weight: 200
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
