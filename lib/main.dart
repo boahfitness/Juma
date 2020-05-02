@@ -19,7 +19,7 @@ class Juma extends StatelessWidget {
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(
-        theme: ThemeData(fontFamily: 'Oswald'),
+        theme: ThemeData(fontFamily: 'Montserrat'),
         initialRoute: '/',
         onGenerateRoute: RouteGenerator.generateRoute,
         debugShowCheckedModeBanner: false,

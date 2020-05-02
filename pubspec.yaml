@@ -70,6 +70,13 @@ flutter:
         - asset: fonts/Oswald-Medium.ttf
         - asset: fonts/Oswald-Light.ttf
         - asset: fonts/Oswald-ExtraLight.ttf
+    - family: Montserrat
+      fonts:
+        - asset: fonts/Montserrat/Montserrat-Bold.ttf
+        - asset: fonts/Montserrat/Montserrat-Regular.ttf
+        - asset: fonts/Montserrat/Montserrat-Medium.ttf
+        - asset: fonts/Montserrat/Montserrat-Light.ttf
+        - asset: fonts/Montserrat/Montserrat-ExtraLight.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
