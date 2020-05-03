@@ -44,7 +44,7 @@ class PageUI extends StatelessWidget {
             ),
             Expanded(
               flex: 2,
-              child: Text(title),
+              child: Text(title, style: TextStyle(color: Colors.white),),
             ),
             Expanded(
               flex: 3,

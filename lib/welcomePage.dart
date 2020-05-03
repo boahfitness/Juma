@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'models/user.dart';
 import 'package:juma/pages/app/home.dart';
 import 'package:juma/theme/Colors.dart';
 import 'package:juma/widgets/animatedStrokeLogo.dart';
+import 'package:juma/pages/onboarding/onboarding.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -15,7 +18,11 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
   AnimationController animController;
   Animation<double> buttonAnim;
   Animation<double> titleAnim;
+  Animation<double> taglineAnim;
   double logoWidth = 200;
+
+  bool showWelcome = true;
+  double pageOpacity = 1.0;
 
   @override
   void initState() {
@@ -47,6 +54,17 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
       setState(() {});
     });
 
+    taglineAnim = CurvedAnimation(
+      curve: Interval(
+        0.85, 1.0,
+        curve: Curves.linear,
+      ),
+      parent: animController
+    )
+    ..addListener(() {
+      setState(() {});
+    });
+
     animController.forward();
   }
 
@@ -63,83 +81,120 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
-            gradient: JumaColors.lightGreyGradient
+            //gradient: JumaColors.lightGreyGradient
+            color: Colors.black
           ),
           child: Stack(
             children: <Widget>[
+              AnimatedOpacity(
+                opacity: pageOpacity,
+                curve: Curves.linear,
+                duration: Duration(milliseconds: 500),
+                onEnd: () {
+                  setState(() {
+                    if (pageOpacity == 0.0) {
+                      showWelcome = !showWelcome;
+                      pageOpacity = 1.0;
+                    }
+                  });
+                },
+                child: showWelcome ? Center(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 120,),
+                      Transform.scale(
+                        scale: titleAnim.value,
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          "WELCOME TO",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Transform.scale(
+                        scale: titleAnim.value,
+                        alignment: Alignment.topCenter,
+                        child: Text(
+                          "JUMA",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Opacity(
+                        opacity: taglineAnim.value,
+                        child: Text(
+                          "Strength Training Redesigned",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: JumaColors.boahOrange
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 300,),
+                      Transform.scale(
+                        scale: buttonAnim.value,
+                        alignment: Alignment.center,
+                        child: SizedBox(
+                          width: 300,
+                          height: 60,
+                          child: RaisedButton(
+                            child: Text("JOIN THE GANG!", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),),
+                            onPressed: () {
+                              setState(() {
+                                pageOpacity = 0;
+                              });
+                            },
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                            color: JumaColors.boahDarkGrey,
+                            elevation: 0.0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      Opacity(
+                        opacity: taglineAnim.value,
+                        child: GestureDetector(
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                "I ALREADY HAVE",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300,
+                                  //decoration: TextDecoration.underline
+                                ),
+                              ),
+                              Text(
+                                "AN ACCOUNT",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w200,
+                                  //decoration: TextDecoration.underline
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ) 
+                : 
+                Onboarding(),
+              ),
               AnimatedStrokeLogo(xpos: centerx, ypos: centery, width: logoWidth,),
-              Center(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: 120,),
-                    Text(
-                      "WELCOME TO",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: titleAnim.value * 30.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      "JUMA",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: titleAnim.value * 30.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      "Strength Training Redesigned",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white
-                      ),
-                    ),
-                    SizedBox(height: 300,),
-                    SizedBox(
-                      width: buttonAnim.value * 250,
-                      height: buttonAnim.value * 50,
-                      child: RaisedButton(
-                        child: Text("Join the GANG!", style: TextStyle(fontWeight: FontWeight.bold),),
-                        onPressed: () {
-                          setState(() {
-                            logoWidth -= 100;
-                          });
-                        },
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                        elevation: 10,
-                      ),
-                    ),
-                    SizedBox(height: 20,),
-                    GestureDetector(
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            "I ALREADY HAVE",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300
-                            ),
-                          ),
-                          Text(
-                            "AN ACCOUNT",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w200
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              )
             ],
           ),
         ),
