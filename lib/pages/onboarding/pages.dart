@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:juma/widgets/backgroundVideo.dart';
+//import 'package:juma/theme/Colors.dart';
+//import 'package:juma/widgets/backgroundVideo.dart';
 
 List<Page> getPages() {
   return [
-    Page(title: 'Onboarding page 1', desc: "You'll get swole AF", videoPath: "assets/video/antonioDeadlift.mp4",),
-    Page(title: 'Onboarding page 2', desc: "And you'll get strong AF", videoPath: "assets/video/Lauren.mp4",),
+    Page(
+      title: 'Track Progress', 
+      desc: "Track your strength progress easily and intuitively.", 
+      videoPath: "assets/video/antonioDeadlift.mp4",
+    ),
+    Page(title: 'Create Programs', desc: "And you'll get strong AF", videoPath: "assets/video/Lauren.mp4",),
     Page(title: 'Onboarding page 3', desc: "but you gotta put in the work", videoPath: "assets/video/paul.mp4",)
   ];
 }
@@ -13,7 +18,6 @@ class Page extends StatelessWidget {
   final String title, desc, videoPath;
   
   Page({this.title, this.desc, this.videoPath});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,22 +37,52 @@ class PageUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0),
         child: Column(
           children: <Widget>[
-            Expanded(
-              flex: 6,
-              child: Container(),
+            SizedBox(height: screenHeight * 0.2,),
+            SizedBox(
+              height: screenHeight * 0.5,
+              width: screenWidth,
+              child: Center(
+                child: Stack(
+                  children: <Widget>[
+                    Transform.scale(
+                      scale: 0.9,
+                      origin: Offset(-350.0, 0.0),
+                      alignment: Alignment.topLeft,
+                      child: AspectRatio(
+                        aspectRatio: 9 / 16,
+                        child: Image.asset('assets/onboardingScreens/trackProgress2.png'),
+                      ),
+                    ),
+                    Transform.scale(
+                      scale: 0.9,
+                      origin: Offset(350.0, 0.0),
+                      alignment: Alignment.bottomRight,
+                      child: AspectRatio(
+                        aspectRatio: 9 / 16,
+                        child: Image.asset('assets/onboardingScreens/trackProgress1.png'),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
-            Expanded(
-              flex: 2,
-              child: Text(title, style: TextStyle(color: Colors.white),),
-            ),
-            Expanded(
-              flex: 3,
-              child: Text(desc),
+            SizedBox(height: screenHeight * 0.03,),
+            Text(title, style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w800),),
+            SizedBox(height: screenHeight * 0.03,),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 65.0),
+              child: Text(desc, 
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w200),
+              ),
             ),
           ],
         ),

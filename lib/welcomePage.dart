@@ -19,10 +19,14 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
   Animation<double> buttonAnim;
   Animation<double> titleAnim;
   Animation<double> taglineAnim;
-  double logoWidth = 200;
 
   bool showWelcome = true;
   double pageOpacity = 1.0;
+
+  double logoPosx;
+  double logoPosy;
+  double logoWidth = 200;
+  bool centerLogo = true;
 
   @override
   void initState() {
@@ -74,6 +78,17 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
 
     double centerx = MediaQuery.of(context).size.width / 2 - (logoWidth / 2);
     double centery = MediaQuery.of(context).size.height / 2 - (logoWidth / 2);
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    if (centerLogo) {
+      logoPosx = centerx;
+      logoPosy = centery;
+    }
+    else {
+      logoPosx = screenWidth * .05;
+      logoPosy = screenHeight * .05;
+    }
 
     //what if this widget is onboarding but hidden and fades into it with logo still in tact
     // if not logged in then show welcome page
@@ -81,8 +96,8 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
-            //gradient: JumaColors.lightGreyGradient
-            color: Colors.black
+            gradient: JumaColors.lightGreyGradient
+            //color: Colors.black
           ),
           child: Stack(
             children: <Widget>[
@@ -101,7 +116,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                 child: showWelcome ? Center(
                   child: Column(
                     children: <Widget>[
-                      SizedBox(height: 120,),
+                      SizedBox(height: screenHeight/5,),
                       Transform.scale(
                         scale: titleAnim.value,
                         alignment: Alignment.bottomCenter,
@@ -138,7 +153,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                           ),
                         ),
                       ),
-                      SizedBox(height: 300,),
+                      SizedBox(height: screenHeight/2.5,),
                       Transform.scale(
                         scale: buttonAnim.value,
                         alignment: Alignment.center,
@@ -146,14 +161,18 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                           width: 300,
                           height: 60,
                           child: RaisedButton(
-                            child: Text("JOIN THE GANG!", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),),
+                            child: Text("JOIN THE GANG!", style: TextStyle(fontWeight: FontWeight.bold, color: JumaColors.boahDarkGrey, fontSize: 20),),
                             onPressed: () {
                               setState(() {
+                                //opacity animation automattically switches the page
                                 pageOpacity = 0;
+                                logoWidth = logoWidth / 2;
+                                centerLogo = false;
                               });
                             },
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                            color: JumaColors.boahDarkGrey,
+                            //color: JumaColors.boahDarkGrey,
+                            color: Colors.white,
                             elevation: 0.0,
                           ),
                         ),
@@ -194,7 +213,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                 : 
                 Onboarding(),
               ),
-              AnimatedStrokeLogo(xpos: centerx, ypos: centery, width: logoWidth,),
+              AnimatedStrokeLogo(xpos: logoPosx, ypos: logoPosy, width: logoWidth,),
             ],
           ),
         ),
