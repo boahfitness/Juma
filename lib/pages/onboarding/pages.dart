@@ -9,8 +9,16 @@ List<Page> getPages() {
       desc: "Track your strength progress easily and intuitively.", 
       videoPath: "assets/video/antonioDeadlift.mp4",
     ),
-    Page(title: 'Create Programs', desc: "And you'll get strong AF", videoPath: "assets/video/Lauren.mp4",),
-    Page(title: 'Onboarding page 3', desc: "but you gotta put in the work", videoPath: "assets/video/paul.mp4",)
+    Page(
+      title: 'Create & Share Programs', 
+      desc: "Customize your own training experience.", 
+      videoPath: "assets/video/Lauren.mp4",
+    ),
+    Page(
+      title: 'Stay Connected', 
+      desc: "Once place for coaches and athletes to easily interact.", 
+      videoPath: "assets/video/paul.mp4",
+    )
   ];
 }
 
@@ -75,10 +83,15 @@ class PageUI extends StatelessWidget {
               ),
             ),
             SizedBox(height: screenHeight * 0.03,),
-            Text(title, style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w800),),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 55.0),
+              child: Text(title, 
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w800),),
+            ),
             SizedBox(height: screenHeight * 0.03,),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 65.0),
+              padding: const EdgeInsets.symmetric(horizontal: 65.0),
               child: Text(desc, 
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w200),

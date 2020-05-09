@@ -4,7 +4,7 @@ import 'package:juma/pages/onboarding/onboarding.dart';
 import 'package:juma/pages/app/home.dart';
 import 'package:juma/pages/authenticate/login.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:juma/welcomePage.dart';
+import 'package:juma/pages/onboarding/entryExperience.dart';
 
 //import 'package:juma/testWidget.dart';
 
@@ -14,7 +14,7 @@ class RouteGenerator {
 
     switch(settings.name) {
       case '/': {
-        return PageTransition(type: PageTransitionType.fade, child: WelcomePage());
+        return PageTransition(type: PageTransitionType.fade, child: Entry());
         //return MaterialPageRoute(builder: (_) => Test());
       }
       case '/onboarding':
