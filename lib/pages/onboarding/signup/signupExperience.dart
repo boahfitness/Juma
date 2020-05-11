@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:juma/pages/onboarding/welcomePage.dart';
+import 'package:juma/pages/onboarding/signup/signupScrollUI.dart';
 
 class SignupScroller extends StatefulWidget {
 
@@ -20,6 +21,7 @@ class _SignupScrollerState extends State<SignupScroller> {
   int currentIndex = 0;
   double uiOpacity;
   ScrollPhysics scrollPhysics;
+  final int numPages = 3;
 
   @override
   void initState() {
@@ -67,14 +69,22 @@ class _SignupScrollerState extends State<SignupScroller> {
         ),
 
         //scroll UI: invisible on welcomePage
-        AnimatedOpacity(
-          opacity: uiOpacity,
-          curve: Curves.linear,
-          duration: Duration(milliseconds: 500),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[Text("UI Controls")],
-          ),
+        ScrollUI(uiOpacity: uiOpacity, currentIndex: currentIndex, numPages: numPages,
+          onTapUp: () {
+            if (currentIndex != 0) {
+              Duration dur = currentIndex == 1 ? Duration(milliseconds: 500) : Duration(seconds: 1);
+              setState(() {
+                controller.previousPage(duration: dur, curve: Curves.linear);
+              });
+            }
+          },
+          onTapDown: () {
+            if (currentIndex != 0 && currentIndex != numPages - 1) {
+              setState(() {
+                controller.nextPage(duration: Duration(seconds: 1), curve: Curves.linear);
+              });
+            }
+          },
         ),
       ],
     );
