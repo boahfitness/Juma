@@ -24,44 +24,51 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+      ),
       backgroundColor: Color(0xff211f1d),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            child: Center(
-              child: Stack(
-                children: <Widget>[
-                  SingleChildScrollView(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 60),
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset('assets/juma-logo-stroke-grad.png'),
-                            SizedBox( height: 30),
-                            Text(
-                              'JUMA',
-                              style: TextStyle(
-                                  color: Color(0xffee630f),
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
+            child: Transform.translate(
+              offset: Offset(0.0, -30.0),
+              child: Center(
+                child: Stack(
+                  children: <Widget>[
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 60),
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Image.asset('assets/juma-logo-stroke-grad.png'),
+                              SizedBox( height: 30),
+                              Text(
+                                'JUMA',
+                                style: TextStyle(
+                                    color: Color(0xffee630f),
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            SizedBox( height: 30 ),
-                            LoginInput(controller: email, label: "Email", type: TextInputType.emailAddress,),
-                            SizedBox( height: 30),
-                            LoginInput(controller: password, label: "Password", hideText: true, type: TextInputType.visiblePassword,),
-                            SizedBox(height: 30),
-                            LoginButton(formKey: formKey, password: password, email: email)
-                          ],
+                              SizedBox( height: 30 ),
+                              LoginInput(controller: email, label: "Email", type: TextInputType.emailAddress,),
+                              SizedBox( height: 30),
+                              LoginInput(controller: password, label: "Password", hideText: true, type: TextInputType.visiblePassword,),
+                              SizedBox(height: 30),
+                              LoginButton(formKey: formKey, password: password, email: email)
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

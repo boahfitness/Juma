@@ -10,7 +10,7 @@ import 'package:juma/pages/onboarding/entryExperience.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    final args = settings.arguments;
+    //final args = settings.arguments;
 
     switch(settings.name) {
       case '/': {

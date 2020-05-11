@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:juma/models/user.dart';
 import 'package:juma/pages/app/home.dart';
 import 'package:juma/pages/onboarding/onboarding.dart';
-import 'package:juma/pages/onboarding/welcomePage.dart';
 import 'package:juma/theme/Colors.dart';
 import 'package:juma/widgets/animatedStrokeLogo.dart';
 import 'package:provider/provider.dart';
@@ -29,10 +28,7 @@ class _EntryState extends State<Entry> {
 
   bool showOnboarding;
   
-  double logoPosx;
-  double logoPosy;
-  double logoWidth;
-  bool centerLogo = true;
+  LogoState logoState = LogoState.center;
 
   double pageOpacity = 0.0;
 
@@ -44,7 +40,7 @@ class _EntryState extends State<Entry> {
 
     Timer(Duration(seconds: 3,), () {
       setState(() {
-        centerLogo = false;
+        logoState = LogoState.topLeft;
       });
     });
 
@@ -61,18 +57,6 @@ class _EntryState extends State<Entry> {
     User user = Provider.of<User>(context);
 
     if (user == null) {
-
-      if (centerLogo) {
-        logoWidth = 200;
-        logoPosx = MediaQuery.of(context).size.width / 2 - (logoWidth / 2);
-        logoPosy = MediaQuery.of(context).size.height / 2 - (logoWidth / 2);
-      }
-      else {
-        logoWidth = 100;
-        logoPosx = MediaQuery.of(context).size.width * .05;
-        logoPosy = MediaQuery.of(context).size.height * .05;
-      }
-
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -98,7 +82,7 @@ class _EntryState extends State<Entry> {
                 : 
                 SignupScroller(),
               ),
-              AnimatedStrokeLogo(xpos: logoPosx, ypos: logoPosy, width: logoWidth,)
+              AnimatedStrokeLogo(logoState: logoState,)
             ],
           ),
         ),
@@ -111,7 +95,7 @@ class _EntryState extends State<Entry> {
 
   void switchPage() {
     setState(() {
-      centerLogo = true;
+      logoState = LogoState.center;
       pageOpacity = 0.0;
     });
   }

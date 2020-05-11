@@ -130,6 +130,9 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
           Opacity(
             opacity: taglineAnim.value,
             child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed('/auth/login');
+              },
               child: Column(
                 children: <Widget>[
                   Text(
