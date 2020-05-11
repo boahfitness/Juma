@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:juma/pages/onboarding/welcomePage.dart';
 
 class SignupScroller extends StatefulWidget {
+
+  final void Function() onStart;
+  final void Function() onReturnHome;
+
+  SignupScroller({this.onStart, this.onReturnHome});
+
   @override
   _SignupScrollerState createState() => _SignupScrollerState();
 }
@@ -35,7 +41,10 @@ class _SignupScrollerState extends State<SignupScroller> {
           onPageChanged: (val) {
             setState(() {
               currentIndex = val;
-              if (val == 0) controller.animateToPage(0, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+              if (val == 0) {
+                widget.onReturnHome();
+                controller.animateToPage(0, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+              }
             });
           },
           physics: scrollPhysics,
@@ -43,9 +52,10 @@ class _SignupScrollerState extends State<SignupScroller> {
           scrollDirection: Axis.vertical,
           children: <Widget>[
             WelcomePage(
-              onSignup: () {
+              onJoinPressed: () {
                 setState(() {
                   controller.animateToPage(currentIndex + 1, duration: Duration(seconds: 1), curve: Curves.easeInOut);
+                  widget.onStart();
                 });
               },
             ),

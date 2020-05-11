@@ -80,7 +80,18 @@ class _EntryState extends State<Entry> {
                   switchPage();
                 },) 
                 : 
-                SignupScroller(),
+                SignupScroller(
+                  onStart: () {
+                    setState(() {
+                      logoState = LogoState.bottomLeft;
+                    });
+                  },
+                  onReturnHome: () {
+                    setState(() {
+                      logoState = LogoState.center;
+                    });
+                  },
+                ),
               ),
               AnimatedStrokeLogo(logoState: logoState,)
             ],

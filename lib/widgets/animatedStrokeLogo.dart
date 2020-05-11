@@ -13,6 +13,7 @@ class AnimatedStrokeLogo extends StatefulWidget {
 class _AnimatedStrokeLogoState extends State<AnimatedStrokeLogo> {
 
   double xpos, ypos, width;
+  String animation = 'glowDraw';
 
   void calculatePos(LogoState state) {
     switch (state) {
@@ -31,7 +32,7 @@ class _AnimatedStrokeLogoState extends State<AnimatedStrokeLogo> {
       case LogoState.bottomLeft: {
         width = 100;
         xpos = MediaQuery.of(context).size.width * 0.05;
-        ypos = MediaQuery.of(context).size.height * 0.95;
+        ypos = MediaQuery.of(context).size.height * 0.85;
       }
         break;
     }
@@ -54,7 +55,13 @@ class _AnimatedStrokeLogoState extends State<AnimatedStrokeLogo> {
         curve: Curves.easeInOut,
         child: FlareActor(
           'assets/video/jumaLightDrawThick.flr',
-          animation: 'glowDraw',
+          animation: animation,
+          callback: (val) {
+            setState(() {
+              if (animation == 'glowDraw')
+                animation = 'idle';
+            });
+          },
         ),
       ),
     );

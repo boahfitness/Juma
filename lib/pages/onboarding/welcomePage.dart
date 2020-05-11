@@ -3,9 +3,9 @@ import 'package:juma/theme/Colors.dart';
 
 class WelcomePage extends StatefulWidget {
 
-  final void Function() onSignup;
+  final void Function() onJoinPressed;
 
-  WelcomePage({this.onSignup});
+  WelcomePage({this.onJoinPressed});
 
   @override
   _WelcomePageState createState() => _WelcomePageState();
@@ -117,7 +117,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
               child: RaisedButton(
                 child: Text("JOIN THE GANG!", style: TextStyle(fontWeight: FontWeight.bold, color: JumaColors.boahDarkGrey, fontSize: 20),),
                 onPressed: () {
-                  widget.onSignup();
+                  widget.onJoinPressed();
                 },
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                 //color: JumaColors.boahDarkGrey,
