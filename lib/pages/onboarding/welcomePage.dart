@@ -70,7 +70,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
     return Center(
       child: Column(
         children: <Widget>[
-          SizedBox(height: screenHeight/5,),
+          SizedBox(height: screenHeight/7,),
           Transform.scale(
             scale: titleAnim.value,
             alignment: Alignment.bottomCenter,
@@ -107,22 +107,22 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
               ),
             ),
           ),
-          SizedBox(height: screenHeight/2.5,),
+          SizedBox(height: screenHeight/2.1,),
           Transform.scale(
             scale: buttonAnim.value,
             alignment: Alignment.center,
             child: SizedBox(
-              width: 300,
+              width: 280,
               height: 60,
               child: RaisedButton(
-                child: Text("JOIN THE GANG!", style: TextStyle(fontWeight: FontWeight.bold, color: JumaColors.boahDarkGrey, fontSize: 20),),
+                child: Text("JOIN THE GANG!", style: TextStyle(fontWeight: FontWeight.bold, color: JumaColors.boahDarkGrey, fontSize: 18),),
                 onPressed: () {
                   widget.onJoinPressed();
                 },
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                 //color: JumaColors.boahDarkGrey,
                 color: Colors.white,
-                elevation: 0.0,
+                elevation: 10.0,
               ),
             ),
           ),
