@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:juma/theme/Colors.dart';
-//import 'package:juma/widgets/backgroundVideo.dart';
 
 List<Page> getPages() {
   return [

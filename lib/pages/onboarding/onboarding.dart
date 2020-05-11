@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:juma/pages/onboarding/pages.dart';
+import 'package:juma/pages/onboarding/onboardingPages.dart';
 import 'package:juma/theme/Colors.dart';
+import 'package:juma/pages/onboarding/pageIndexIndicator.dart';
 
 class Onboarding extends StatefulWidget {
 
@@ -64,7 +65,7 @@ class _OnboardingState extends State<Onboarding> {
                 child: currentIndex != pages.length - 1 ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    for(int i = 0; i < pages.length; i++) currentIndex == i ? PageIndexIndicator(true) : PageIndexIndicator(false)
+                    for(int i = 0; i < pages.length; i++) currentIndex == i ? PageIndexIndicator(true, 12.0) : PageIndexIndicator(false, 12.0)
                   ],
                 )
                 :
@@ -136,26 +137,6 @@ class _OnboardingState extends State<Onboarding> {
           ) : SizedBox(),
         ),
       ],
-    );
-  }
-}
-
-class PageIndexIndicator extends StatelessWidget {
-  final bool isCurrent;
-  PageIndexIndicator(this.isCurrent);
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      margin: EdgeInsets.symmetric(horizontal: 5.0),
-      padding: EdgeInsets.symmetric(horizontal: 2.0),
-      height: 12.0,
-      width: 12.0,
-      decoration: BoxDecoration(
-        color: isCurrent ? JumaColors.boahOrange : Colors.grey[900],
-        borderRadius: BorderRadius.circular(12)
-      ),
-      duration: Duration(milliseconds: 100),
-      curve: Curves.linear,
     );
   }
 }
