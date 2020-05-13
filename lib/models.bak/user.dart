@@ -1,4 +1,4 @@
-import 'package:juma/models/program.dart';
+import 'package:juma/models.bak/program.dart';
 
 class User {
   String uid;

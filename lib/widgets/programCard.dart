@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:juma/models/program.dart';
+import 'package:juma/models.bak/program.dart';
 import 'package:juma/theme/Colors.dart';
 
 class ProgramCard extends StatelessWidget {
