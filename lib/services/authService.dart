@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:juma/models/user.dart';
+import 'package:juma/models/users/user.dart';
 
 class AuthService {
 

@@ -11,7 +11,7 @@
 import 'dart:async';
 import 'package:juma/pages/onboarding/signup/signupExperience.dart';
 import 'package:flutter/material.dart';
-import 'package:juma/models/user.dart';
+import 'package:juma/models/users/user.dart';
 import 'package:juma/pages/app/home.dart';
 import 'package:juma/pages/onboarding/onboarding.dart';
 import 'package:juma/theme/Colors.dart';
