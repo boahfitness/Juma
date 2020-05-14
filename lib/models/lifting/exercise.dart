@@ -34,6 +34,18 @@ class Squat extends MainLift {
   Set<SquatEquipment> equipment = new Set();
   @override
   String get name => 'Squat';
+
+  bool operator ==(dynamic other) {
+    if (other.runtimeType == Squat) {
+      return equipment.containsAll(other.equipment) && equipment.length == other.equipment.length;
+    }
+    else {
+      return false;
+    }
+  }
+
+  @override
+  int get hashCode => equipment.hashCode;
 }
 enum SquatEquipment {
   wraps,
@@ -45,6 +57,18 @@ class Bench extends MainLift {
   Set<BenchEquipment> equipment = new Set();
   @override
   String get name => 'Bench';
+
+  bool operator ==(dynamic other) {
+    if (other.runtimeType == Bench) {
+      return equipment.containsAll(other.equipment) && equipment.length == other.equipment.length;
+    }
+    else {
+      return false;
+    }
+  }
+
+  @override
+  int get hashCode => equipment.hashCode;
 }
 enum BenchEquipment {
   slingshot,
@@ -55,6 +79,18 @@ class Deadlift extends MainLift {
   Set<DeadliftEquipment> equipment = new Set();
   @override
   String get name => 'Deadlift';
+
+  bool operator ==(dynamic other) {
+    if (other.runtimeType == Deadlift) {
+      return equipment.containsAll(other.equipment) && equipment.length == other.equipment.length;
+    }
+    else {
+      return false;
+    }
+  }
+
+  @override
+  int get hashCode => equipment.hashCode;
 }
 enum DeadliftEquipment {
   suit,
