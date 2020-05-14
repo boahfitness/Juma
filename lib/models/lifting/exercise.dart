@@ -1,7 +1,6 @@
 import 'package:juma/models/lifting/weight.dart';
 
 class Exercise {
-  MainLiftType mainLiftType;
   String name;
   int sets;
   int reps;
@@ -23,20 +22,41 @@ class Exercise {
     return weight.pounds * (reps + (10.0 - rpe));
   }
 
-  Exercise({this.mainLiftType, this.name, this.sets=0, this.reps=0, this.rpe=5.0,
+  Exercise({this.name, this.sets=0, this.reps=0, this.rpe=5.0,
     this.weight, this.duration, this.rest, this.percentage, 
     this.athleteNotes, this.coachNotes, this.completed});
 }
 
-enum MainLiftType {
-  squat,
-  squatWrapped,
-  squatSuit,
-  squatWrappedSuit,
-  bench,
-  benchShirt,
-  deadliftConv,
-  deadliftConvSuit,
-  deadliftSumo,
-  deadliftSumoSuit,
+abstract class MainLift extends Exercise {
+}
+
+class Squat extends MainLift {
+  Set<SquatEquipment> equipment = new Set();
+  @override
+  String get name => 'Squat';
+}
+enum SquatEquipment {
+  wraps,
+  suit,
+  breifs
+}
+
+class Bench extends MainLift {
+  Set<BenchEquipment> equipment = new Set();
+  @override
+  String get name => 'Bench';
+}
+enum BenchEquipment {
+  slingshot,
+  shirt
+}
+
+class Deadlift extends MainLift {
+  Set<DeadliftEquipment> equipment = new Set();
+  @override
+  String get name => 'Deadlift';
+}
+enum DeadliftEquipment {
+  suit,
+  breifs,
 }
