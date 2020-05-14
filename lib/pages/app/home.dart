@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:juma/models.bak/user.dart';
+import 'package:juma/models/users/user.dart';
 import 'package:juma/services/authService.dart';
 import 'package:juma/theme/Colors.dart';
-import 'package:juma/models.bak/program.dart';
+import 'package:juma/models/lifting/program.dart';
 import 'package:juma/widgets/programCard.dart';
 
 AuthService auth = AuthService();
@@ -14,11 +14,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  User testUser = User();
+  Program testProgram = Program();
   
   @override
   Widget build(BuildContext context) {
-    User testUser = User.test();
-    Program testProgram = testUser.currentProgram;
     ColorTheme theme = testProgram.theme;
 
     return Scaffold(
@@ -89,7 +89,7 @@ class _HomeState extends State<Home> {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Text("${testProgram.currentDay.firstExercise.name.toUpperCase()} 5 X 5", style: wkText(),),
+                      child: Text("${testProgram.currentDay.exercises.elementAt(0).name.toUpperCase()} 5 X 5", style: wkText(),),
                     ),
                     Expanded(
                       flex: 1,

@@ -11,6 +11,11 @@ class Program {
   String description;
   String pathToPicture;
   ColorTheme theme;
+
+  Day get currentDay {
+    // TODO: implement function to get the current day
+    return Day();
+  }
 }
 
 class Week {
