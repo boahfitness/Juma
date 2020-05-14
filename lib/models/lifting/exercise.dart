@@ -32,12 +32,13 @@ abstract class MainLift extends Exercise {
 
 class Squat extends MainLift {
   Set<SquatEquipment> equipment = new Set();
+  SquatVariation variation = SquatVariation.lowBar;
   @override
   String get name => 'Squat';
 
   bool operator ==(dynamic other) {
     if (other.runtimeType == Squat) {
-      return equipment.containsAll(other.equipment) && equipment.length == other.equipment.length;
+      return equipment.containsAll(other.equipment) && equipment.length == other.equipment.length && variation == other.variation;
     }
     else {
       return false;
@@ -51,6 +52,10 @@ enum SquatEquipment {
   wraps,
   suit,
   breifs
+}
+enum SquatVariation {
+  highBar,
+  lowBar
 }
 
 class Bench extends MainLift {
@@ -77,12 +82,14 @@ enum BenchEquipment {
 
 class Deadlift extends MainLift {
   Set<DeadliftEquipment> equipment = new Set();
+  DeadliftVariation variation = DeadliftVariation.conventional;
+
   @override
   String get name => 'Deadlift';
 
   bool operator ==(dynamic other) {
     if (other.runtimeType == Deadlift) {
-      return equipment.containsAll(other.equipment) && equipment.length == other.equipment.length;
+      return equipment.containsAll(other.equipment) && equipment.length == other.equipment.length && variation == other.variation;
     }
     else {
       return false;
@@ -90,9 +97,14 @@ class Deadlift extends MainLift {
   }
 
   @override
-  int get hashCode => equipment.hashCode;
+  int get hashCode => super.hashCode;
 }
 enum DeadliftEquipment {
   suit,
   breifs,
+}
+
+enum DeadliftVariation {
+  sumo,
+  conventional
 }
