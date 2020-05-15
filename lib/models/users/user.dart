@@ -10,7 +10,7 @@ class User {
   Program currentProgram;
   List<Program> pastPrograms;
 
-  Map<MainLift, PersonalRecords> personalRecords;
+  Map<MainLiftDescriptor, PersonalRecords> personalRecords;
 
   User({this.uid});
 }
