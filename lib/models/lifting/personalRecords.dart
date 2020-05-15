@@ -1,17 +1,25 @@
 import 'package:juma/models/lifting/exercise.dart';
 
-class PersonalRecords<T extends MainLift> {
+class PersonalRecords {
   String prid;
   String uid;
-  T liftDescriptor;
+  MainLiftDescriptor _liftDescriptor;
+  MainLiftDescriptor get liftDescriptor {
+    return _liftDescriptor;
+  }
 
   // holding a list of exercises for each rep count
-  Map<int, List<PersonalRecord<T>>> data;
+  Map<int, List<PersonalRecord>> data;
+
+  PersonalRecords(MainLiftDescriptor liftDescriptor) {
+    _liftDescriptor = liftDescriptor;
+    data = Map();
+  }
 }
 
-class PersonalRecord<T extends MainLift> {
+class PersonalRecord {
   String programId;
   int weekIndex;
   int dayIndex;
-  T lift;
+  MainLift lift;
 }

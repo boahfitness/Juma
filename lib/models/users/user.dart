@@ -1,6 +1,5 @@
 import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/models/lifting/program.dart';
-import 'package:juma/models/lifting/personalRecords.dart';
 import 'package:juma/models/lifting/weight.dart';
 
 class User {
@@ -10,7 +9,7 @@ class User {
   Program currentProgram;
   List<Program> pastPrograms;
 
-  Map<MainLiftDescriptor, PersonalRecords> personalRecords;
+  Set<MainLiftDescriptor> trackedLifts;
 
   User({this.uid});
 }
