@@ -44,12 +44,17 @@ class MainLiftDescriptor {
 
   bool operator ==(dynamic other) {
     if (other.runtimeType == MainLiftDescriptor) {
-      return value = other.value;
+      return value == other.value;
     }
     return false;
   }
   
   int get hashCode => super.hashCode;
+
+  @override
+  String toString() {
+    return value;
+  }
 
   static String calculateDescriptor(MainLift lift) {
     String output = "";
@@ -100,6 +105,10 @@ class Squat extends MainLift {
   SquatSuit suit;
   MainLiftDescriptor _descriptor;
 
+  Squat({this.kneeEquipment=KneeEquipment.none, this.variation=SquatVariation.lowBar, this.suit=SquatSuit.none}) {
+    _descriptor = MainLiftDescriptor.fromLift(this);
+  }
+
   @override
   String get name => 'Squat';
 
@@ -138,6 +147,11 @@ enum SquatVariation {
 class Bench extends MainLift {
   BenchEquipment equipment;
   MainLiftDescriptor _descriptor;
+
+  Bench({this.equipment=BenchEquipment.none}) {
+    _descriptor = MainLiftDescriptor.fromLift(this);
+  }
+
   @override
   String get name => 'Bench';
 
@@ -169,6 +183,10 @@ class Deadlift extends MainLift {
   DeadliftEquipment equipment;
   DeadliftVariation variation;
   MainLiftDescriptor _descriptor;
+
+  Deadlift({this.equipment=DeadliftEquipment.none, this.variation=DeadliftVariation.conventional}) {
+    _descriptor = MainLiftDescriptor.fromLift(this);
+  }
 
   @override
   String get name => 'Deadlift';
