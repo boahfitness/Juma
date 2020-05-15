@@ -14,7 +14,7 @@ class Onboarding extends StatefulWidget {
 }
 
 class _OnboardingState extends State<Onboarding> {
-  List<Page> pages;
+  List<OnboardingPage> pages;
   int currentIndex = 0;
   PageController pageController = PageController(initialPage: 0);
 

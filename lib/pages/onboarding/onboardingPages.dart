@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-List<Page> getPages() {
+List<OnboardingPage> getPages() {
   return [
-    Page(
+    OnboardingPage(
       title: 'Track Progress', 
       desc: "Track your strength progress easily and intuitively.", 
       videoPath: "assets/video/antonioDeadlift.mp4",
     ),
-    Page(
+    OnboardingPage(
       title: 'Create & Share Programs', 
       desc: "Customize your own training experience.", 
       videoPath: "assets/video/Lauren.mp4",
     ),
-    Page(
+    OnboardingPage(
       title: 'Stay Connected', 
       desc: "Once place for coaches and athletes to easily interact.", 
       videoPath: "assets/video/paul.mp4",
@@ -20,10 +20,10 @@ List<Page> getPages() {
   ];
 }
 
-class Page extends StatelessWidget {
+class OnboardingPage extends StatelessWidget {
   final String title, desc, videoPath;
   
-  Page({this.title, this.desc, this.videoPath});
+  OnboardingPage({this.title, this.desc, this.videoPath});
   @override
   Widget build(BuildContext context) {
     return Container(
