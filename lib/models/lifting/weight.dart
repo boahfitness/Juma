@@ -1,16 +1,34 @@
 class Weight {
-  double pounds;
-  double kilograms;
+  double _pounds, _kilograms;
 
-  Weight({this.pounds, this.kilograms}) {
-    if (pounds == null && kilograms == null) {
-      pounds = kilograms = 0;
-    }
-    else {
-
-    }
+  double get pounds {
+    return _pounds;
+  }
+  set pounds(double val) {
+    _pounds = val;
+    _kilograms = poundsToKilos(val);
   }
 
+  double get kilograms {
+    return _kilograms;
+  }
+  set kilograms(double val) {
+    _kilograms = val;
+    _pounds = kilosToPounds(val);
+  }
+
+  Weight.kilograms(double val) {
+    kilograms = val;
+  }
+
+  Weight.pounds(double val) {
+    pounds = val;
+  }
+
+  Weight() {
+    pounds = 0.0;
+  }
+  
   static double poundsToKilos(double pounds) {
     return pounds / 2.205;
   }
@@ -34,8 +52,19 @@ class Weight {
 
 }
 
-class PoundPlates {
-  double weight;
+enum WeightUnit {
+  pounds,
+  kilograms
+}
+
+abstract class Plates {
+  Weight weight;
+  double barWeight;
+}
+
+class PoundPlates extends Plates {
+  Weight weight;
+  double barWeight = 45.0;
   int num45s;
   int num25s;
   int num10s;
@@ -43,8 +72,9 @@ class PoundPlates {
   int num2point5s;
 }
 
-class KiloPlates {
-  double weight;
+class KiloPlates extends Plates {
+  Weight weight;
+  double barWeight = 20.0;
   int numRed;
   int numBlue;
   int numYellow;
