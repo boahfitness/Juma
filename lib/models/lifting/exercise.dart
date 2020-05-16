@@ -112,18 +112,6 @@ class Squat extends MainLift {
   @override
   String get name => 'Squat';
 
-  bool operator ==(dynamic other) {
-    if (other.runtimeType == Squat) {
-      return kneeEquipment == other.kneeEquipment && variation == other.variation && suit == other.suit;
-    }
-    else {
-      return false;
-    }
-  }
-
-  @override
-  int get hashCode => super.hashCode;
-
   @override
   MainLiftDescriptor get descriptor {
     _descriptor.value = MainLiftDescriptor.calculateDescriptor(this);
@@ -155,18 +143,6 @@ class Bench extends MainLift {
   @override
   String get name => 'Bench';
 
-  bool operator ==(dynamic other) {
-    if (other.runtimeType == Bench) {
-      return equipment == other.equipment;
-    }
-    else {
-      return false;
-    }
-  }
-
-  @override
-  int get hashCode => super.hashCode;
-
   @override
   MainLiftDescriptor get descriptor {
     _descriptor.value = MainLiftDescriptor.calculateDescriptor(this);
@@ -190,18 +166,6 @@ class Deadlift extends MainLift {
 
   @override
   String get name => 'Deadlift';
-
-  bool operator ==(dynamic other) {
-    if (other.runtimeType == Deadlift) {
-      return equipment == other.equipment && variation == other.variation;
-    }
-    else {
-      return false;
-    }
-  }
-
-  @override
-  int get hashCode => super.hashCode;
 
   @override
   MainLiftDescriptor get descriptor {
