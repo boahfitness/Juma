@@ -1,4 +1,6 @@
 class Weight {
+
+  // Variables
   double _pounds, _kilograms;
 
   double get pounds {
@@ -17,6 +19,7 @@ class Weight {
     _pounds = kilosToPounds(val);
   }
 
+  // Constructors
   Weight.kilograms(double val) {
     kilograms = val;
   }
@@ -29,6 +32,7 @@ class Weight {
     pounds = 0.0;
   }
   
+  // Methods
   static double poundsToKilos(double pounds) {
     return pounds / 2.2046226218;
   }

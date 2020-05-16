@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/pages/app/home.dart';
 import 'package:juma/pages/authenticate/authenticate.dart';
 import 'package:provider/provider.dart';
@@ -8,12 +7,7 @@ import 'package:juma/models/users/user.dart';
 import 'package:juma/routeGenerator.dart';
 import 'package:flutter/services.dart';
 
-void main() {
-  Squat squat = Squat();
-  print(squat.descriptor);
-}
-
-//void main() => runApp(Juma());
+void main() => runApp(Juma());
 
 class Juma extends StatelessWidget {
   @override
@@ -28,8 +22,7 @@ class Juma extends StatelessWidget {
         theme: ThemeData(fontFamily: 'Montserrat'),
         initialRoute: '/',
         onGenerateRoute: RouteGenerator.generateRoute,
-        debugShowCheckedModeBanner: false,
-        
+        debugShowCheckedModeBanner: false,  
       ),
     );
   }
