@@ -2,24 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:juma/main.dart';
 import 'package:juma/pages/onboarding/onboarding.dart';
 import 'package:juma/pages/app/home.dart';
-import 'package:juma/pages/authenticate/authenticate.dart';
 import 'package:juma/pages/authenticate/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:juma/pages/onboarding/entryExperience.dart';
+
+//import 'package:juma/testWidget.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    final args = settings.arguments;
+    //final args = settings.arguments;
 
     switch(settings.name) {
-      // on home route check if seen -> onboarding or authenticate
       case '/': {
-        //return MaterialPageRoute(builder: (_) => Splash());
+        return PageTransition(type: PageTransitionType.fade, child: Entry());
         //return MaterialPageRoute(builder: (_) => Test());
-        return PageTransition(type: PageTransitionType.fade, child: Test());
       }
       case '/onboarding':
-        //return MaterialPageRoute(builder: (_) => Onboarding());
         return PageTransition(type: PageTransitionType.fade, child: Onboarding());
       case '/home':
         return MaterialPageRoute(builder: (_) => Home());
@@ -45,22 +43,4 @@ class RouteGenerator {
     });
   }
 
-}
-
-
-// if seen return to autch checker else return onboarding
-Route<dynamic> _checkSeen(SharedPreferences prefs) {
-  bool seen = prefs.getBool('seen') ?? false;
-
-  if (seen) {
-    return MaterialPageRoute(
-      builder: (_) => AuthChecker()
-    );
-  }
-  else {
-    return PageTransition(
-      type: PageTransitionType.fade,
-      child: Onboarding()
-    );
-  }
 }
