@@ -103,7 +103,8 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
               "Strength Training Redesigned",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: JumaColors.boahOrange
+                color: JumaColors.boahOrange,
+                fontSize: 13,
               ),
             ),
           ),

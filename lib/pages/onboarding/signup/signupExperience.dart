@@ -1,6 +1,7 @@
 // to hold pageview that starts with welcome page and goes to signup scroller
 
 import 'package:flutter/material.dart';
+import 'package:juma/pages/onboarding/signup/inputPages/displayName.dart';
 import 'package:juma/pages/onboarding/welcomePage.dart';
 import 'package:juma/pages/onboarding/signup/signupScrollUI.dart';
 
@@ -17,76 +18,99 @@ class SignupScroller extends StatefulWidget {
 
 class _SignupScrollerState extends State<SignupScroller> {
 
-  PageController controller = PageController(initialPage: 0, keepPage: false);
+  PageController pageController = PageController(initialPage: 0, keepPage: false);
   int currentIndex = 0;
   double uiOpacity;
   ScrollPhysics scrollPhysics;
   final int numPages = 3;
+  bool upDisabled = false, downDisabled = false;
+
+  final displayName = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    controller.addListener(() {
+    pageController.addListener(() {
       setState(() {});
     });
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    displayName.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
 
     uiOpacity = currentIndex == 0 ? 0.0 : 1.0;
-    scrollPhysics = currentIndex == 0 ? NeverScrollableScrollPhysics() : PageScrollPhysics();
+    scrollPhysics = currentIndex == 0 ? NeverScrollableScrollPhysics() : NeverScrollableScrollPhysics();
 
-    return Stack(
-      children: <Widget>[
-        PageView(
-          onPageChanged: (val) {
-            setState(() {
-              currentIndex = val;
-              if (val == 0) {
-                widget.onReturnHome();
-                controller.animateToPage(0, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
-              }
-            });
-          },
-          physics: scrollPhysics,
-          controller: controller,
-          scrollDirection: Axis.vertical,
-          children: <Widget>[
-            WelcomePage(
-              onJoinPressed: () {
+    return Form(
+      key: formKey,
+      child: Stack(
+        children: <Widget>[
+          DefaultTextStyle(
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w100,
+              fontSize: 20,
+            ),
+            child: Padding(
+              padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * .1),
+              child: PageView(
+                onPageChanged: (val) {
+                  setState(() {
+                    currentIndex = val;
+                    if (val == 0) {
+                      widget.onReturnHome();
+                      pageController.animateToPage(0, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+                    }
+                  });
+                },
+                physics: scrollPhysics,
+                controller: pageController,
+                scrollDirection: Axis.vertical,
+                children: <Widget>[
+                  WelcomePage(
+                    onJoinPressed: () {
+                      setState(() {
+                        pageController.animateToPage(currentIndex + 1, duration: Duration(seconds: 1), curve: Curves.easeInOut);
+                        widget.onStart();
+                      });
+                    },
+                  ),
+                  InputDisplayName(displayName),
+                  Container(child: Center(child: Text("PRs!"),),)
+                ],
+              ),
+            ),
+          ),
+
+          //scroll UI: invisible on welcomePage
+          ScrollUI(uiOpacity: uiOpacity, currentIndex: currentIndex, numPages: numPages,
+            onTapUp: () {
+              if (currentIndex != 0 && !upDisabled) {
+                Duration dur = currentIndex == 1 ? Duration(milliseconds: 500) : Duration(seconds: 1);
                 setState(() {
-                  controller.animateToPage(currentIndex + 1, duration: Duration(seconds: 1), curve: Curves.easeInOut);
-                  widget.onStart();
+                  pageController.previousPage(duration: dur, curve: Curves.linear);
                 });
-              },
-            ),
-            Container(
-              child: Center(child: Text("Display Name"),),
-            ),
-            Container(child: Center(child: Text("PRs!"),),)
-          ],
-        ),
-
-        //scroll UI: invisible on welcomePage
-        ScrollUI(uiOpacity: uiOpacity, currentIndex: currentIndex, numPages: numPages,
-          onTapUp: () {
-            if (currentIndex != 0) {
-              Duration dur = currentIndex == 1 ? Duration(milliseconds: 500) : Duration(seconds: 1);
-              setState(() {
-                controller.previousPage(duration: dur, curve: Curves.linear);
-              });
-            }
-          },
-          onTapDown: () {
-            if (currentIndex != 0 && currentIndex != numPages - 1) {
-              setState(() {
-                controller.nextPage(duration: Duration(seconds: 1), curve: Curves.linear);
-              });
-            }
-          },
-        ),
-      ],
+              }
+            },
+            onTapDown: () {
+              if (currentIndex != 0 && currentIndex != numPages - 1 && !downDisabled && formKey.currentState.validate()) {
+                setState(() {
+                  pageController.nextPage(duration: Duration(seconds: 1), curve: Curves.linear);
+                });
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }

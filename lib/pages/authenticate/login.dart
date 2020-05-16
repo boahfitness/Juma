@@ -168,7 +168,7 @@ class LoginInput extends StatelessWidget {
             width: 2.0
           ),
         ),
-        hasFloatingPlaceholder: true,
+        floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
       validator: (value) {
         if (value.isEmpty) return 'Please enter ${label.toLowerCase()}';
