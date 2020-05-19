@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'package:juma/models/lifting/exercise.dart';
 
-class PersonalRecords {
+class TrackedLift {
   String id;
   String uid;
   MainLiftDescriptor _liftDescriptor;
@@ -10,10 +10,24 @@ class PersonalRecords {
   Map<int, List<PersonalRecord>> _data;
   Map<int, List<PersonalRecord>> get data => _data;
 
-  PersonalRecords(MainLiftDescriptor liftDescriptor) {
+  TrackedLift(MainLiftDescriptor liftDescriptor) {
     _liftDescriptor = liftDescriptor;
     _data = SplayTreeMap();
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (other.runtimeType == TrackedLift) {
+      TrackedLift otherLift = other;
+      if (otherLift.liftDescriptor == this._liftDescriptor) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => _liftDescriptor.hashCode;
 
   bool addPersonalRecord(PersonalRecord pr) {
     // the lift must match the lift descriptor of the PR data to be added to the data.
