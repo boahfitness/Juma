@@ -11,6 +11,7 @@ class Program {
   String description;
   String pathToPicture;
   ColorTheme theme;
+  DateTime completed;
 
   Day get currentDay {
     // TODO: implement function to get the current day
