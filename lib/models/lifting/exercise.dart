@@ -28,6 +28,7 @@ class Exercise {
 }
 
 abstract class MainLift extends Exercise {
+  bool isPR;
   MainLiftDescriptor get descriptor;
 }
 
