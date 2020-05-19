@@ -16,16 +16,29 @@ class PersonalRecords {
   }
 
   bool addPersonalRecord(PersonalRecord pr) {
-    // the lift must match the lift descriptor of the PR list to be added to the data.
+    // the lift must match the lift descriptor of the PR data to be added to the data.
+    // the lift must also be greater weight than the most recent pr (last)
     MainLiftDescriptor prDescriptor = pr.lift.descriptor;
     if (prDescriptor == _liftDescriptor) {
       int prReps = pr.lift.reps;
+
       _data.putIfAbsent(prReps, () => List());
-      _data[prReps].add(pr);
-      return true;
+      
+      List<PersonalRecord> prList = _data[prReps];
+
+      if (prList.isEmpty) {
+        prList.add(pr);
+        return true;
+      }
+      //check if pr weight is greater than weight of most recent pr
+      else if (pr.lift.weight.pounds > prList.last.lift.weight.pounds) {
+        prList.add(pr);
+        return true;
+      }
     }
     return false;
   }
+
 }
 
 class PersonalRecord {
