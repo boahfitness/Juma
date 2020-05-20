@@ -1,6 +1,7 @@
 // to hold pageview that starts with welcome page and goes to signup scroller
 
 import 'package:flutter/material.dart';
+import 'package:juma/models/users/user.dart';
 import 'package:juma/pages/onboarding/signup/inputPages/displayName.dart';
 import 'package:juma/pages/onboarding/welcomePage.dart';
 import 'package:juma/pages/onboarding/signup/signupScrollUI.dart';
@@ -17,6 +18,8 @@ class SignupScroller extends StatefulWidget {
 }
 
 class _SignupScrollerState extends State<SignupScroller> {
+
+  User user = User();
 
   PageController pageController = PageController(initialPage: 0, keepPage: false);
   int currentIndex = 0;
@@ -85,7 +88,6 @@ class _SignupScrollerState extends State<SignupScroller> {
                     },
                   ),
                   InputDisplayName(displayName),
-                  Container(child: Center(child: Text("PRs!"),),)
                 ],
               ),
             ),
