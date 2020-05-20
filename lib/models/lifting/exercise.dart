@@ -150,6 +150,7 @@ class Squat extends MainLift {
     _variation = SquatVariation.values[values[1]];
     _equipment = SquatEquipment.values[values[2]];
     _kneeEquipment = KneeEquipment.values[values[3]];
+    _descriptor = MainLiftDescriptor(value: calculateDescriptorValue(), path: calculateDescriptorPath());
   }
 
   @override 
@@ -168,11 +169,11 @@ class Squat extends MainLift {
       MainLiftType.squat.toString().split('.').last,
       _variation.toString().split('.').last,
       _equipment.toString().split('.').last,
-      _kneeEquipment.toString().split('.').last
     );
+    if (_kneeEquipment == KneeEquipment.wraps) path.join(output, _kneeEquipment.toString().split('.').last);
     return output
       .toUpperCase()
-      .replaceAll('/', ' // ');
+      .replaceAll('/', '//');
   }
 
 }
@@ -220,6 +221,7 @@ class Bench extends MainLift {
     List<int> values = d.value.split('-').map((val) => int.parse(val)).toList();
     if (values.length != 2) throw Exception('Invalid main lift descriptor');
     _equipment = BenchEquipment.values[values[1]];
+    _descriptor = MainLiftDescriptor(value: calculateDescriptorValue(), path: calculateDescriptorPath());
   }
 
   @override 
@@ -238,7 +240,7 @@ class Bench extends MainLift {
     );
     return output
       .toUpperCase()
-      .replaceAll('/', ' // ');
+      .replaceAll('/', '//');
   }
 
 }
@@ -291,6 +293,7 @@ class Deadlift extends MainLift {
     if (values.length != 3) throw Exception('Invalid main lift descriptor');
     _variation = DeadliftVariation.values[values[1]];
     _equipment = DeadliftEquipment.values[values[2]];
+    _descriptor = MainLiftDescriptor(value: calculateDescriptorValue(), path: calculateDescriptorPath());
   }
 
   @override 
@@ -311,7 +314,7 @@ class Deadlift extends MainLift {
     );
     return output 
       .toUpperCase()
-      .replaceAll('/', ' // ');
+      .replaceAll('/', '//');
   }
 
 }
