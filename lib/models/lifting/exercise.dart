@@ -55,7 +55,7 @@ class MainLiftDescriptor {
     return false;
   }
   
-  int get hashCode => super.hashCode;
+  int get hashCode => value.hashCode;
 
   @override
   String toString() {
