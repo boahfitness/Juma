@@ -4,11 +4,8 @@ class Exercise {
   String name;
   int sets;
   int reps;
-  double rpe;
   Weight weight = Weight();
-  Duration duration;
   Duration rest;
-  double percentage;
   String coachNotes;
   String athleteNotes;
   DateTime completed;
@@ -18,18 +15,26 @@ class Exercise {
     return weight.pounds * reps;
   }
 
-  double get rpeWorkload {
-    return weight.pounds * (reps + (10.0 - rpe));
-  }
-
-  Exercise({this.name, this.sets=0, this.reps=0, this.rpe=5.0,
-    this.weight, this.duration, this.rest, this.percentage, 
+  Exercise({this.name, this.sets=0, this.reps=0,
+    this.weight, this.rest,
     this.athleteNotes, this.coachNotes, this.completed});
 }
 
+class DurationExercise extends Exercise {
+  Duration duration;
+
+  double get workload => null;
+}
+
 abstract class MainLift extends Exercise {
+  double percentage;
+  double rpe;
   bool isPR;
   MainLiftDescriptor get descriptor;
+
+  double get rpeWorkload {
+    return weight.pounds * (reps + (10.0 - rpe));
+  }
 }
 
 class MainLiftDescriptor {
@@ -67,7 +72,7 @@ class MainLiftDescriptor {
         output += MainLiftType.squat.index.toString() + '-';
         output += squat.kneeEquipment.index.toString() + '-';
         output += squat.variation.index.toString() + '-';
-        output += squat.suit.index.toString();
+        output += squat.equipment.index.toString();
         return output;
       }
 
@@ -103,10 +108,10 @@ enum MainLiftType {
 class Squat extends MainLift {
   KneeEquipment kneeEquipment;
   SquatVariation variation;
-  SquatSuit suit;
+  SquatEquipment equipment;
   MainLiftDescriptor _descriptor;
 
-  Squat({this.kneeEquipment=KneeEquipment.none, this.variation=SquatVariation.lowBar, this.suit=SquatSuit.none}) {
+  Squat({this.kneeEquipment=KneeEquipment.none, this.variation=SquatVariation.lowBar, this.equipment=SquatEquipment.raw}) {
     _descriptor = MainLiftDescriptor.fromLift(this);
   }
 
@@ -123,8 +128,8 @@ enum KneeEquipment {
   none,
   wraps
 }
-enum SquatSuit {
-  none,
+enum SquatEquipment {
+  raw,
   breifs,
   suit
 }
@@ -137,7 +142,7 @@ class Bench extends MainLift {
   BenchEquipment equipment;
   MainLiftDescriptor _descriptor;
 
-  Bench({this.equipment=BenchEquipment.none}) {
+  Bench({this.equipment=BenchEquipment.raw}) {
     _descriptor = MainLiftDescriptor.fromLift(this);
   }
 
@@ -151,7 +156,7 @@ class Bench extends MainLift {
   }
 }
 enum BenchEquipment {
-  none,
+  raw,
   slingshot,
   shirt
 }
@@ -161,7 +166,7 @@ class Deadlift extends MainLift {
   DeadliftVariation variation;
   MainLiftDescriptor _descriptor;
 
-  Deadlift({this.equipment=DeadliftEquipment.none, this.variation=DeadliftVariation.conventional}) {
+  Deadlift({this.equipment=DeadliftEquipment.raw, this.variation=DeadliftVariation.conventional}) {
     _descriptor = MainLiftDescriptor.fromLift(this);
   }
 
@@ -175,7 +180,7 @@ class Deadlift extends MainLift {
   }
 }
 enum DeadliftEquipment {
-  none,
+  raw,
   suit,
   breifs,
 }
