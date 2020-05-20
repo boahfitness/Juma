@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/weight.dart';
+import 'package:path/path.dart' as path;
 
 class Exercise {
   String name;
@@ -32,21 +34,45 @@ abstract class MainLift extends Exercise {
   bool isPR;
   MainLiftDescriptor get descriptor;
 
+  MainLift();
+
+  static MainLift fromDescriptor(MainLiftDescriptor d) {
+    MainLiftType type = d.getType();
+    switch (type) {
+      case MainLiftType.squat: return Squat.fromDescriptor(d);
+      case MainLiftType.bench: return Bench.fromDescriptor(d);
+      case MainLiftType.deadlift: return Deadlift.fromDescriptor(d);
+      default: return null;
+    }
+  }
+
   double get rpeWorkload {
     return weight.pounds * (reps + (10.0 - rpe));
   }
+
+  String calculateDescriptorValue();
+  String calculateDescriptorPath();
 }
 
 class MainLiftDescriptor {
   String value;
+  String path;
 
   MainLiftDescriptor.fromLift(MainLift lift) {
-    value = calculateDescriptor(lift);
+    value = lift.calculateDescriptorValue();
+    path = lift.calculateDescriptorPath();
   }
 
-  MainLiftDescriptor() {
-    value = '';
+  MainLiftDescriptor({this.path, this.value});
+
+  MainLiftType getType() {
+    if (value == null || value.isEmpty) {
+      return null;
+    }
+    int typeIndicator = int.parse(value.split('-').first);
+    return MainLiftType.values[typeIndicator];
   }
+
 
   bool operator ==(dynamic other) {
     if (other.runtimeType == MainLiftDescriptor) {
@@ -61,42 +87,6 @@ class MainLiftDescriptor {
   String toString() {
     return value;
   }
-
-  static String calculateDescriptor(MainLift lift) {
-    String output = "";
-
-    switch (lift.runtimeType) {
-
-      case Squat: {
-        Squat squat = lift;
-        output += MainLiftType.squat.index.toString() + '-';
-        output += squat.kneeEquipment.index.toString() + '-';
-        output += squat.variation.index.toString() + '-';
-        output += squat.equipment.index.toString();
-        return output;
-      }
-
-      case Bench: {
-        Bench bench = lift;
-        output += MainLiftType.bench.index.toString() + '-';
-        output += bench.equipment.index.toString();
-        return output;
-      }
-
-      case Deadlift: {
-        Deadlift deadlift = lift;
-        output += MainLiftType.deadlift.index.toString() + '-';
-        output += deadlift.variation.index.toString() + '-';
-        output += deadlift.equipment.index.toString();
-        return output;
-      }
-
-      default: {
-        return '';
-      }
-
-    } 
-  }
 }
 
 enum MainLiftType {
@@ -106,23 +96,85 @@ enum MainLiftType {
 }
 
 class Squat extends MainLift {
-  KneeEquipment kneeEquipment;
-  SquatVariation variation;
-  SquatEquipment equipment;
-  MainLiftDescriptor _descriptor;
-
-  Squat({this.kneeEquipment=KneeEquipment.none, this.variation=SquatVariation.lowBar, this.equipment=SquatEquipment.raw}) {
-    _descriptor = MainLiftDescriptor.fromLift(this);
+  KneeEquipment _kneeEquipment;
+  KneeEquipment get kneeEquipment => _kneeEquipment;
+  set kneeEquipment(KneeEquipment val) {
+    _kneeEquipment = val;
+    _descriptor.value = calculateDescriptorValue();
+    _descriptor.path = calculateDescriptorPath();
   }
+
+  SquatVariation _variation;
+  SquatVariation get variation => _variation;
+  set variation(SquatVariation val) {
+    _variation = val;
+    _descriptor.value = calculateDescriptorValue();
+    _descriptor.path = calculateDescriptorPath();
+  }
+
+  SquatEquipment _equipment;
+  SquatEquipment get equipment => _equipment;
+  set equipment(SquatEquipment val) {
+    _equipment = val;
+    _descriptor.value = calculateDescriptorValue();
+    _descriptor.path = calculateDescriptorPath();
+  }
+
+  MainLiftDescriptor _descriptor;
+  @override
+  MainLiftDescriptor get descriptor => _descriptor;
 
   @override
   String get name => 'Squat';
 
-  @override
-  MainLiftDescriptor get descriptor {
-    _descriptor.value = MainLiftDescriptor.calculateDescriptor(this);
-    return _descriptor;
+  Squat({
+    @required
+    SquatVariation variation,
+    @required
+    SquatEquipment equipment,
+    @required
+    KneeEquipment kneeEquipment
+  }) {
+    _variation = variation;
+    _equipment = equipment;
+    _kneeEquipment = kneeEquipment;
+    _descriptor = MainLiftDescriptor(path: calculateDescriptorPath(), value: calculateDescriptorValue());
   }
+
+  Squat.fromDescriptor(MainLiftDescriptor d) {
+    if (d == null || d.value == null || d.value.isEmpty) {
+      throw Exception('descriptor cannot be null and value cannot be empty');
+    }
+    List<int> values = d.value.split('-').map((val) => int.parse(val)).toList();
+    if (values.length != 4) throw Exception('Invalid main lift descriptor');
+    _variation = SquatVariation.values[values[1]];
+    _equipment = SquatEquipment.values[values[2]];
+    _kneeEquipment = KneeEquipment.values[values[3]];
+  }
+
+  @override 
+  String calculateDescriptorValue() {
+    String output = "";
+    output += MainLiftType.squat.index.toString() + '-'
+      + _variation.index.toString() + '-'
+      + _equipment.index.toString() + '-'
+      + _kneeEquipment.index.toString();
+    return output;
+  }
+
+  @override
+  String calculateDescriptorPath() {
+    String output = path.join(
+      MainLiftType.squat.toString().split('.').last,
+      _variation.toString().split('.').last,
+      _equipment.toString().split('.').last,
+      _kneeEquipment.toString().split('.').last
+    );
+    return output
+      .toUpperCase()
+      .replaceAll('/', ' // ');
+  }
+
 }
 enum KneeEquipment {
   none,
@@ -139,21 +191,56 @@ enum SquatVariation {
 }
 
 class Bench extends MainLift {
-  BenchEquipment equipment;
-  MainLiftDescriptor _descriptor;
-
-  Bench({this.equipment=BenchEquipment.raw}) {
-    _descriptor = MainLiftDescriptor.fromLift(this);
+  BenchEquipment _equipment;
+  BenchEquipment get equipment => _equipment;
+  set equipment(BenchEquipment val) {
+    _descriptor.value = calculateDescriptorValue();
+    _descriptor.path = calculateDescriptorPath();
   }
+
+  MainLiftDescriptor _descriptor;
+  @override
+  MainLiftDescriptor get descriptor => _descriptor;
 
   @override
   String get name => 'Bench';
 
-  @override
-  MainLiftDescriptor get descriptor {
-    _descriptor.value = MainLiftDescriptor.calculateDescriptor(this);
-    return _descriptor;
+  Bench({
+    @required
+    BenchEquipment equipment
+  }) {
+    _equipment = equipment;
+    _descriptor = MainLiftDescriptor(value: calculateDescriptorValue(), path: calculateDescriptorPath());
   }
+
+  Bench.fromDescriptor(MainLiftDescriptor d) {
+    if (d == null || d.value == null || d.value.isEmpty) {
+      throw Exception('descriptor cannot be null and value cannot be empty');
+    }
+    List<int> values = d.value.split('-').map((val) => int.parse(val)).toList();
+    if (values.length != 2) throw Exception('Invalid main lift descriptor');
+    _equipment = BenchEquipment.values[values[1]];
+  }
+
+  @override 
+  String calculateDescriptorValue() {
+    String output = "";
+    output += MainLiftType.bench.index.toString() + '-'
+      + _equipment.index.toString();
+    return output;
+  }
+
+  @override 
+  String calculateDescriptorPath() {
+    String output = path.join(
+      MainLiftType.bench.toString().split('.').last,
+      _equipment.toString().split('.').last
+    );
+    return output
+      .toUpperCase()
+      .replaceAll('/', ' // ');
+  }
+
 }
 enum BenchEquipment {
   raw,
@@ -162,22 +249,71 @@ enum BenchEquipment {
 }
 
 class Deadlift extends MainLift {
-  DeadliftEquipment equipment;
-  DeadliftVariation variation;
-  MainLiftDescriptor _descriptor;
-
-  Deadlift({this.equipment=DeadliftEquipment.raw, this.variation=DeadliftVariation.conventional}) {
-    _descriptor = MainLiftDescriptor.fromLift(this);
+  DeadliftEquipment _equipment;
+  DeadliftEquipment get equipment => _equipment;
+  set equipment(DeadliftEquipment val) {
+    _equipment = equipment;
+    _descriptor.value = calculateDescriptorValue();
+    _descriptor.path = calculateDescriptorPath();
   }
+
+  DeadliftVariation _variation;
+  DeadliftVariation get variation => _variation;
+  set variation(DeadliftVariation val) {
+    _variation = val;
+    _descriptor.value = calculateDescriptorValue();
+    _descriptor.path = calculateDescriptorPath();
+  }
+
+  MainLiftDescriptor _descriptor;
+  @override
+  MainLiftDescriptor get descriptor => _descriptor;
 
   @override
   String get name => 'Deadlift';
 
-  @override
-  MainLiftDescriptor get descriptor {
-    _descriptor.value = MainLiftDescriptor.calculateDescriptor(this);
-    return _descriptor;
+  Deadlift({
+    @required
+    DeadliftVariation variation,
+    @required
+    DeadliftEquipment equipment
+  }) {
+    _variation = variation;
+    _equipment = equipment;
+    _descriptor = MainLiftDescriptor(value: calculateDescriptorValue(), path: calculateDescriptorPath());
   }
+
+  Deadlift.fromDescriptor(MainLiftDescriptor d) {
+    if (d == null || d.value == null || d.value.isEmpty) {
+      throw Exception('descriptor cannot be null and value cannot be empty');
+    }
+    List<int> values = d.value.split('-').map((val) => int.parse(val)).toList();
+    if (values.length != 3) throw Exception('Invalid main lift descriptor');
+    _variation = DeadliftVariation.values[values[1]];
+    _equipment = DeadliftEquipment.values[values[2]];
+  }
+
+  @override 
+  String calculateDescriptorValue() {
+    String output = "";
+    output += MainLiftType.deadlift.index.toString() + '-'
+      + _variation.index.toString() + '-'
+      + _equipment.index.toString();
+    return output;
+  }
+
+  @override 
+  String calculateDescriptorPath() {
+    String output = path.join(
+      MainLiftType.deadlift.toString().split('.').last,
+      _variation.toString().split('.').last,
+      _equipment.toString().split('.').last
+    );
+    return output 
+      .toUpperCase()
+      .replaceAll('/', ' // ');
+  }
+
 }
 enum DeadliftEquipment {
   raw,
