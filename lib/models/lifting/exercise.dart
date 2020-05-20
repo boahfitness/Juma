@@ -326,5 +326,5 @@ enum DeadliftEquipment {
 
 enum DeadliftVariation {
   sumo,
-  conventional
+  conv
 }
