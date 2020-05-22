@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:juma/models/users/user.dart';
-import 'package:juma/pages/onboarding/signup/inputPages/displayName.dart';
 import 'package:juma/pages/onboarding/welcomePage.dart';
 import 'package:juma/pages/onboarding/signup/signupScrollUI.dart';
+
+import 'package:juma/pages/onboarding/signup/inputPages/displayName.dart';
+import 'package:juma/pages/onboarding/signup/inputPages/enterMaxes.dart';
 
 class SignupScroller extends StatefulWidget {
 
@@ -88,6 +90,7 @@ class _SignupScrollerState extends State<SignupScroller> {
                     },
                   ),
                   InputDisplayName(displayName),
+                  EnterMaxes()
                 ],
               ),
             ),
@@ -97,16 +100,16 @@ class _SignupScrollerState extends State<SignupScroller> {
           ScrollUI(uiOpacity: uiOpacity, currentIndex: currentIndex, numPages: numPages,
             onTapUp: () {
               if (currentIndex != 0 && !upDisabled) {
-                Duration dur = currentIndex == 1 ? Duration(milliseconds: 500) : Duration(seconds: 1);
+                Duration dur = currentIndex == 1 ? Duration(milliseconds: 500) : Duration(milliseconds: 800);
                 setState(() {
-                  pageController.previousPage(duration: dur, curve: Curves.linear);
+                  pageController.previousPage(duration: dur, curve: Curves.easeInOut);
                 });
               }
             },
             onTapDown: () {
               if (currentIndex != 0 && currentIndex != numPages - 1 && !downDisabled && formKey.currentState.validate()) {
                 setState(() {
-                  pageController.nextPage(duration: Duration(seconds: 1), curve: Curves.linear);
+                  pageController.nextPage(duration: Duration(milliseconds: 800), curve: Curves.easeInOut);
                 });
               }
             },
