@@ -104,20 +104,7 @@ class _EnterMaxesState extends State<EnterMaxes> {
                   padding: const EdgeInsets.symmetric(horizontal: 100),
                   child: FlatButton(
                     onPressed: () async {
-                      var lift = await showDialog<TrackedLift>(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (context) {
-                          return AlertDialog(
-                            //title: Text('Hello world'),
-                            contentPadding: const EdgeInsets.all(0.0),
-                            content: Container(
-                              color: Colors.grey[800],
-                              child: Image.asset('assets/juma-logo-outline-grad.png'),
-                            ),
-                          );
-                        }
-                      );
+                      await Navigator.of(context).pushNamed('/create-pr');
                     },
                     child: Icon(Icons.add, color: Colors.white,),
                     shape: RoundedRectangleBorder(
