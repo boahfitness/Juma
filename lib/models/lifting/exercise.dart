@@ -140,12 +140,9 @@ class Squat extends MainLift {
   String get name => 'Squat';
 
   Squat({
-    @required
-    SquatVariation variation,
-    @required
-    SquatEquipment equipment,
-    @required
-    KneeEquipment kneeEquipment
+    SquatVariation variation = SquatVariation.lowBar,
+    SquatEquipment equipment = SquatEquipment.raw,
+    KneeEquipment kneeEquipment = KneeEquipment.none
   }) {
     _variation = variation;
     _equipment = equipment;
@@ -242,8 +239,7 @@ class Bench extends MainLift {
   String get name => 'Bench';
 
   Bench({
-    @required
-    BenchEquipment equipment
+    BenchEquipment equipment = BenchEquipment.raw
   }) {
     _equipment = equipment;
     _descriptor = MainLiftDescriptor(value: calculateDescriptorValue(), path: calculateDescriptorPath());
@@ -321,10 +317,8 @@ class Deadlift extends MainLift {
   String get name => 'Deadlift';
 
   Deadlift({
-    @required
-    DeadliftVariation variation,
-    @required
-    DeadliftEquipment equipment
+    DeadliftVariation variation = DeadliftVariation.conv,
+    DeadliftEquipment equipment = DeadliftEquipment.raw
   }) {
     _variation = variation;
     _equipment = equipment;
