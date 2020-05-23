@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:juma/models/users/user.dart';
 import 'package:juma/widgets/weightUnitPicker.dart';
 import 'package:juma/models/lifting/weight.dart';
 
 class EnterMaxes extends StatefulWidget {
+
+  final User user;
+
+  EnterMaxes(this.user);
+
   @override
   _EnterMaxesState createState() => _EnterMaxesState();
 }
@@ -13,8 +19,15 @@ class _EnterMaxesState extends State<EnterMaxes> {
 
   @override
   void initState() {
-    lbEnabled = true;
-    kgEnabled = false;
+    if (widget.user.unitPreference != null) {
+      lbEnabled = widget.user.unitPreference == WeightUnit.pounds ? true : false;
+      kgEnabled = !lbEnabled;
+    }
+    else {
+      lbEnabled = true;
+      kgEnabled = false;
+      widget.user.unitPreference = WeightUnit.pounds;
+    }
     super.initState();
   }
 
@@ -39,6 +52,7 @@ class _EnterMaxesState extends State<EnterMaxes> {
                 setState(() {
                   kgEnabled = true;
                   lbEnabled = false;
+                  widget.user.unitPreference = WeightUnit.kilograms;
                 });
               },
             ),
@@ -47,6 +61,7 @@ class _EnterMaxesState extends State<EnterMaxes> {
                 setState(() {
                   lbEnabled = true;
                   kgEnabled = false;
+                  widget.user.unitPreference = WeightUnit.pounds;
                 });
               },
             )

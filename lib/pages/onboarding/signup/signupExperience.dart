@@ -1,5 +1,3 @@
-// to hold pageview that starts with welcome page and goes to signup scroller
-
 import 'package:flutter/material.dart';
 import 'package:juma/models/users/user.dart';
 import 'package:juma/pages/onboarding/welcomePage.dart';
@@ -24,10 +22,11 @@ class _SignupScrollerState extends State<SignupScroller> {
   User user = User();
 
   PageController pageController = PageController(initialPage: 0, keepPage: false);
+  final int numPages = 4;
+
   int currentIndex = 0;
   double uiOpacity;
   ScrollPhysics scrollPhysics;
-  final int numPages = 3;
   bool upDisabled = false, downDisabled = false;
 
   final displayName = TextEditingController();
@@ -90,7 +89,10 @@ class _SignupScrollerState extends State<SignupScroller> {
                     },
                   ),
                   InputDisplayName(displayName),
-                  EnterMaxes()
+                  EnterMaxes(user),
+                  Center(
+                    child: user.unitPreference != null ? Text(user.unitPreference.toString()) : Text('Error'),
+                  )
                 ],
               ),
             ),
