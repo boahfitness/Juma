@@ -78,7 +78,7 @@ class _WeightUnitPickerState extends State<WeightUnitPicker> {
               curve: Curves.easeInOut,
               opacity: widget.enabled ? 1.0 : 0.0,
               child: FlareActor(
-                'assets/video/Aura.flr',
+                'assets/animations/Aura.flr',
                 animation: 'Aura',
               ),
             ),
