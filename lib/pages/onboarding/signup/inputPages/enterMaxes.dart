@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:juma/models/lifting/personalRecords.dart';
 import 'package:juma/models/users/user.dart';
 import 'package:juma/widgets/weightUnitPicker.dart';
 import 'package:juma/models/lifting/weight.dart';
+import 'package:juma/models/lifting/exercise.dart';
 
 class EnterMaxes extends StatefulWidget {
 
@@ -16,9 +18,14 @@ class EnterMaxes extends StatefulWidget {
 class _EnterMaxesState extends State<EnterMaxes> {
 
   bool kgEnabled, lbEnabled;
+  List<MainLift> allMainLifts;
 
   @override
   void initState() {
+    allMainLifts = List();
+    allMainLifts.addAll(Squat.getAllPossibleVariations());
+    allMainLifts.addAll(Bench.getAllPossibleVariations());
+    allMainLifts.addAll(Deadlift.getAllPossibleVariations());
     if (widget.user.unitPreference != null) {
       lbEnabled = widget.user.unitPreference == WeightUnit.pounds ? true : false;
       kgEnabled = !lbEnabled;
@@ -67,6 +74,63 @@ class _EnterMaxesState extends State<EnterMaxes> {
             )
           ],
         ),
+
+        ShaderMask(
+          blendMode: BlendMode.dstOut,
+          shaderCallback: (bounds) {
+            return LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.black, Colors.transparent, Colors.transparent, Colors.black],
+              stops: [0.0, 0.1, 0.75, 1.0]
+            ).createShader(bounds);
+          },
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              children: <Widget>[
+                for (TrackedLift lift in widget.user.trackedLifts) FlatButton(
+                  onPressed: () {},
+                  child: Text(lift.liftDescriptor.path),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                    side: BorderSide(color: Colors.white),
+                  ),
+                ),
+
+                // add new lift button
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 100),
+                  child: FlatButton(
+                    onPressed: () async {
+                      var lift = await showDialog<TrackedLift>(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (context) {
+                          return AlertDialog(
+                            //title: Text('Hello world'),
+                            contentPadding: const EdgeInsets.all(0.0),
+                            content: Container(
+                              color: Colors.grey[800],
+                              child: Image.asset('assets/juma-logo-outline-grad.png'),
+                            ),
+                          );
+                        }
+                      );
+                    },
+                    child: Icon(Icons.add, color: Colors.white,),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(color: Colors.white)
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+
       ],
     );
   }
