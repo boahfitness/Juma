@@ -182,7 +182,9 @@ class Squat extends MainLift {
       _variation.toString().split('.').last,
       _equipment.toString().split('.').last,
     );
-    if (_kneeEquipment == KneeEquipment.wraps) path.join(output, _kneeEquipment.toString().split('.').last);
+    if (_kneeEquipment == KneeEquipment.wraps) {
+      output = path.join(output, _kneeEquipment.toString().split('.').last);
+    }
     return output
       .toUpperCase()
       .replaceAll('/', '//');
@@ -199,8 +201,8 @@ class Squat extends MainLift {
       equipment.forEach((equip) {
         kneeEquipment.forEach((kneeEquip) {
           output.add(Squat(
-            equipment: equip,
             variation: variation,
+            equipment: equip,
             kneeEquipment: kneeEquip
           ));
         });
