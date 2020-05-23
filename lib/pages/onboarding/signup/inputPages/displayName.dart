@@ -19,6 +19,7 @@ class _InputDisplayNameState extends State<InputDisplayName> {
           Text('Your display name is how other users will\nrecognize you.', textAlign: TextAlign.left, style: TextStyle(fontSize: 12, color: Colors.grey),),
           SizedBox(height: 20,),
           TextFormField(
+            autocorrect: false,
             style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w300),
             controller:  widget.controller,
             decoration: InputDecoration(

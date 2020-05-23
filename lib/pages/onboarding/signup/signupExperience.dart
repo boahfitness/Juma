@@ -102,7 +102,7 @@ class _SignupScrollerState extends State<SignupScroller> {
           ScrollUI(uiOpacity: uiOpacity, currentIndex: currentIndex, numPages: numPages,
             onTapUp: () {
               if (currentIndex != 0 && !upDisabled) {
-                Duration dur = currentIndex == 1 ? Duration(milliseconds: 500) : Duration(milliseconds: 800);
+                Duration dur = currentIndex == 1 ? Duration(milliseconds: 1000) : Duration(milliseconds: 800);
                 setState(() {
                   pageController.previousPage(duration: dur, curve: Curves.easeInOut);
                 });
