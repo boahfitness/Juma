@@ -52,6 +52,18 @@ abstract class MainLift extends Exercise {
 
   String calculateDescriptorValue();
   String calculateDescriptorPath();
+
+  @override
+  bool operator ==(Object other) {
+    if (other is MainLift) {
+      return other.descriptor == descriptor;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => descriptor.hashCode;
+
 }
 
 class MainLiftDescriptor {
@@ -176,6 +188,27 @@ class Squat extends MainLift {
       .replaceAll('/', '//');
   }
 
+  static List<Squat> getAllPossibleVariations() {
+    var variations = SquatVariation.values;
+    var equipment = SquatEquipment.values;
+    var kneeEquipment = KneeEquipment.values;
+
+    Set<Squat> output = Set();
+
+    variations.forEach((variation) {
+      equipment.forEach((equip) {
+        kneeEquipment.forEach((kneeEquip) {
+          output.add(Squat(
+            equipment: equip,
+            variation: variation,
+            kneeEquipment: kneeEquip
+          ));
+        });
+      });
+    });
+
+    return output.toList();
+  }
 }
 enum KneeEquipment {
   none,
@@ -241,6 +274,17 @@ class Bench extends MainLift {
     return output
       .toUpperCase()
       .replaceAll('/', '//');
+  }
+
+  static List<Bench> getAllPossibleVariations() {
+    var equipment = BenchEquipment.values;
+    Set<Bench> output = Set();
+
+    equipment.forEach((element) {
+      output.add(Bench(equipment: element));
+    });
+    
+    return output.toList();
   }
 
 }
@@ -315,6 +359,25 @@ class Deadlift extends MainLift {
     return output 
       .toUpperCase()
       .replaceAll('/', '//');
+  }
+
+  static List<Deadlift> getAllPossibleVariations() {
+    var variations = DeadliftVariation.values;
+    var equipment = DeadliftEquipment.values;
+    Set<Deadlift> output = Set();
+
+    variations.forEach((variation) {
+      equipment.forEach((equip) {
+        output.add(
+          Deadlift(
+            equipment: equip,
+            variation: variation
+          )
+        );
+      });
+    });
+
+    return output.toList();
   }
 
 }
