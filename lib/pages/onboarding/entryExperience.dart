@@ -58,6 +58,7 @@ class _EntryState extends State<Entry> {
 
     if (user == null) {
       return Scaffold(
+        resizeToAvoidBottomPadding: false,
         body: Container(
           decoration: BoxDecoration(
             gradient: JumaColors.lightGreyGradient
