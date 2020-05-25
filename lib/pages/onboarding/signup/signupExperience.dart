@@ -51,7 +51,8 @@ class _SignupScrollerState extends State<SignupScroller> {
   Widget build(BuildContext context) {
 
     uiOpacity = currentIndex == 0 ? 0.0 : 1.0;
-    scrollPhysics = currentIndex == 0 ? NeverScrollableScrollPhysics() : NeverScrollableScrollPhysics();
+    //scrollPhysics = currentIndex == 0 ? NeverScrollableScrollPhysics() : NeverScrollableScrollPhysics();
+    scrollPhysics = NeverScrollableScrollPhysics();
 
     return Form(
       key: formKey,

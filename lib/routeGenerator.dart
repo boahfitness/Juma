@@ -6,7 +6,7 @@ import 'package:juma/pages/authenticate/login.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:juma/pages/onboarding/entryExperience.dart';
 
-import 'package:juma/pages/onboarding/signup/inputPages/createPR.dart';
+import 'package:juma/pages/onboarding/signup/inputPages/createPR/createPR.dart';
 
 //import 'package:juma/testWidget.dart';
 
