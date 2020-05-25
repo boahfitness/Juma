@@ -33,6 +33,7 @@ abstract class MainLift extends Exercise {
   double rpe;
   bool isPR;
   MainLiftDescriptor get descriptor;
+  MainLiftType get type;
 
   MainLift();
 
@@ -139,6 +140,9 @@ class Squat extends MainLift {
   @override
   String get name => 'Squat';
 
+  @override 
+  MainLiftType get type => MainLiftType.squat;
+
   Squat({
     SquatVariation variation = SquatVariation.lowBar,
     SquatEquipment equipment = SquatEquipment.raw,
@@ -238,6 +242,9 @@ class Bench extends MainLift {
   @override
   String get name => 'Bench';
 
+  @override 
+  MainLiftType get type => MainLiftType.bench;
+
   Bench({
     BenchEquipment equipment = BenchEquipment.raw
   }) {
@@ -315,6 +322,9 @@ class Deadlift extends MainLift {
 
   @override
   String get name => 'Deadlift';
+
+  @override
+  MainLiftType get type => MainLiftType.deadlift;
 
   Deadlift({
     DeadliftVariation variation = DeadliftVariation.conv,
