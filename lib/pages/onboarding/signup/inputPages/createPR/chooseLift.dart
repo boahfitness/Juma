@@ -16,8 +16,6 @@ class _ChooseLiftState extends State<ChooseLift> {
   Bench bench = Bench();
   Deadlift deadlift = Deadlift();
 
-  bool sEnabled, bEnabled, dEnabled;
-
   @override
   void initState() {
     widget.personalRecord.lift ??= squat;
@@ -26,46 +24,30 @@ class _ChooseLiftState extends State<ChooseLift> {
 
   @override
   Widget build(BuildContext context) {
-
-    switch (widget.personalRecord.lift.name) {
-      case 'Squat': {
-        sEnabled = true; bEnabled = dEnabled = false;
-      }
-      break;
-      case 'Bench': {
-        bEnabled = true; sEnabled = dEnabled = false;
-      }
-      break;
-      case 'Deadlift': {
-        dEnabled = true; sEnabled = bEnabled = false;
-      }
-      break;
-      default: {
-        sEnabled = true; bEnabled = dEnabled = false;
-      }
-    }
-
     return Stack(
       children: <Widget>[
 
-        ShaderMask(
-          blendMode: BlendMode.dstOut,
-          shaderCallback: (bounds) {
-            return LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [Colors.transparent, Colors.black],
-            ).createShader(bounds);
-          },
-          child: Transform.translate(
-            offset: Offset(0.0, -75),
-            child: Text(
-              widget.personalRecord.lift.name[0].toUpperCase(),
-              style: TextStyle(
-                fontWeight: FontWeight.bold, 
-                color: Colors.white,
-                fontSize: 400,
-                decoration: TextDecoration.none,
+        Opacity(
+          opacity: .3,
+          child: ShaderMask(
+            blendMode: BlendMode.dstOut,
+            shaderCallback: (bounds) {
+              return LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Colors.transparent, Colors.black],
+              ).createShader(bounds);
+            },
+            child: Transform.translate(
+              offset: Offset(0.0, -75),
+              child: Text(
+                widget.personalRecord.lift.name[0].toUpperCase(),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold, 
+                  color: Colors.white,
+                  fontSize: 400,
+                  decoration: TextDecoration.none,
+                ),
               ),
             ),
           ),
@@ -78,21 +60,21 @@ class _ChooseLiftState extends State<ChooseLift> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                LiftPicker(squat, enabled: sEnabled,
+                LiftPicker(squat, enabled: widget.personalRecord.lift.type == MainLiftType.squat,
                   onTap: () { 
                     setState(() { 
                       widget.personalRecord.lift = squat;
                     }); 
                   },
                 ),
-                LiftPicker(bench, enabled: bEnabled,
+                LiftPicker(bench, enabled: widget.personalRecord.lift.type == MainLiftType.bench,
                   onTap: () { 
                     setState(() { 
                       widget.personalRecord.lift = bench;
                     }); 
                   },
                 ),
-                LiftPicker(deadlift, enabled: dEnabled,
+                LiftPicker(deadlift, enabled: widget.personalRecord.lift.type == MainLiftType.deadlift,
                   onTap: () { 
                     setState(() { 
                       widget.personalRecord.lift = deadlift;
@@ -123,14 +105,14 @@ class _LiftPickerState extends State<LiftPicker> {
 
   @override
   void initState() {
-    switch (widget.lift.name) {
-      case 'Squat':
+    switch (widget.lift.type) {
+      case MainLiftType.squat:
         theme = ColorTheme.getTheme(ThemeType.red);
         break;
-      case 'Bench':
+      case MainLiftType.bench:
         theme = ColorTheme.getTheme(ThemeType.green);
         break;
-      case 'Deadlift':
+      case MainLiftType.deadlift:
         theme = ColorTheme.getTheme(ThemeType.purple);
         break;
       default:

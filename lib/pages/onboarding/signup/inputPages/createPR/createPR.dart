@@ -22,7 +22,6 @@ class _CreatePRState extends State<CreatePR> {
 
   @override
   void initState() {
-    title = titles[0];
     super.initState();
   }
 
@@ -34,6 +33,15 @@ class _CreatePRState extends State<CreatePR> {
 
   @override 
   Widget build(BuildContext context) {
+
+    Map<String, Widget> pages = {
+      'Choose a Lift': ChooseLift(pr),
+      'Customize the Lift': CustomizeLift(pr),
+      'Test': Center(child: Text(pr.lift.descriptor.path),)
+    };
+
+    title ??= pages.keys.toList()[0];
+
     return Container(
       decoration: BoxDecoration(
         gradient: JumaColors.lightGreyGradient
@@ -46,17 +54,16 @@ class _CreatePRState extends State<CreatePR> {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
         ),
-        body: PageView(
+        body: PageView.builder(
           controller: controller,
           onPageChanged: (index) {
             setState(() {
-              title = titles[index];
+              title = pages.keys.toList()[index];
             });
           },
-          children: <Widget>[
-            ChooseLift(pr),
-            CustomizeLift(pr),
-          ],
+          itemBuilder: (context, index) {
+            return pages.values.toList()[index];
+          },
         ),
         floatingActionButton: FlatButton(
           onPressed: () {
@@ -70,8 +77,4 @@ class _CreatePRState extends State<CreatePR> {
     );
   }
 }
-
-List<String> titles = [
-  'Choose a Lift', '', 'Weight'
-];
 
