@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/personalRecords.dart';
 import 'package:juma/models/users/user.dart';
-import 'package:juma/widgets/weightUnitPicker.dart';
+import 'package:juma/widgets/auraPicker.dart';
 import 'package:juma/models/lifting/weight.dart';
 import 'package:juma/models/lifting/exercise.dart';
 
@@ -18,23 +18,10 @@ class EnterMaxes extends StatefulWidget {
 class _EnterMaxesState extends State<EnterMaxes> {
 
   bool kgEnabled, lbEnabled;
-  List<MainLift> allMainLifts;
 
   @override
   void initState() {
-    allMainLifts = List();
-    allMainLifts.addAll(Squat.getAllPossibleVariations());
-    allMainLifts.addAll(Bench.getAllPossibleVariations());
-    allMainLifts.addAll(Deadlift.getAllPossibleVariations());
-    if (widget.user.unitPreference != null) {
-      lbEnabled = widget.user.unitPreference == WeightUnit.pounds ? true : false;
-      kgEnabled = !lbEnabled;
-    }
-    else {
-      lbEnabled = true;
-      kgEnabled = false;
-      widget.user.unitPreference = WeightUnit.pounds;
-    }
+    widget.user.unitPreference ??= WeightUnit.pounds;
     super.initState();
   }
 
@@ -54,20 +41,16 @@ class _EnterMaxesState extends State<EnterMaxes> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            WeightUnitPicker(width: 100, unit: WeightUnit.kilograms, enabled: kgEnabled,
+            AuraPicker(width: 100, text: 'KG', enabled: widget.user.unitPreference == WeightUnit.kilograms,
               onTap: () {
                 setState(() {
-                  kgEnabled = true;
-                  lbEnabled = false;
                   widget.user.unitPreference = WeightUnit.kilograms;
                 });
               },
             ),
-            WeightUnitPicker(width: 100, unit: WeightUnit.pounds, enabled: lbEnabled,
+            AuraPicker(width: 100, text: 'LB', enabled: widget.user.unitPreference == WeightUnit.pounds,
               onTap: () {
                 setState(() {
-                  lbEnabled = true;
-                  kgEnabled = false;
                   widget.user.unitPreference = WeightUnit.pounds;
                 });
               },

@@ -1,27 +1,26 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
-import 'package:juma/models/lifting/weight.dart';
 
-class WeightUnitPicker extends StatefulWidget {
+class AuraPicker extends StatefulWidget {
   final bool enabled;
   final double width;
-  final WeightUnit unit;
+  final String text;
   final void Function() onTap;
 
-  WeightUnitPicker({
+  AuraPicker({
     this.enabled=true,
     @required 
     this.width,
     @required 
-    this.unit,
+    this.text,
     this.onTap,
   });
 
   @override
-  _WeightUnitPickerState createState() => _WeightUnitPickerState();
+  _AuraPickerState createState() => _AuraPickerState();
 }
 
-class _WeightUnitPickerState extends State<WeightUnitPicker> {
+class _AuraPickerState extends State<AuraPicker> {
   double size;
 
   @override
@@ -65,7 +64,7 @@ class _WeightUnitPickerState extends State<WeightUnitPicker> {
 
             Center(
               child: Text(
-                widget.unit == WeightUnit.pounds ? 'LB' : 'KG',
+                widget.text,
                 style: TextStyle(
                   color: widget.enabled ? Colors.black : Colors.grey[500],
                   fontWeight: FontWeight.bold
