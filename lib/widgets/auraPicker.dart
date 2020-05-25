@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 
 class AuraPicker extends StatefulWidget {
   final bool enabled;
-  final double width;
   final String text;
+  final double fontSize;
   final void Function() onTap;
 
   AuraPicker({
     this.enabled=true,
     @required 
-    this.width,
-    @required 
     this.text,
+    this.fontSize,
     this.onTap,
   });
 
@@ -21,11 +20,12 @@ class AuraPicker extends StatefulWidget {
 }
 
 class _AuraPickerState extends State<AuraPicker> {
-  double size;
+  double baseSize, size;
 
   @override
   void initState() {
-    size = widget.width;
+    //size = widget.width;
+    size = baseSize = 100.0;
     super.initState();
   }
 
@@ -40,12 +40,12 @@ class _AuraPickerState extends State<AuraPicker> {
       onTapUp: (details) {
         widget.onTap();
         setState(() {
-          size = widget.width;
+          size = baseSize;
         });
       },
       child: Container(
-        width: widget.width,
-        height: widget.width,
+        width: baseSize,
+        height: baseSize,
         child: Stack(
           children: <Widget>[
 
@@ -58,16 +58,16 @@ class _AuraPickerState extends State<AuraPicker> {
                   color: widget.enabled ? Colors.grey[500] : Colors.grey[900],
                   width: size * 0.75,
                   height: size * 0.75,
-                ),
-              ),
-            ),
-
-            Center(
-              child: Text(
-                widget.text,
-                style: TextStyle(
-                  color: widget.enabled ? Colors.black : Colors.grey[500],
-                  fontWeight: FontWeight.bold
+                  child: Center(
+                    child: Text(
+                      widget.text,
+                      style: TextStyle(
+                        color: widget.enabled ? Colors.black : Colors.grey[500],
+                        fontWeight: FontWeight.bold,
+                        fontSize: widget.fontSize,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),

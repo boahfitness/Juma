@@ -41,14 +41,14 @@ class _EnterMaxesState extends State<EnterMaxes> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            AuraPicker(width: 100, text: 'KG', enabled: widget.user.unitPreference == WeightUnit.kilograms,
+            AuraPicker(text: 'KG', enabled: widget.user.unitPreference == WeightUnit.kilograms,
               onTap: () {
                 setState(() {
                   widget.user.unitPreference = WeightUnit.kilograms;
                 });
               },
             ),
-            AuraPicker(width: 100, text: 'LB', enabled: widget.user.unitPreference == WeightUnit.pounds,
+            AuraPicker(text: 'LB', enabled: widget.user.unitPreference == WeightUnit.pounds,
               onTap: () {
                 setState(() {
                   widget.user.unitPreference = WeightUnit.pounds;
