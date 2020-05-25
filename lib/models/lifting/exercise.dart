@@ -303,7 +303,7 @@ class Deadlift extends MainLift {
   DeadliftEquipment _equipment;
   DeadliftEquipment get equipment => _equipment;
   set equipment(DeadliftEquipment val) {
-    _equipment = equipment;
+    _equipment = val;
     _descriptor.value = calculateDescriptorValue();
     _descriptor.path = calculateDescriptorPath();
   }

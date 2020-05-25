@@ -24,6 +24,10 @@ class _SquatCustomizerState extends State<SquatCustomizer> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: Text('SQUAT', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),),
+            ),
+            Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
               child: Text('Variations', style: TextStyle(color: Colors.white),),
             ),
