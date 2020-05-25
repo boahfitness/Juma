@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/weight.dart';
 import 'package:path/path.dart' as path;
 
@@ -231,6 +230,7 @@ class Bench extends MainLift {
   BenchEquipment _equipment;
   BenchEquipment get equipment => _equipment;
   set equipment(BenchEquipment val) {
+    _equipment = val;
     _descriptor.value = calculateDescriptorValue();
     _descriptor.path = calculateDescriptorPath();
   }

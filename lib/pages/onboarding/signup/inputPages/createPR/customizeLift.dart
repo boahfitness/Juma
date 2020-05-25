@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/models/lifting/personalRecords.dart';
 import './squatCustomizer.dart';
+import './benchCustomizer.dart';
 
 class CustomizeLift extends StatefulWidget {
   final PersonalRecord personalRecord;
@@ -46,22 +47,6 @@ class _PickerState extends State<Picker> {
           child: Text(widget.text, style: TextStyle(color: widget.enabled ? Colors.white : Colors.grey[700],),),
         ),
       ),
-    );
-  }
-}
-
-class BenchCustomizer extends StatefulWidget {
-  final PersonalRecord pr;
-  BenchCustomizer(this.pr);
-  @override
-  _BenchCustomizerState createState() => _BenchCustomizerState();
-}
-
-class _BenchCustomizerState extends State<BenchCustomizer> {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Bench'),
     );
   }
 }
