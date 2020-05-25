@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/personalRecords.dart';
 import 'package:juma/models/users/user.dart';
+import 'package:juma/pages/onboarding/signup/inputPages/createPR/createPR.dart';
 import 'package:juma/widgets/auraPicker.dart';
 import 'package:juma/models/lifting/weight.dart';
-import 'package:juma/models/lifting/exercise.dart';
 
 class EnterMaxes extends StatefulWidget {
 
@@ -32,7 +32,7 @@ class _EnterMaxesState extends State<EnterMaxes> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          "PRs!\n" +
+          "Personal Records!\n" +
           "We'll track your PRs for you.\n" +
           "You can input your current ones if you know them.",
           textAlign: TextAlign.left,
@@ -82,12 +82,13 @@ class _EnterMaxesState extends State<EnterMaxes> {
                   ),
                 ),
 
-                // add new lift button
+                // add new personal record button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 100),
                   child: FlatButton(
                     onPressed: () async {
-                      await Navigator.of(context).pushNamed('/create-pr');
+                      PersonalRecord newPR = await Navigator.of(context).push(MaterialPageRoute<PersonalRecord>(builder: (_) => CreatePR()));
+                      widget.user.addNewPR(newPR);
                     },
                     child: Icon(Icons.add, color: Colors.white,),
                     shape: RoundedRectangleBorder(

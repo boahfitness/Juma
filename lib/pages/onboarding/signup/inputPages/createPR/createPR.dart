@@ -19,6 +19,7 @@ class _CreatePRState extends State<CreatePR> {
     '0', 0, 0, Squat()
   );
   PageController controller = PageController();
+  int currentIndex = 0;
 
   @override
   void initState() {
@@ -37,7 +38,7 @@ class _CreatePRState extends State<CreatePR> {
     Map<String, Widget> pages = {
       'Choose a Lift': ChooseLift(pr),
       'Customize the Lift': CustomizeLift(pr),
-      'Test': Center(child: Text(pr.lift.descriptor.path),)
+      'Enter a Weight': Center(child: Text('Enter a Weight'),)
     };
 
     title ??= pages.keys.toList()[0];
@@ -58,20 +59,46 @@ class _CreatePRState extends State<CreatePR> {
           controller: controller,
           onPageChanged: (index) {
             setState(() {
+              currentIndex = index;
               title = pages.keys.toList()[index];
             });
           },
+          itemCount: pages.length,
           itemBuilder: (context, index) {
             return pages.values.toList()[index];
           },
         ),
-        floatingActionButton: FlatButton(
-          onPressed: () {
-            setState(() {
-              controller.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
-            });
-          },
-          child: Text('NEXT', style: TextStyle(color: Colors.white),),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  setState(() {
+                    if (currentIndex != 0)
+                      controller.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                    else {
+                      Navigator.of(context).pop();
+                    }
+                  });
+                },
+                child: Text('BACK', style: TextStyle(color: Colors.white),),
+              ),
+              FlatButton(
+                onPressed: () {
+                  setState(() {
+                    if (currentIndex != pages.length - 1)
+                      controller.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                    else {
+                      Navigator.of(context).pop<PersonalRecord>(pr);
+                    }
+                  });
+                },
+                child: Text(currentIndex != pages.length - 1 ? 'NEXT' : 'FINISH', style: TextStyle(color: Colors.white),),
+              ),
+            ],
+          ),
         ),
       ),
     );

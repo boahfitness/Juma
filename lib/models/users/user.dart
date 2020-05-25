@@ -13,4 +13,19 @@ class User {
   Set<TrackedLift> trackedLifts = Set();
 
   User({this.uid});
+
+  bool addNewPR(PersonalRecord newPR) {
+    if (newPR == null) return false;
+    
+    TrackedLift newTL = TrackedLift(newPR.lift.descriptor);
+    TrackedLift tl = trackedLifts.lookup(newTL);
+    
+    if (tl == null) {
+      trackedLifts.add(newTL);
+      return newTL.addPersonalRecord(newPR);
+    }
+    else {
+      return tl.addPersonalRecord(newPR);
+    }
+  }
 }

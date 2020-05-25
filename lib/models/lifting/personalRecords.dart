@@ -11,7 +11,7 @@ class TrackedLift {
   Map<int, List<PersonalRecord>> get data => _data;
 
   TrackedLift(MainLiftDescriptor liftDescriptor) {
-    _liftDescriptor = liftDescriptor;
+    _liftDescriptor = MainLiftDescriptor(path: liftDescriptor.path, value: liftDescriptor.value);
     _data = SplayTreeMap();
   }
 
@@ -33,7 +33,8 @@ class TrackedLift {
     // the lift must match the lift descriptor of the PR data to be added to the data.
     // the lift must also be greater weight than the most recent pr (last)
     MainLiftDescriptor prDescriptor = pr.lift.descriptor;
-    if (prDescriptor == _liftDescriptor) {
+    if (prDescriptor == _liftDescriptor 
+          && pr.lift.weight != null) { // pr must have a weight to be added
       int prReps = pr.lift.reps;
 
       _data.putIfAbsent(prReps, () => List());

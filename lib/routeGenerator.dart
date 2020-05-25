@@ -6,8 +6,6 @@ import 'package:juma/pages/authenticate/login.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:juma/pages/onboarding/entryExperience.dart';
 
-import 'package:juma/pages/onboarding/signup/inputPages/createPR/createPR.dart';
-
 //import 'package:juma/testWidget.dart';
 
 class RouteGenerator {
@@ -27,8 +25,6 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AuthChecker());
       case '/auth/login':
         return MaterialPageRoute(builder: (_) => Login());
-      case '/create-pr':
-        return MaterialPageRoute(builder: (_) => CreatePR());
       default:
         return _errorRoute();
     }
