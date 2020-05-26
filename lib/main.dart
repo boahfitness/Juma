@@ -16,6 +16,7 @@ class Juma extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown
     ]);
+    //SystemChrome.setEnabledSystemUIOverlays([]);
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(

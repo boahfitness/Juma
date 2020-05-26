@@ -34,11 +34,11 @@ class Weight {
   
   // Methods
   static double poundsToKilos(double pounds) {
-    return pounds / 2.2046226218;
+    return pounds / 2.205;
   }
 
   static kilosToPounds(double kilos) {
-    return kilos * 2.2046226218;
+    return kilos * 2.205;
   }
 
   static PoundPlates calculatePoundsPlates(double pounds, {double barWeight = 45}) {
@@ -48,10 +48,12 @@ class Weight {
     //keep adding 45 till get over weight then go back
     //keep adding 25s till get over then go back;
     //ans so on.. until hit weight
+    return null;
   }
 
   static KiloPlates calculateKiloPlates(double kilos, {double barWeight = 20}) {
     // TODO implement calc kilo plates
+    return null;
   }
 
 }

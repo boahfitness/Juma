@@ -1,9 +1,10 @@
-// to hold pageview that starts with welcome page and goes to signup scroller
-
 import 'package:flutter/material.dart';
-import 'package:juma/pages/onboarding/signup/inputPages/displayName.dart';
+import 'package:juma/models/users/user.dart';
 import 'package:juma/pages/onboarding/welcomePage.dart';
 import 'package:juma/pages/onboarding/signup/signupScrollUI.dart';
+
+import 'package:juma/pages/onboarding/signup/inputPages/displayName.dart';
+import 'package:juma/pages/onboarding/signup/inputPages/enterMaxes.dart';
 
 class SignupScroller extends StatefulWidget {
 
@@ -18,11 +19,14 @@ class SignupScroller extends StatefulWidget {
 
 class _SignupScrollerState extends State<SignupScroller> {
 
+  User user = User();
+
   PageController pageController = PageController(initialPage: 0, keepPage: false);
+  final int numPages = 4;
+
   int currentIndex = 0;
   double uiOpacity;
   ScrollPhysics scrollPhysics;
-  final int numPages = 3;
   bool upDisabled = false, downDisabled = false;
 
   final displayName = TextEditingController();
@@ -47,7 +51,8 @@ class _SignupScrollerState extends State<SignupScroller> {
   Widget build(BuildContext context) {
 
     uiOpacity = currentIndex == 0 ? 0.0 : 1.0;
-    scrollPhysics = currentIndex == 0 ? NeverScrollableScrollPhysics() : NeverScrollableScrollPhysics();
+    //scrollPhysics = currentIndex == 0 ? NeverScrollableScrollPhysics() : NeverScrollableScrollPhysics();
+    scrollPhysics = NeverScrollableScrollPhysics();
 
     return Form(
       key: formKey,
@@ -85,7 +90,10 @@ class _SignupScrollerState extends State<SignupScroller> {
                     },
                   ),
                   InputDisplayName(displayName),
-                  Container(child: Center(child: Text("PRs!"),),)
+                  EnterMaxes(user),
+                  Center(
+                    child: user.unitPreference != null ? Text(user.unitPreference.toString()) : Text('Error'),
+                  )
                 ],
               ),
             ),
@@ -95,16 +103,16 @@ class _SignupScrollerState extends State<SignupScroller> {
           ScrollUI(uiOpacity: uiOpacity, currentIndex: currentIndex, numPages: numPages,
             onTapUp: () {
               if (currentIndex != 0 && !upDisabled) {
-                Duration dur = currentIndex == 1 ? Duration(milliseconds: 500) : Duration(seconds: 1);
+                Duration dur = currentIndex == 1 ? Duration(milliseconds: 1000) : Duration(seconds: 1);
                 setState(() {
-                  pageController.previousPage(duration: dur, curve: Curves.linear);
+                  pageController.previousPage(duration: dur, curve: Curves.easeInOut);
                 });
               }
             },
             onTapDown: () {
               if (currentIndex != 0 && currentIndex != numPages - 1 && !downDisabled && formKey.currentState.validate()) {
                 setState(() {
-                  pageController.nextPage(duration: Duration(seconds: 1), curve: Curves.linear);
+                  pageController.nextPage(duration: Duration(seconds: 1), curve: Curves.easeInOut);
                 });
               }
             },

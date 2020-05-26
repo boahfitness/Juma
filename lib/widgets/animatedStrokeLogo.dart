@@ -54,7 +54,7 @@ class _AnimatedStrokeLogoState extends State<AnimatedStrokeLogo> {
         width: width,
         curve: Curves.easeInOut,
         child: FlareActor(
-          'assets/video/jumaLightDrawThick.flr',
+          'assets/animations/jumaLightDrawThick.flr',
           animation: animation,
           callback: (val) {
             setState(() {
