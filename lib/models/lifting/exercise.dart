@@ -145,12 +145,15 @@ class Squat extends MainLift {
   Squat({
     SquatVariation variation = SquatVariation.lowBar,
     SquatEquipment equipment = SquatEquipment.raw,
-    KneeEquipment kneeEquipment = KneeEquipment.none
+    KneeEquipment kneeEquipment = KneeEquipment.none,
+    int reps=1
   }) {
     _variation = variation;
     _equipment = equipment;
     _kneeEquipment = kneeEquipment;
     _descriptor = MainLiftDescriptor(path: calculateDescriptorPath(), value: calculateDescriptorValue());
+    this.weight = Weight();
+    this.reps = reps;
   }
 
   Squat.fromDescriptor(MainLiftDescriptor d) {
@@ -246,10 +249,13 @@ class Bench extends MainLift {
   MainLiftType get type => MainLiftType.bench;
 
   Bench({
-    BenchEquipment equipment = BenchEquipment.raw
+    BenchEquipment equipment = BenchEquipment.raw,
+    int reps=1
   }) {
     _equipment = equipment;
     _descriptor = MainLiftDescriptor(value: calculateDescriptorValue(), path: calculateDescriptorPath());
+    this.weight = Weight();
+    this.reps = reps;
   }
 
   Bench.fromDescriptor(MainLiftDescriptor d) {
@@ -328,11 +334,14 @@ class Deadlift extends MainLift {
 
   Deadlift({
     DeadliftVariation variation = DeadliftVariation.conv,
-    DeadliftEquipment equipment = DeadliftEquipment.raw
+    DeadliftEquipment equipment = DeadliftEquipment.raw,
+    int reps=1
   }) {
     _variation = variation;
     _equipment = equipment;
     _descriptor = MainLiftDescriptor(value: calculateDescriptorValue(), path: calculateDescriptorPath());
+    this.weight = Weight();
+    this.reps = reps;
   }
 
   Deadlift.fromDescriptor(MainLiftDescriptor d) {
