@@ -5,6 +5,7 @@ import 'package:juma/models/lifting/weight.dart';
 import 'package:juma/pages/onboarding/signup/inputPages/createPR/customizeLift.dart';
 import 'package:juma/theme/Colors.dart';
 import 'package:juma/pages/onboarding/signup/inputPages/createPR/chooseLift.dart';
+import 'package:juma/pages/onboarding/signup/inputPages/createPR/enterWeight.dart';
 
 class CreatePR extends StatefulWidget {
   final WeightUnit unitPreference;
@@ -38,7 +39,7 @@ class _CreatePRState extends State<CreatePR> {
     Map<String, Widget> pages = {
       'Choose a Lift': ChooseLift(pr),
       'Customize the Lift': CustomizeLift(pr),
-      'Enter a Weight': Center(child: Text('Enter a Weight'),)
+      'Enter a Weight': EnterWeight(pr, unitPreference: widget.unitPreference,),
     };
 
     title ??= pages.keys.toList()[0];

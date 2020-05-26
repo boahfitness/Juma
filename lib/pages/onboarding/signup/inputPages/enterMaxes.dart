@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/personalRecords.dart';
 import 'package:juma/models/users/user.dart';
 import 'package:juma/pages/onboarding/signup/inputPages/createPR/createPR.dart';
+import 'package:juma/theme/Colors.dart';
 import 'package:juma/widgets/auraPicker.dart';
 import 'package:juma/models/lifting/weight.dart';
 
@@ -73,22 +74,23 @@ class _EnterMaxesState extends State<EnterMaxes> {
             child: ListView(
               scrollDirection: Axis.vertical,
               children: <Widget>[
-                for (TrackedLift lift in widget.user.trackedLifts) FlatButton(
-                  onPressed: () {},
-                  child: Text(lift.liftDescriptor.path),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                    side: BorderSide(color: Colors.white),
-                  ),
-                ),
 
                 // add new personal record button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 100),
                   child: FlatButton(
                     onPressed: () async {
-                      PersonalRecord newPR = await Navigator.of(context).push(MaterialPageRoute<PersonalRecord>(builder: (_) => CreatePR()));
-                      widget.user.addNewPR(newPR);
+                      PersonalRecord newPR = await Navigator.of(context).push(MaterialPageRoute<PersonalRecord>(builder: (_) => CreatePR(unitPreference: widget.user.unitPreference,)));
+                      if (newPR != null) {
+                        var tl = widget.user.trackedLifts.lookup(TrackedLift(newPR.lift.descriptor));
+                        if (tl == null) {
+                          widget.user.addNewPR(newPR);
+                        }
+                        else {
+                          widget.user.trackedLifts.remove(tl);
+                          widget.user.addNewPR(newPR);
+                        }
+                      }
                     },
                     child: Icon(Icons.add, color: Colors.white,),
                     shape: RoundedRectangleBorder(
@@ -96,7 +98,36 @@ class _EnterMaxesState extends State<EnterMaxes> {
                       side: BorderSide(color: Colors.white)
                     ),
                   ),
-                )
+                ),
+
+                // list of items
+                for (TrackedLift trackedLift in widget.user.trackedLifts) 
+                  for (PersonalRecord pr in trackedLift.getPrForEachRep())
+                    FlatButton(
+                      onPressed: () {},
+                      onLongPress: () {
+                        setState(() {
+                          widget.user.trackedLifts.remove(trackedLift);
+                        });
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(pr.lift.descriptor.path),
+                          Text(
+                            widget.user.unitPreference == WeightUnit.pounds ?
+                            '${pr.lift.weight.pounds.round()} LB' :
+                            '${pr.lift.weight.kilograms.round()} KG'
+                          )
+                        ],
+                      ),
+                      textColor: Colors.white,
+                      color: JumaColors.boahDarkGrey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        side: BorderSide(color: Colors.white)
+                      ),
+                    ),
               ],
             ),
           ),
