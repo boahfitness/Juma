@@ -34,7 +34,8 @@ class TrackedLift {
     // the lift must also be greater weight than the most recent pr (last)
     MainLiftDescriptor prDescriptor = pr.lift.descriptor;
     if (prDescriptor == _liftDescriptor 
-          && pr.lift.weight != null) { // pr must have a weight to be added
+          && pr.lift.weight != null
+          && pr.lift.reps != null) { // pr must have a weight to be added
       int prReps = pr.lift.reps;
 
       _data.putIfAbsent(prReps, () => List());
@@ -52,6 +53,23 @@ class TrackedLift {
       }
     }
     return false;
+  }
+
+  PersonalRecord getRecentPrForReps(int reps) {
+    if (_data.containsKey(reps) && _data[reps].isNotEmpty) {
+      return _data[reps].last;
+    }
+    else {
+      return null;
+    }
+  }
+
+  List<PersonalRecord> getPrForEachRep() {
+    List<PersonalRecord> output = List();
+    for (int reps in _data.keys) {
+      output.add(getRecentPrForReps(reps));
+    }
+    return output;
   }
 
 }
