@@ -34,11 +34,11 @@ class Weight {
   
   // Methods
   static double poundsToKilos(double pounds) {
-    return pounds / 2.2046226218;
+    return pounds / 2.205;
   }
 
   static kilosToPounds(double kilos) {
-    return kilos * 2.2046226218;
+    return kilos * 2.205;
   }
 
   static PoundPlates calculatePoundsPlates(double pounds, {double barWeight = 45}) {

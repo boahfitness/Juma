@@ -67,7 +67,8 @@ class TrackedLift {
   List<PersonalRecord> getPrForEachRep() {
     List<PersonalRecord> output = List();
     for (int reps in _data.keys) {
-      output.add(getRecentPrForReps(reps));
+      var pr = getRecentPrForReps(reps);
+      if (pr != null) output.add(pr);
     }
     return output;
   }
