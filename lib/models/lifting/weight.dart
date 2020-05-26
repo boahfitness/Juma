@@ -48,10 +48,12 @@ class Weight {
     //keep adding 45 till get over weight then go back
     //keep adding 25s till get over then go back;
     //ans so on.. until hit weight
+    return null;
   }
 
   static KiloPlates calculateKiloPlates(double kilos, {double barWeight = 20}) {
     // TODO implement calc kilo plates
+    return null;
   }
 
 }
