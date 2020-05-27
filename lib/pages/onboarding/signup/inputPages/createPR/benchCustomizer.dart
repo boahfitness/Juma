@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/models/lifting/personalRecords.dart';
+import 'package:juma/theme/Colors.dart';
 import 'package:juma/widgets/auraPicker.dart';
 
 class BenchCustomizer extends StatefulWidget {
@@ -12,6 +13,7 @@ class BenchCustomizer extends StatefulWidget {
 
 class _BenchCustomizerState extends State<BenchCustomizer> {
   final Bench lift;
+  final ColorTheme theme = ColorTheme.getLiftTheme(LiftTheme.bench);
   _BenchCustomizerState(this.lift);
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class _BenchCustomizerState extends State<BenchCustomizer> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 AuraPicker(
+                  theme: theme,
                   text: 'RAW',
                   fontSize: 12,
                   enabled: lift.equipment == BenchEquipment.raw,
@@ -45,6 +48,7 @@ class _BenchCustomizerState extends State<BenchCustomizer> {
                   },
                 ),
                 AuraPicker(
+                  theme: theme,
                   text: 'EQUIPPED',
                   fontSize: 12,
                   enabled: lift.equipment != BenchEquipment.raw,
@@ -78,6 +82,7 @@ class _BenchCustomizerState extends State<BenchCustomizer> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   AuraPicker(
+                    theme: theme,
                     text: 'SHIRT',
                     fontSize: 12,
                     enabled: lift.equipment == BenchEquipment.shirt,
@@ -88,6 +93,7 @@ class _BenchCustomizerState extends State<BenchCustomizer> {
                     },
                   ),
                   AuraPicker(
+                    theme: theme,
                     text: 'SLINGSHOT',
                     fontSize: 12,
                     enabled: lift.equipment == BenchEquipment.slingshot,

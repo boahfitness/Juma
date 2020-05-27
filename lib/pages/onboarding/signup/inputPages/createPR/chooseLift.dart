@@ -107,13 +107,13 @@ class _LiftPickerState extends State<LiftPicker> {
   void initState() {
     switch (widget.lift.type) {
       case MainLiftType.squat:
-        theme = ColorTheme.getTheme(ThemeType.red);
+        theme = ColorTheme.getLiftTheme(LiftTheme.squat);
         break;
       case MainLiftType.bench:
-        theme = ColorTheme.getTheme(ThemeType.green);
+        theme = ColorTheme.getLiftTheme(LiftTheme.bench);
         break;
       case MainLiftType.deadlift:
-        theme = ColorTheme.getTheme(ThemeType.purple);
+        theme = ColorTheme.getLiftTheme(LiftTheme.deadlift);
         break;
       default:
         theme = ColorTheme.getTheme(ThemeType.gold);

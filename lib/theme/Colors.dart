@@ -210,6 +210,14 @@ abstract class ColorTheme {
       }
     }
   }
+
+  static getLiftTheme(LiftTheme lift) {
+    switch (lift) {
+      case LiftTheme.squat: return RedTheme();
+      case LiftTheme.bench: return GreenTheme();
+      case LiftTheme.deadlift: return PurpleTheme();
+    }
+  }
 }
 
 enum ThemeType {
@@ -218,4 +226,10 @@ enum ThemeType {
   purple,
   gold,
   black
+}
+
+enum LiftTheme {
+  squat,
+  bench,
+  deadlift
 }

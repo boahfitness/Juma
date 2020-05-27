@@ -1,11 +1,13 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:juma/theme/Colors.dart';
 
 class AuraPicker extends StatefulWidget {
   final bool enabled;
   final String text;
   final double fontSize;
   final void Function() onTap;
+  final ColorTheme theme;
 
   AuraPicker({
     this.enabled=true,
@@ -13,6 +15,7 @@ class AuraPicker extends StatefulWidget {
     this.text,
     this.fontSize,
     this.onTap,
+    this.theme
   });
 
   @override
@@ -76,9 +79,15 @@ class _AuraPickerState extends State<AuraPicker> {
               duration: Duration(milliseconds: 200),
               curve: Curves.easeInOut,
               opacity: widget.enabled ? 1.0 : 0.0,
-              child: FlareActor(
-                'assets/animations/Aura.flr',
-                animation: 'Aura',
+              child: ShaderMask(
+                blendMode: widget.theme == null ? BlendMode.dst : BlendMode.srcIn,
+                shaderCallback: (bounds) {
+                  return widget.theme == null ? RedTheme().gradient.createShader(bounds) : widget.theme.gradient.createShader(bounds);
+                },
+                child: FlareActor(
+                  'assets/animations/Aura.flr',
+                  animation: 'Aura',
+                ),
               ),
             ),
 

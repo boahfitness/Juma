@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/models/lifting/personalRecords.dart';
+import 'package:juma/theme/Colors.dart';
 import 'package:juma/widgets/auraPicker.dart';
 
 class SquatCustomizer extends StatefulWidget {
@@ -12,6 +13,7 @@ class SquatCustomizer extends StatefulWidget {
 
 class _SquatCustomizerState extends State<SquatCustomizer> {
   final Squat lift;
+  final ColorTheme theme = ColorTheme.getLiftTheme(LiftTheme.squat);
   _SquatCustomizerState(this.lift);
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class _SquatCustomizerState extends State<SquatCustomizer> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 AuraPicker(
+                  theme: theme,
                   text: 'HIGHBAR',
                   fontSize: 12,
                   enabled: lift.variation == SquatVariation.highBar,
@@ -45,6 +48,7 @@ class _SquatCustomizerState extends State<SquatCustomizer> {
                   },
                 ),
                 AuraPicker(
+                  theme: theme,
                   text: 'LOW BAR',
                   fontSize: 12,
                   enabled: lift.variation == SquatVariation.lowBar,
@@ -74,6 +78,7 @@ class _SquatCustomizerState extends State<SquatCustomizer> {
                   },
                 ),
                 AuraPicker(
+                  theme: theme,
                   text: 'EQUIPPED',
                   fontSize: 12,
                   enabled: lift.equipment != SquatEquipment.raw,
@@ -107,6 +112,7 @@ class _SquatCustomizerState extends State<SquatCustomizer> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   AuraPicker(
+                    theme: theme,
                     text: 'SUIT',
                     fontSize: 12,
                     enabled: lift.equipment == SquatEquipment.suit,
@@ -117,6 +123,7 @@ class _SquatCustomizerState extends State<SquatCustomizer> {
                     },
                   ),
                   AuraPicker(
+                    theme: theme,
                     text: 'BREIFS',
                     fontSize: 12,
                     enabled: lift.equipment == SquatEquipment.breifs,
@@ -130,6 +137,7 @@ class _SquatCustomizerState extends State<SquatCustomizer> {
               ),
             ),
             AuraPicker(
+              theme: theme,
               text: 'WRAPS',
               fontSize: 12,
               enabled: lift.kneeEquipment == KneeEquipment.wraps,
