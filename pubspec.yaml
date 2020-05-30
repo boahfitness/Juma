@@ -92,6 +92,9 @@ flutter:
     - family: LiftIcons
       fonts:
         - asset: icons/LiftIcons.ttf
+    - family: JumaIcons
+      fonts:
+        - asset: icons/JumaIcons.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
