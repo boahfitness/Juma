@@ -22,7 +22,6 @@ class _SignupScrollerState extends State<SignupScroller> {
   User user = User();
 
   PageController pageController = PageController(initialPage: 0, keepPage: false);
-  final int numPages = 4;
 
   int currentIndex = 0;
   double uiOpacity;
@@ -54,6 +53,21 @@ class _SignupScrollerState extends State<SignupScroller> {
     //scrollPhysics = currentIndex == 0 ? NeverScrollableScrollPhysics() : NeverScrollableScrollPhysics();
     scrollPhysics = NeverScrollableScrollPhysics();
 
+    List<Widget> pages = [
+      WelcomePage(
+        onJoinPressed: () {
+          setState(() {
+            pageController.animateToPage(currentIndex + 1, duration: Duration(seconds: 1), curve: Curves.easeInOut);
+            widget.onStart();
+          });
+        },
+      ),
+      InputDisplayName(displayName),
+      EnterMaxes(user),
+    ];
+
+    int numPages = pages.length;
+
     return Form(
       key: formKey,
       child: Stack(
@@ -67,7 +81,7 @@ class _SignupScrollerState extends State<SignupScroller> {
             ),
             child: Padding(
               padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * .1),
-              child: PageView(
+              child: PageView.builder(
                 onPageChanged: (val) {
                   setState(() {
                     currentIndex = val;
@@ -80,21 +94,10 @@ class _SignupScrollerState extends State<SignupScroller> {
                 physics: scrollPhysics,
                 controller: pageController,
                 scrollDirection: Axis.vertical,
-                children: <Widget>[
-                  WelcomePage(
-                    onJoinPressed: () {
-                      setState(() {
-                        pageController.animateToPage(currentIndex + 1, duration: Duration(seconds: 1), curve: Curves.easeInOut);
-                        widget.onStart();
-                      });
-                    },
-                  ),
-                  InputDisplayName(displayName),
-                  EnterMaxes(user),
-                  Center(
-                    child: user.unitPreference != null ? Text(user.unitPreference.toString()) : Text('Error'),
-                  )
-                ],
+                itemCount: numPages,
+                itemBuilder: (context, index) {
+                  return pages[index];
+                },
               ),
             ),
           ),
