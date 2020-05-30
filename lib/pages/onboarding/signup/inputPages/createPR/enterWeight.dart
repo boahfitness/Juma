@@ -27,6 +27,10 @@ class _EnterWeightState extends State<EnterWeight> {
           padding: const EdgeInsets.only(bottom: 30.0),
           child: Text(widget.pr.lift.descriptor.path, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),),
         ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 30.0),
+          child: Text('Enter your One Rep Max', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),),
+        ),
         WeightPicker(widget.pr.lift.weight, unit: widget.unitPreference,),
       ],
     );
@@ -46,7 +50,7 @@ class _WeightPickerState extends State<WeightPicker> {
 
   @override
   void initState() {
-    controller = TextEditingController(text: widget.unit == WeightUnit.pounds ? widget.weight.pounds.toString() : widget.weight.kilograms.toString());
+    controller = TextEditingController();
     super.initState();
   }
 
@@ -58,17 +62,24 @@ class _WeightPickerState extends State<WeightPicker> {
 
   @override
   Widget build(BuildContext context) {
+    FocusNode f = FocusNode();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         SizedBox(
           width: 100,
           child: TextField(
+            focusNode: f,
             decoration: InputDecoration(
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white)
               ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white)
+              ),
             ),
+            cursorColor: Colors.white,
+            autofocus: true,
             style: TextStyle(color: Colors.white),
             controller: controller,
             keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
@@ -76,6 +87,7 @@ class _WeightPickerState extends State<WeightPicker> {
               setState(() {
                 if (widget.unit == WeightUnit.kilograms) {
                   widget.weight.kilograms = double.parse(val);
+                  f.unfocus();
                 }
                 else {
                   widget.weight.pounds = double.parse(val);
