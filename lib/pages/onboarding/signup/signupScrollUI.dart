@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:juma/pages/onboarding/pageIndexIndicator.dart';
+import 'package:juma/theme/jumaIcons.dart';
 
 class ScrollUI extends StatefulWidget {
 
@@ -44,20 +45,30 @@ class _ScrollUIState extends State<ScrollUI> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        GestureDetector(
-                          onTap: widget.onTapUp,
-                          child: Icon(
-                            Icons.keyboard_arrow_up,
+                        SizedBox(
+                          width: 35,
+                          height: 35,
+                          child: IconButton(
+                            onPressed: widget.onTapUp,
                             color: Colors.grey[100],
-                            size: 40,
+                            iconSize: 18,
+                            alignment: Alignment.center,
+                            icon: Icon(
+                              JumaIcons.navUp,
+                            ),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: widget.onTapDown,
-                          child: Icon(
-                            Icons.keyboard_arrow_down,
+                        SizedBox(
+                          width: 35,
+                          height: 35,
+                          child: IconButton(
+                            onPressed: widget.onTapDown,
                             color: widget.currentIndex != widget.numPages - 1 ? Colors.grey[100] : Colors.grey[800],
-                            size: 40,
+                            iconSize: 18,
+                            alignment: Alignment.center,
+                            icon: Icon(
+                              JumaIcons.navDown,
+                            ),
                           ),
                         ),
                       ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:juma/pages/onboarding/onboardingPages.dart';
 import 'package:juma/theme/Colors.dart';
 import 'package:juma/pages/onboarding/pageIndexIndicator.dart';
+import 'package:juma/theme/jumaIcons.dart';
 
 class Onboarding extends StatefulWidget {
 
@@ -45,11 +46,9 @@ class _OnboardingState extends State<Onboarding> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: GestureDetector(
-                  onTap: () {
-                    widget.onContinue();
-                  },
+                padding: const EdgeInsets.all(10.0),
+                child: FlatButton(
+                  onPressed: widget.onContinue,
                   child: Text("SKIP", style: TextStyle(color: JumaColors.boahOrange, fontSize: 12),)
                 ),
               ),
@@ -97,34 +96,46 @@ class _OnboardingState extends State<Onboarding> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     SizedBox(
-                      width: 70.0,
+                      width: 80.0,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              if (currentIndex != 0) {
-                                setState(() {
-                                  pageController.animateToPage(currentIndex - 1, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
-                                });
-                              }
-                            },
-                            child: Icon(
-                              Icons.arrow_back_ios,
+                          SizedBox(
+                            width: 35,
+                            height: 35,
+                            child: IconButton(
+                              onPressed: () {
+                                if (currentIndex != 0) {
+                                  setState(() {
+                                    pageController.animateToPage(currentIndex - 1, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+                                  });
+                                }
+                              },
                               color: currentIndex != 0 ? Colors.grey[100] : Colors.grey[800],
+                              iconSize: 20,
+                              alignment: Alignment.center,
+                              icon: Icon(
+                                JumaIcons.navLeft,
+                              ),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              if (currentIndex != pages.length - 1) {
-                                setState(() {
-                                  pageController.animateToPage(currentIndex + 1, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
-                                });
-                              }
-                            },
-                            child: Icon(
-                              Icons.arrow_forward_ios,
+                          SizedBox(
+                            width: 35,
+                            height: 35,
+                            child: IconButton(
+                              onPressed: () {
+                                if (currentIndex != pages.length - 1) {
+                                  setState(() {
+                                    pageController.animateToPage(currentIndex + 1, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+                                  });
+                                }
+                              },
                               color: currentIndex != pages.length - 1 ? Colors.grey[100] : Colors.grey[800],
+                              iconSize: 20,
+                              alignment: Alignment.center,
+                              icon: Icon(
+                                JumaIcons.navRight,
+                              ),
                             ),
                           )
                         ],
