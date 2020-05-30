@@ -206,16 +206,17 @@ abstract class ColorTheme {
       break;
 
       default: {
-        return RedTheme();
+        return null;
       }
     }
   }
 
-  static getLiftTheme(LiftTheme lift) {
+  static ColorTheme getLiftTheme(LiftTheme lift) {
     switch (lift) {
       case LiftTheme.squat: return RedTheme();
       case LiftTheme.bench: return GreenTheme();
       case LiftTheme.deadlift: return PurpleTheme();
+      default: return null;
     }
   }
 }

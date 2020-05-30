@@ -89,6 +89,9 @@ flutter:
           weight: 300
         - asset: fonts/Montserrat/Montserrat-ExtraLight.ttf
           weight: 200
+    - family: LiftIcons
+      fonts:
+        - asset: icons/LiftIcons.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

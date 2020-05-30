@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/models/lifting/personalRecords.dart';
 import 'package:juma/theme/Colors.dart';
+import 'package:juma/theme/liftIcons.dart';
 
 class ChooseLift extends StatefulWidget {
   final PersonalRecord personalRecord;
@@ -16,6 +17,9 @@ class _ChooseLiftState extends State<ChooseLift> {
   Bench bench = Bench();
   Deadlift deadlift = Deadlift();
 
+  IconData icon;
+  Color iconColor;
+
   @override
   void initState() {
     widget.personalRecord.lift ??= squat;
@@ -24,9 +28,28 @@ class _ChooseLiftState extends State<ChooseLift> {
 
   @override
   Widget build(BuildContext context) {
+
+    switch (widget.personalRecord.lift.type) {
+      case MainLiftType.squat:
+        iconColor = ColorTheme.getLiftTheme(LiftTheme.squat).solid;
+        icon = LiftIcons.squat;
+        break;
+      case MainLiftType.bench:
+        iconColor = ColorTheme.getLiftTheme(LiftTheme.bench).solid;
+        icon = LiftIcons.bench;
+        break;
+      case MainLiftType.deadlift:
+        iconColor = ColorTheme.getLiftTheme(LiftTheme.deadlift).solid;
+        icon = LiftIcons.deadlift;
+        break;
+      default:
+        iconColor = ColorTheme.getTheme(ThemeType.gold).solid;
+        icon = LiftIcons.deadlift;
+        break;
+    }
+
     return Stack(
       children: <Widget>[
-
         Opacity(
           opacity: .3,
           child: ShaderMask(
@@ -39,15 +62,11 @@ class _ChooseLiftState extends State<ChooseLift> {
               ).createShader(bounds);
             },
             child: Transform.translate(
-              offset: Offset(0.0, -75),
-              child: Text(
-                widget.personalRecord.lift.name[0].toUpperCase(),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold, 
-                  color: Colors.white,
-                  fontSize: 400,
-                  decoration: TextDecoration.none,
-                ),
+              offset: Offset(-50.0, 0.0),
+              child: Icon(
+                icon,
+                size: 350.0,
+                color: iconColor,
               ),
             ),
           ),
@@ -102,21 +121,26 @@ class LiftPicker extends StatefulWidget {
 class _LiftPickerState extends State<LiftPicker> {
 
   ColorTheme theme;
+  IconData icon;
 
   @override
   void initState() {
     switch (widget.lift.type) {
       case MainLiftType.squat:
         theme = ColorTheme.getLiftTheme(LiftTheme.squat);
+        icon = LiftIcons.squat;
         break;
       case MainLiftType.bench:
         theme = ColorTheme.getLiftTheme(LiftTheme.bench);
+        icon = LiftIcons.bench;
         break;
       case MainLiftType.deadlift:
         theme = ColorTheme.getLiftTheme(LiftTheme.deadlift);
+        icon = LiftIcons.deadlift;
         break;
       default:
         theme = ColorTheme.getTheme(ThemeType.gold);
+        icon = LiftIcons.deadlift;
         break;
     }
     super.initState();
@@ -156,7 +180,8 @@ class _LiftPickerState extends State<LiftPicker> {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(left: 10, right: 20),
-                      child: Text(widget.lift.name[0].toUpperCase(), style: TextStyle(color: widget.enabled ? Colors.white : Colors.grey[700], fontWeight: FontWeight.bold, fontSize: 60),),
+                      //child: Text(widget.lift.name[0].toUpperCase(), style: TextStyle(color: widget.enabled ? Colors.white : Colors.grey[700], fontWeight: FontWeight.bold, fontSize: 60),),
+                      child: Icon(icon, color: widget.enabled ? Colors.white : Colors.grey[700], size: 60),
                     ),
                     Text(widget.lift.name.toUpperCase(), style: TextStyle(color: widget.enabled ? Colors.white : Colors.grey[700]),)
                   ],
