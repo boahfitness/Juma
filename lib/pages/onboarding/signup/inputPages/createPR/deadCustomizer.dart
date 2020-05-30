@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/models/lifting/personalRecords.dart';
+import 'package:juma/theme/Colors.dart';
 import 'package:juma/widgets/auraPicker.dart';
 
 class DeadCustomizer extends StatefulWidget {
@@ -12,6 +13,7 @@ class DeadCustomizer extends StatefulWidget {
 
 class _DeadCustomizerState extends State<DeadCustomizer> {
   final Deadlift lift;
+  final ColorTheme theme = ColorTheme.getLiftTheme(LiftTheme.deadlift);
   _DeadCustomizerState(this.lift);
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class _DeadCustomizerState extends State<DeadCustomizer> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 AuraPicker(
+                  theme: theme,
                   text: 'CONV',
                   fontSize: 12,
                   enabled: lift.variation == DeadliftVariation.conv,
@@ -45,6 +48,7 @@ class _DeadCustomizerState extends State<DeadCustomizer> {
                   },
                 ),
                 AuraPicker(
+                  theme: theme,
                   text: 'SUMO',
                   fontSize: 12,
                   enabled: lift.variation == DeadliftVariation.sumo,
@@ -64,6 +68,7 @@ class _DeadCustomizerState extends State<DeadCustomizer> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 AuraPicker(
+                  theme: theme,
                   text: 'RAW',
                   fontSize: 12,
                   enabled: lift.equipment == DeadliftEquipment.raw,
@@ -74,6 +79,7 @@ class _DeadCustomizerState extends State<DeadCustomizer> {
                   },
                 ),
                 AuraPicker(
+                  theme: theme,
                   text: 'EQUIPPED',
                   fontSize: 12,
                   enabled: lift.equipment != DeadliftEquipment.raw,
@@ -107,6 +113,7 @@ class _DeadCustomizerState extends State<DeadCustomizer> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   AuraPicker(
+                    theme: theme,
                     text: 'SUIT',
                     fontSize: 12,
                     enabled: lift.equipment == DeadliftEquipment.suit,
