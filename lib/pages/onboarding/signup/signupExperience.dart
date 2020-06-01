@@ -5,6 +5,7 @@ import 'package:juma/pages/onboarding/signup/signupScrollUI.dart';
 
 import 'package:juma/pages/onboarding/signup/inputPages/displayName.dart';
 import 'package:juma/pages/onboarding/signup/inputPages/enterMaxes.dart';
+import 'package:juma/pages/onboarding/signup/inputPages/healthData.dart';
 
 class SignupScroller extends StatefulWidget {
 
@@ -50,7 +51,6 @@ class _SignupScrollerState extends State<SignupScroller> {
   Widget build(BuildContext context) {
 
     uiOpacity = currentIndex == 0 ? 0.0 : 1.0;
-    //scrollPhysics = currentIndex == 0 ? NeverScrollableScrollPhysics() : NeverScrollableScrollPhysics();
     scrollPhysics = NeverScrollableScrollPhysics();
 
     List<Widget> pages = [
@@ -64,6 +64,7 @@ class _SignupScrollerState extends State<SignupScroller> {
       ),
       InputDisplayName(displayName),
       EnterMaxes(user),
+      InputHealthData(user),
     ];
 
     int numPages = pages.length;
@@ -116,6 +117,7 @@ class _SignupScrollerState extends State<SignupScroller> {
               if (currentIndex != 0 && currentIndex != numPages - 1 && !downDisabled && formKey.currentState.validate()) {
                 setState(() {
                   pageController.nextPage(duration: Duration(seconds: 1), curve: Curves.easeInOut);
+                  if (currentIndex == 1) user.displayName = displayName.text;
                 });
               }
             },

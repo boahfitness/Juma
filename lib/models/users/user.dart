@@ -12,6 +12,9 @@ class User {
 
   Set<TrackedLift> trackedLifts = Set();
 
+  Gender gender;
+  Weight bodyweight = Weight();
+
   User({this.uid});
 
   bool addNewPR(PersonalRecord newPR) {
@@ -28,4 +31,10 @@ class User {
       return tl.addPersonalRecord(newPR);
     }
   }
+}
+
+enum Gender {
+  male,
+  female,
+  unspecified
 }
