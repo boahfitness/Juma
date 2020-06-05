@@ -21,6 +21,15 @@ class _InputHealthDataState extends State<InputHealthData> {
         Text(
           '${widget.user.displayName}, help us manage your strength stats with the following data.'
         ),
+
+        Padding(
+          padding: const EdgeInsets.only(top: 30.0),
+          child: Text('Bodyweight'),
+        ),
+        WeightPicker(
+          widget.user.bodyweight, unit: widget.user.unitPreference,
+        ),
+
         Padding(
           padding: const EdgeInsets.only(top: 30.0),
           child: Text('Gender'),
@@ -64,14 +73,6 @@ class _InputHealthDataState extends State<InputHealthData> {
               ),
             ),
           ),
-        ),
-
-        Padding(
-          padding: const EdgeInsets.only(top: 30.0),
-          child: Text('Bodyweight'),
-        ),
-        WeightPicker(
-          widget.user.bodyweight, unit: widget.user.unitPreference,
         ),
       ],
     );

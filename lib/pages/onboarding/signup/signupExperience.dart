@@ -6,6 +6,7 @@ import 'package:juma/pages/onboarding/signup/signupScrollUI.dart';
 import 'package:juma/pages/onboarding/signup/inputPages/displayName.dart';
 import 'package:juma/pages/onboarding/signup/inputPages/enterMaxes.dart';
 import 'package:juma/pages/onboarding/signup/inputPages/healthData.dart';
+import 'package:juma/pages/onboarding/signup/inputPages/credentials.dart';
 
 class SignupScroller extends StatefulWidget {
 
@@ -65,6 +66,7 @@ class _SignupScrollerState extends State<SignupScroller> {
       InputDisplayName(displayName),
       EnterMaxes(user),
       InputHealthData(user),
+      InputCredentials()
     ];
 
     int numPages = pages.length;
