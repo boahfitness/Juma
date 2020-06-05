@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/models/lifting/personalRecords.dart';
 import 'package:juma/models/users/user.dart';
 import 'package:juma/pages/onboarding/signup/inputPages/createPR/createPR.dart';
 import 'package:juma/theme/Colors.dart';
+import 'package:juma/theme/liftIcons.dart';
 import 'package:juma/widgets/auraPicker.dart';
 import 'package:juma/models/lifting/weight.dart';
 
@@ -84,11 +86,15 @@ class _EnterMaxesState extends State<EnterMaxes> {
                       if (newPR != null) {
                         var tl = widget.user.trackedLifts.lookup(TrackedLift(newPR.lift.descriptor));
                         if (tl == null) {
-                          widget.user.addNewPR(newPR);
+                          setState(() {
+                            widget.user.addNewPR(newPR);
+                          });
                         }
                         else {
                           widget.user.trackedLifts.remove(tl);
-                          widget.user.addNewPR(newPR);
+                          setState(() {
+                            widget.user.addNewPR(newPR);
+                          });
                         }
                       }
                     },
@@ -103,29 +109,29 @@ class _EnterMaxesState extends State<EnterMaxes> {
                 // list of items
                 for (TrackedLift trackedLift in widget.user.trackedLifts) 
                   for (PersonalRecord pr in trackedLift.getPrForEachRep())
-                    FlatButton(
-                      onPressed: () {},
-                      onLongPress: () {
-                        setState(() {
-                          widget.user.trackedLifts.remove(trackedLift);
-                        });
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(pr.lift.descriptor.path),
-                          Text(
-                            widget.user.unitPreference == WeightUnit.pounds ?
-                            '${pr.lift.weight.pounds.round()} LB' :
-                            '${pr.lift.weight.kilograms.round()} KG'
-                          )
-                        ],
-                      ),
-                      textColor: Colors.white,
-                      color: JumaColors.boahDarkGrey,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        side: BorderSide(color: Colors.white)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Dismissible(
+                        key: Key(pr.lift.descriptor.toString()),
+                        onDismissed: (direction) {
+                          setState(() {
+                            var tl = widget.user.trackedLifts.lookup(TrackedLift(pr.lift.descriptor));
+                            widget.user.trackedLifts.remove(tl);
+                          });
+                        },
+                        direction: DismissDirection.endToStart,
+                        background: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Icon(Icons.delete, color: Colors.red,),
+                              ],
+                            ),
+                          ),
+                        ),
+                        child: LiftItemBar(lift: pr.lift, unit: widget.user.unitPreference,)
                       ),
                     ),
               ],
@@ -134,6 +140,94 @@ class _EnterMaxesState extends State<EnterMaxes> {
         ),
 
       ],
+    );
+  }
+}
+
+class LiftItemBar extends StatelessWidget {
+  const LiftItemBar({
+    Key key,
+    @required this.lift,
+    this.unit=WeightUnit.pounds
+  }) : super(key: key);
+
+  final MainLift lift;
+  final WeightUnit unit;
+
+  @override
+  Widget build(BuildContext context) {
+    IconData liftIcon;
+    ColorTheme liftTheme;
+
+    switch (lift.type) {
+      case MainLiftType.squat: {
+        liftIcon = LiftIcons.squat;
+        liftTheme = ColorTheme.getLiftTheme(LiftTheme.squat);
+        break;
+      }
+      case MainLiftType.bench: {
+        liftIcon = LiftIcons.bench;
+        liftTheme = ColorTheme.getLiftTheme(LiftTheme.bench);
+        break;
+      }
+      case MainLiftType.deadlift: {
+        liftIcon = LiftIcons.deadlift;
+        liftTheme = ColorTheme.getLiftTheme(LiftTheme.deadlift);
+        break;
+      }
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                // Icon box
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: liftTheme.gradient
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      liftIcon,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+
+                SizedBox(width: 8.0,),
+
+                //name
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(lift.name.toUpperCase(), style: TextStyle( fontWeight: FontWeight.bold, fontSize: 15.0 ),),
+                    Text(lift.descriptor.path.substring(lift.descriptor.path.indexOf('/')+2), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10.0),),
+                  ],
+                ),
+              ],
+            ),
+
+            Text(
+              unit == WeightUnit.pounds ?
+              '${lift.weight.pounds.round()} LB'
+              :
+              '${lift.weight.kilograms.round()} KG', 
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
