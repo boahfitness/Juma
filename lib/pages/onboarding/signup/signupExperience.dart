@@ -66,7 +66,7 @@ class _SignupScrollerState extends State<SignupScroller> {
       InputDisplayName(displayName),
       EnterMaxes(user),
       InputHealthData(user),
-      InputCredentials()
+      InputCredentials(user)
     ];
 
     int numPages = pages.length;
