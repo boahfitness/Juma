@@ -68,7 +68,7 @@ class _EnterMaxesState extends State<EnterMaxes> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [Colors.black, Colors.transparent, Colors.transparent, Colors.black],
-              stops: [0.0, 0.1, 0.75, 1.0]
+              stops: [0.0, 0.1, 0.9, 1.0]
             ).createShader(bounds);
           },
           child: Container(

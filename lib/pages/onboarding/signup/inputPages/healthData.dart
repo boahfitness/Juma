@@ -22,6 +22,9 @@ class _InputHealthDataState extends State<InputHealthData> {
           '${widget.user.displayName}, help us manage your strength stats with the following data.'
         ),
 
+        SizedBox(height: MediaQuery.of(context).size.height*0.1,),
+
+
         Padding(
           padding: const EdgeInsets.only(top: 30.0),
           child: Text('Bodyweight'),
@@ -29,6 +32,8 @@ class _InputHealthDataState extends State<InputHealthData> {
         WeightPicker(
           widget.user.bodyweight, unit: widget.user.unitPreference,
         ),
+
+        SizedBox(height: MediaQuery.of(context).size.height*0.1,),
 
         Padding(
           padding: const EdgeInsets.only(top: 30.0),
@@ -111,25 +116,17 @@ class _GenderPickerState extends State<GenderPicker> {
           end: Alignment.topCenter,
         ).createShader(bounds);
       },
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 200,
-            child: IconButton(
-              onPressed: widget.onTap,
-              icon: Icon(genderIcon, color: Colors.grey[700],),
-              iconSize: genderIcon == JumaIcons.female ? iconSize * 1.2 : iconSize,
-            ),
+      child: FlatButton.icon(
+        onPressed: widget.onTap,
+        icon: Icon(genderIcon),
+        label: Text(
+          widget.gender == Gender.male ? 'MALE' : 'FEMALE',
+          style: TextStyle(
+            color: Colors.grey[700],
+            fontWeight: FontWeight.bold,
+            fontSize: 15
           ),
-          Text(
-            widget.gender == Gender.male ? 'MALE' : 'FEMALE',
-            style: TextStyle(
-              color: Colors.grey[700],
-              fontWeight: FontWeight.bold,
-              fontSize: 15
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
