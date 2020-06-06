@@ -22,22 +22,25 @@ class _InputHealthDataState extends State<InputHealthData> {
           '${widget.user.displayName}, help us manage your strength stats with the following data.'
         ),
 
-        SizedBox(height: MediaQuery.of(context).size.height*0.1,),
-
+        SizedBox(height: MediaQuery.of(context).size.height*0.05,),
 
         Padding(
           padding: const EdgeInsets.only(top: 30.0),
-          child: Text('Bodyweight'),
+          child: Text('Bodyweight', style: TextStyle(fontSize: 15.0),),
         ),
         WeightPicker(
           widget.user.bodyweight, unit: widget.user.unitPreference,
         ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text('*you can adjust this later*', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),),
+        ),
 
         SizedBox(height: MediaQuery.of(context).size.height*0.1,),
 
         Padding(
           padding: const EdgeInsets.only(top: 30.0),
-          child: Text('Gender'),
+          child: Text('Gender', style: TextStyle(fontSize: 15.0),),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -68,7 +71,7 @@ class _InputHealthDataState extends State<InputHealthData> {
                 widget.user.gender = Gender.unspecified;
               });
             },
-            child: Text('I prefer not to answer.',),
+            child: Text('I prefer not to answer.', style: TextStyle(fontSize: 15.0),),
             textColor: widget.user.gender == Gender.unspecified ? JumaColors.boahOrange : Colors.grey[700],
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),

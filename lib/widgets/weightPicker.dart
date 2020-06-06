@@ -36,6 +36,7 @@ class _WeightPickerState extends State<WeightPicker> {
           width: 100,
           child: TextField(
             focusNode: f,
+            textAlign: TextAlign.center,
             decoration: InputDecoration(
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white)
@@ -54,6 +55,7 @@ class _WeightPickerState extends State<WeightPicker> {
                 if (widget.unit == WeightUnit.kilograms) {
                   widget.weight.kilograms = double.parse(val);
                   //f.unfocus();
+                  // TODO fix focusing for the createPR screen
                 }
                 else {
                   widget.weight.pounds = double.parse(val);
