@@ -44,23 +44,48 @@ class Weight {
   }
 
   static Map<PoundPlateType, int> calculatePoundPlates(double targetWeight, {double barWeight = 45.0}) {
-    //pound plates can only be calculated to the nearest 5
-    // TODO implete calc pound plates
-
     double currentWeight = barWeight;
     List<PoundPlateType> plateTypes = PoundPlateType.values;
+    Map<PoundPlateType, int> result = Map();
 
     plateTypes.forEach((plateType) {
-
+      int numPlates = 0;
+      PoundPlate plate = PoundPlates.fromType(plateType);
+      //result.putIfAbsent(plateType, () => numPlates);
+      while (currentWeight + plate.weight*2 <= targetWeight) {
+        currentWeight += plate.weight*2;
+        numPlates += 1;
+      }
+      if (numPlates != 0) result.update(plateType, (value) => numPlates, ifAbsent: () => numPlates);
     });
 
-    return null;
+    return result;
   }
 
-  static Map<KiloPlateType, int> calculateKiloPlates(double targetWeight, {double barWeight = 20.0}) {
-    //kilo plates can only be calculated to the nearest 0.5
-    // TODO implement calc kilo plates
-    return null;
+  static Map<KiloPlateType, int> calculateKiloPlates(double targetWeight, {double barWeight = 20.0, useCollar=true}) {
+    double currentWeight = useCollar? barWeight + KiloPlates.collar.weight*2 : barWeight;
+    List<KiloPlateType> plateTypes = KiloPlateType.values;
+    Map<KiloPlateType, int> result = Map();
+
+    plateTypes.forEach((plateType) {
+      if (plateType == KiloPlateType.collar) {
+        if (useCollar) {
+          result.update(plateType, (val) => 1, ifAbsent: () => 1);
+        }
+      }
+      else {
+        int numPlates = 0;
+        KiloPlate plate = KiloPlates.fromType(plateType);
+        //result.putIfAbsent(plateType, () => numPlates);
+        while (currentWeight + plate.weight*2 <= targetWeight) {
+          currentWeight += plate.weight*2;
+          numPlates += 1;
+        }
+        if (numPlates != 0) result.update(plateType, (value) => numPlates, ifAbsent: () => numPlates);
+      }
+    });
+
+    return result;
   }
 
 }
@@ -83,7 +108,7 @@ class PoundPlates extends Plates {
   double _weight;
   double get weight => _weight;
   set weight(double val) {
-    _weight = val;
+    _weight = roundToFive(val);
     _plates = Weight.calculatePoundPlates(_weight, barWeight: _barWeight);
   }
   double _barWeight;
@@ -96,7 +121,8 @@ class PoundPlates extends Plates {
   Map<PoundPlateType, int> get plates => _plates;
 
   PoundPlates(double weight, {double barWeight=45.0}) {
-    _weight = weight;
+    // pound plates can only be calculated to the nearest 5
+    _weight = roundToFive(weight);
     _barWeight = barWeight;
     _plates = Weight.calculatePoundPlates(_weight, barWeight: _barWeight);
   }
@@ -139,7 +165,7 @@ class KiloPlates extends Plates {
   double _weight;
   double get weight => _weight;
   set weight(double val) {
-    _weight = val;
+    _weight = roundToHalf(val);
     _plates = Weight.calculateKiloPlates(_weight, barWeight: _barWeight);
   }
 
@@ -153,10 +179,11 @@ class KiloPlates extends Plates {
   Map<KiloPlateType, int> _plates;
   Map<KiloPlateType, int> get plates => _plates;
 
-  KiloPlates(double weight, {double barWeight=20.0}) {
-    _weight = weight;
+  KiloPlates(double weight, {double barWeight=20.0, bool useCollar=true}) {
+    // kilo plates can only be calculated to the nearest 0.5
+    _weight = roundToHalf(weight);
     _barWeight = barWeight;
-    _plates = Weight.calculateKiloPlates(_weight, barWeight: _barWeight);
+    _plates = Weight.calculateKiloPlates(_weight, barWeight: _barWeight, useCollar: useCollar);
   }
 
   static KiloPlate red = KiloPlate(type: KiloPlateType.red, weight: 25.0, color: Colors.red);
@@ -168,6 +195,7 @@ class KiloPlates extends Plates {
   static KiloPlate one25 = KiloPlate(type: KiloPlateType.one25, weight: 1.25, color: Colors.grey);
   static KiloPlate zero5 = KiloPlate(type: KiloPlateType.zero5, weight: 0.5, color: Colors.grey);
   static KiloPlate zero25 = KiloPlate(type: KiloPlateType.zero25, weight: 0.25, color: Colors.grey);
+  static KiloPlate collar = KiloPlate(type: KiloPlateType.collar, weight: 2.5, color: Colors.grey);
 
   static KiloPlate fromType(KiloPlateType type) {
     switch(type){
@@ -180,6 +208,7 @@ class KiloPlates extends Plates {
       case KiloPlateType.one25: return one25;
       case KiloPlateType.zero5: return zero5;
       case KiloPlateType.zero25: return zero25;
+      case KiloPlateType.collar: return collar;
       default: return null;
     }
   }
@@ -195,7 +224,8 @@ enum KiloPlateType {
   black,
   one25,
   zero5,
-  zero25
+  zero25,
+  collar
 }
 
 class KiloPlate extends Plate{
@@ -203,4 +233,19 @@ class KiloPlate extends Plate{
   double weight;
   Color color;
   KiloPlate({this.type, this.weight, this.color});
+}
+
+double roundToHalf(double val) {
+  val = val * 2;
+  val = val.round().toDouble();
+  val = val / 2.0;
+  return val;
+}
+
+double roundToFive(double val) {
+  val = val.round().toDouble();
+  val = val / 10.0;
+  val = roundToHalf(val);
+  val = val * 10.0;
+  return val;
 }
