@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "jumaTextx1.png",
+      "filename" : "boahFitnessText.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "jumaTextx1-1.png",
+      "filename" : "boahFitnessText-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "jumaTextx1-2.png",
+      "filename" : "boahFitnessText-2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
