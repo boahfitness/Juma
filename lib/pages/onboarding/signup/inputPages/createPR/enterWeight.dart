@@ -6,7 +6,8 @@ import 'package:juma/widgets/weightPicker.dart';
 class EnterWeight extends StatefulWidget {
   final PersonalRecord pr;
   final WeightUnit unitPreference;
-  EnterWeight(this.pr, {this.unitPreference = WeightUnit.pounds});
+  final GlobalKey formkey;
+  EnterWeight(this.pr, {this.unitPreference = WeightUnit.pounds, this.formkey});
   @override
   _EnterWeightState createState() => _EnterWeightState();
 }
@@ -32,7 +33,12 @@ class _EnterWeightState extends State<EnterWeight> {
           padding: const EdgeInsets.only(bottom: 30.0),
           child: Text('Enter your One Rep Max', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),),
         ),
-        WeightPicker(widget.pr.lift.weight, unit: widget.unitPreference,),
+        WeightPicker(widget.pr.lift.weight, unit: widget.unitPreference,
+          validator: (val) {
+            if (val.isEmpty) return 'enter weight';
+            return null;
+          },
+        ),
       ],
     );
   }

@@ -4,7 +4,8 @@ import 'package:juma/models/lifting/weight.dart';
 class WeightPicker extends StatefulWidget {
   final WeightUnit unit;
   final Weight weight;
-  WeightPicker(this.weight, {this.unit=WeightUnit.pounds});
+  final String Function(String) validator;
+  WeightPicker(this.weight, {this.unit=WeightUnit.pounds, this.validator});
   @override
   _WeightPickerState createState() => _WeightPickerState();
 }
@@ -34,7 +35,8 @@ class _WeightPickerState extends State<WeightPicker> {
       children: <Widget>[
         SizedBox(
           width: 100,
-          child: TextField(
+          child: TextFormField(
+            validator: widget.validator,
             focusNode: f,
             textAlign: TextAlign.center,
             decoration: InputDecoration(
