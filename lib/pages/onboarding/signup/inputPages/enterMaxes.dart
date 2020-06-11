@@ -21,11 +21,49 @@ class EnterMaxes extends StatefulWidget {
 class _EnterMaxesState extends State<EnterMaxes> {
 
   bool kgEnabled, lbEnabled;
+  bool firstCreation;
 
   @override
   void initState() {
     widget.user.unitPreference ??= WeightUnit.pounds;
+    firstCreation = true;
     super.initState();
+  }
+
+  void showDeleteInstruction(BuildContext context) async {
+    var overlay = Overlay.of(context);
+    var overlayEntry = OverlayEntry(
+      builder: (context) {
+        return Transform.translate(
+          offset: Offset(0.0, (MediaQuery.of(context).size.height*.1)),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+                Text(
+                  'slide to remove',
+                  style: TextStyle(
+                    decoration: TextDecoration.none,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13.0,
+                    color: Colors.white
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    );
+
+    await Future.delayed(Duration(seconds: 1));
+    overlay.insert(overlayEntry);
+    await Future.delayed(Duration(seconds: 3));
+    overlayEntry.remove();
   }
 
   @override
@@ -95,6 +133,11 @@ class _EnterMaxesState extends State<EnterMaxes> {
                           setState(() {
                             widget.user.addNewPR(newPR);
                           });
+                        }
+
+                        if (firstCreation && widget.user.trackedLifts.length <= 1) {
+                          firstCreation = false;
+                          showDeleteInstruction(context);
                         }
                       }
                     },
