@@ -7,7 +7,8 @@ import 'package:juma/widgets/weightPicker.dart';
 
 class InputHealthData extends StatefulWidget {
   final User user;
-  InputHealthData(this.user);
+  final String Function(String) genderValidator;
+  InputHealthData(this.user, {this.genderValidator});
   @override
   _InputHealthDataState createState() => _InputHealthDataState();
 }
@@ -81,6 +82,12 @@ class _InputHealthDataState extends State<InputHealthData> {
               ),
             ),
           ),
+        ),
+        FormField(
+          builder: (state) {
+            return Text(state.hasError? state.errorText : '', style: TextStyle(color: Colors.red, fontSize: 12.0),);
+          },
+          validator: widget.genderValidator,
         ),
       ],
     );

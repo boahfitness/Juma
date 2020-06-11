@@ -65,7 +65,12 @@ class _SignupScrollerState extends State<SignupScroller> {
       ),
       InputDisplayName(displayName),
       EnterMaxes(user),
-      InputHealthData(user),
+      InputHealthData(user,
+        genderValidator: (val) {
+          if (user.gender == null && currentIndex == 3) return 'please choose a gender option';
+          return null;
+        },
+      ),
       InputCredentials(user)
     ];
 
