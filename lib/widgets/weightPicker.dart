@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/weight.dart';
+import 'package:juma/theme/Colors.dart';
 
 class WeightPicker extends StatefulWidget {
   final WeightUnit unit;
@@ -12,19 +16,51 @@ class WeightPicker extends StatefulWidget {
 
 class _WeightPickerState extends State<WeightPicker> {
   TextEditingController controller;
-  FocusNode f;
+  FocusNode focusNode;
+  OverlayEntry overlayEntry;
 
   @override
   void initState() {
     controller = TextEditingController();
-    f = FocusNode();
+    focusNode = FocusNode();
+    focusNode.addListener(() {
+      if (focusNode.hasFocus && Platform.isIOS) {
+        showDoneButton(context, focusNode);
+      }
+      else {
+        removeDoneButton();
+      }
+    });
     super.initState();
+  }
+
+  void showDoneButton(BuildContext context, FocusNode focusNode) {
+    var overlay = Overlay.of(context);
+    if (overlayEntry != null) return;
+
+    overlayEntry = OverlayEntry(builder: (context) {
+      return Positioned(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+        right: 0.0,
+        left: 0.0,
+        child: KeyBoardDoneButton(focusNode),
+      );
+    });
+
+    overlay.insert(overlayEntry);
+  }
+
+  void removeDoneButton() {
+    if (overlayEntry != null) {
+      overlayEntry.remove();
+      overlayEntry = null;
+    }
   }
 
   @override
   void dispose() {
     controller.dispose();
-    f.unfocus();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -37,7 +73,7 @@ class _WeightPickerState extends State<WeightPicker> {
           width: 100,
           child: TextFormField(
             validator: widget.validator,
-            focusNode: f,
+            focusNode: focusNode,
             textAlign: TextAlign.center,
             decoration: InputDecoration(
               enabledBorder: UnderlineInputBorder(
@@ -68,6 +104,37 @@ class _WeightPickerState extends State<WeightPicker> {
         ),
         Text(widget.unit == WeightUnit.pounds ? 'LB' : 'KG', style: TextStyle(color: Colors.white),),
       ],
+    );
+  }
+}
+
+class KeyBoardDoneButton extends StatelessWidget {
+  final FocusNode f;
+  KeyBoardDoneButton(this.f);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      color: JumaColors.boahLightGrey,
+      child: Align(
+        alignment: Alignment.topRight,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+          child: CupertinoButton(
+            padding: EdgeInsets.only(right: 24.0, top: 8.0, bottom: 8.0),
+            onPressed: () {
+              f.unfocus();
+            },
+            child: Text(
+              'Done',
+              style: TextStyle(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

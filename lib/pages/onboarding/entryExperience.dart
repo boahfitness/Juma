@@ -9,7 +9,7 @@
 // needs to have functionality just for switching between then with a fade (switch case)
 
 import 'dart:async';
-import 'package:juma/pages/onboarding/signup/signupExperience.dart';
+import 'package:juma/pages/onboarding/signup/signupScroller.dart';
 import 'package:flutter/material.dart';
 import 'package:juma/models/users/user.dart';
 import 'package:juma/pages/app/home.dart';

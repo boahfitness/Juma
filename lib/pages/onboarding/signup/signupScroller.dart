@@ -71,7 +71,16 @@ class _SignupScrollerState extends State<SignupScroller> {
           return null;
         },
       ),
-      InputCredentials(user)
+      InputCredentials(user,
+        onDone: () {
+          print('DisplayName: ${user.displayName}');
+          user.trackedLifts.forEach((element) {
+            print('trackedLift: ${element.liftDescriptor.path}');
+          });
+          print('BodyWeight: ${user.bodyweight.pounds} lb');
+          print('Gender: ${user.gender}');
+        },
+      )
     ];
 
     int numPages = pages.length;

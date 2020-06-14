@@ -4,7 +4,8 @@ import 'package:email_validator/email_validator.dart';
 
 class InputCredentials extends StatefulWidget {
   final User user;
-  InputCredentials(this.user);
+  final void Function() onDone;
+  InputCredentials(this.user, {this.onDone});
   @override
   _InputCredentialsState createState() => _InputCredentialsState();
 }
@@ -115,7 +116,11 @@ class _InputCredentialsState extends State<InputCredentials> {
           FlatButton(
             onPressed: () {
               setState(() {
-                formKey.currentState.validate();
+                if (formKey.currentState.validate()) {
+                  widget.onDone();
+                  print('Email: ${emailController.text}');
+                  print('Password: ${passwordController.text}');
+                }
                 // TODO if email ends in udayton.edu or other school eamil, suggest to add to school team
               });
             },
