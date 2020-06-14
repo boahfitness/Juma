@@ -54,6 +54,10 @@ class _CreatePRState extends State<CreatePR> {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(Icons.clear, color: Colors.white),
+              onPressed: () => Navigator.of(context).pop(),
+            ), 
             title: Text(title, style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15),),
             centerTitle: true,
             backgroundColor: Colors.transparent,
