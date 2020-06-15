@@ -10,7 +10,7 @@ class TrackedLift {
   Map<int, List<PersonalRecord>> _data;
   Map<int, List<PersonalRecord>> get data => _data;
 
-  TrackedLift(MainLiftDescriptor liftDescriptor) {
+  TrackedLift(MainLiftDescriptor liftDescriptor, {this.uid, this.id}) {
     _liftDescriptor = MainLiftDescriptor(path: liftDescriptor.path, value: liftDescriptor.value);
     _data = SplayTreeMap();
   }
@@ -24,6 +24,21 @@ class TrackedLift {
       }
     }
     return false;
+  }
+
+  Map<int, List<Map>> get dataMap {
+    return _data.map<int, List<Map<String, dynamic>>>((reps, prList) {
+      List<Map<String, dynamic>> prMaps = prList.map((pr) => pr.toMap()).toList();
+      return MapEntry(reps, prMaps);
+    });
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'liftDescriptor': _liftDescriptor.value,
+      'data': dataMap
+    };
   }
 
   @override
@@ -82,4 +97,13 @@ class PersonalRecord {
   MainLift lift;
 
   PersonalRecord(this.programId, this.weekIndex, this.dayIndex, this.lift);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'programId': programId,
+      'weekIndex': weekIndex,
+      'dayIndex': dayIndex,
+      'lift': lift.toMap()
+    };
+  }
 }

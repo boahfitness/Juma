@@ -19,6 +19,19 @@ class Exercise {
   Exercise({this.name, this.sets=0, this.reps=0,
     this.weight, this.rest,
     this.athleteNotes, this.coachNotes, this.completed});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'sets': sets,
+      'reps': reps,
+      'pounds': weight.pounds,
+      'kilograms': weight.kilograms,
+      'coachNotes': coachNotes,
+      'athleteNotes': athleteNotes,
+      'completed': completed
+    };
+  }
 }
 
 class DurationExercise extends Exercise {
@@ -99,6 +112,7 @@ class MainLiftDescriptor {
   String toString() {
     return value;
   }
+
 }
 
 enum MainLiftType {

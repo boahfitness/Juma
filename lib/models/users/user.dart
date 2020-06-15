@@ -15,12 +15,12 @@ class User {
   Gender gender;
   Weight bodyweight = Weight();
 
-  User({this.uid});
+  User({this.uid, this.displayName="", this.unitPreference, this.unitPreference=WeightUnit.pounds, this.gender=Gender.unspecified});
 
   bool addNewPR(PersonalRecord newPR) {
     if (newPR == null) return false;
     
-    TrackedLift newTL = TrackedLift(newPR.lift.descriptor);
+    TrackedLift newTL = TrackedLift(newPR.lift.descriptor, uid: uid);
     TrackedLift tl = trackedLifts.lookup(newTL);
     
     if (tl == null) {
@@ -30,6 +30,15 @@ class User {
     else {
       return tl.addPersonalRecord(newPR);
     }
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'displayName': displayName,
+      'unitPreference': unitPreference,
+      'gender': gender,
+      'bodyweight': bodyweight
+    };
   }
 }
 
