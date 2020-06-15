@@ -15,7 +15,7 @@ class User {
   Gender gender;
   Weight bodyweight = Weight();
 
-  User({this.uid, this.displayName="", this.unitPreference, this.unitPreference=WeightUnit.pounds, this.gender=Gender.unspecified});
+  User({this.uid, this.displayName="", this.unitPreference=WeightUnit.pounds, this.gender=Gender.unspecified});
 
   bool addNewPR(PersonalRecord newPR) {
     if (newPR == null) return false;
@@ -37,7 +37,7 @@ class User {
       'displayName': displayName,
       'unitPreference': unitPreference,
       'gender': gender,
-      'bodyweight': bodyweight
+      'bodyweight': bodyweight.toMap()
     };
   }
 }

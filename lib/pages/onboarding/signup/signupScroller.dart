@@ -73,12 +73,8 @@ class _SignupScrollerState extends State<SignupScroller> {
       ),
       InputCredentials(user,
         onDone: () {
-          print('DisplayName: ${user.displayName}');
-          user.trackedLifts.forEach((element) {
-            print('trackedLift: ${element.liftDescriptor.path}');
-          });
-          print('BodyWeight: ${user.bodyweight.pounds} lb');
-          print('Gender: ${user.gender}');
+          print(user.toMap());
+          user.trackedLifts.forEach((trackedLift) { print(trackedLift.toMap()); });
         },
       )
     ];

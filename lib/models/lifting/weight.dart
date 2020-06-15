@@ -5,6 +5,13 @@ class Weight {
   // Variables
   double _pounds, _kilograms;
 
+  Map<String, dynamic> toMap() {
+    return {
+      'pounds': _pounds,
+      'kilograms': _kilograms
+    };
+  }
+
   double get pounds {
     return _pounds;
   }
@@ -36,11 +43,11 @@ class Weight {
   
   // Methods
   static double poundsToKilos(double pounds) {
-    return pounds / 2.205;
+    return ((pounds / 2.205) * 100).round().toDouble() / 100;
   }
 
   static kilosToPounds(double kilos) {
-    return kilos * 2.205;
+    return ((kilos * 2.205) * 100).round().toDouble() / 100;
   }
 
   static Map<PoundPlateType, int> calculatePoundPlates(double targetWeight, {double barWeight = 45.0}) {
