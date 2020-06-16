@@ -25,8 +25,7 @@ class Exercise {
       'name': name,
       'sets': sets,
       'reps': reps,
-      'pounds': weight.pounds,
-      'kilograms': weight.kilograms,
+      'weight': weight.toMap(),
       'coachNotes': coachNotes,
       'athleteNotes': athleteNotes,
       'completed': completed

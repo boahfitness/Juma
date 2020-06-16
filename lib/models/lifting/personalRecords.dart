@@ -1,6 +1,29 @@
 import 'dart:collection';
 import 'package:juma/models/lifting/exercise.dart';
 
+class PersonalRecords {
+  String uid;
+  Set<TrackedLift> _data = Set();
+  Set<TrackedLift> get data => _data;
+
+  PersonalRecords(this.uid);
+
+  bool addNewPR(PersonalRecord newPR) {
+    if (newPR == null) return false;
+
+    TrackedLift newTL = TrackedLift(newPR.lift.descriptor, uid: uid);
+    TrackedLift tl = _data.lookup(newTL);
+
+    if (tl == null) {
+      data.add(newTL);
+      return newTL.addPersonalRecord(newPR);
+    }
+    else {
+      return tl.addPersonalRecord(newPR);
+    }
+  }
+}
+
 class TrackedLift {
   String id;
   String uid;
