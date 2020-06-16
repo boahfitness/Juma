@@ -35,8 +35,8 @@ class User {
   Map<String, dynamic> toMap() {
     return {
       'displayName': displayName,
-      'unitPreference': unitPreference,
-      'gender': gender,
+      'unitPreference': unitPreference.index,
+      'gender': gender.index,
       'bodyweight': bodyweight.toMap()
     };
   }

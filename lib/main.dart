@@ -38,7 +38,10 @@ class AuthChecker extends StatelessWidget {
       return Authenticate();
     }
     else {
-      return Home();
+      //return Home();
+      return Center(
+        child: Text('Welcome to JUMA', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
+      );
     }
   }
 }

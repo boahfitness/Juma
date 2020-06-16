@@ -8,6 +8,9 @@ import 'package:juma/pages/onboarding/signup/inputPages/enterMaxes.dart';
 import 'package:juma/pages/onboarding/signup/inputPages/healthData.dart';
 import 'package:juma/pages/onboarding/signup/inputPages/credentials.dart';
 
+import 'package:juma/services/authService.dart';
+import 'package:juma/services/userService.dart';
+
 class SignupScroller extends StatefulWidget {
 
   final void Function() onStart;
@@ -48,6 +51,20 @@ class _SignupScrollerState extends State<SignupScroller> {
     super.dispose();
   }
 
+  void signUpAndCreateUser(String email, String password, User user) async {
+    AuthService authSerivce = AuthService();
+    UserService userService = UserService();
+
+    String newUID = await authSerivce.registerWithEmailAndPassword(email, password);
+    if (newUID == null) return;
+
+    user.uid = newUID;
+
+    await userService.createUser(user);
+
+    //authSerivce.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -72,9 +89,10 @@ class _SignupScrollerState extends State<SignupScroller> {
         },
       ),
       InputCredentials(user,
-        onDone: () {
-          print(user.toMap());
-          user.trackedLifts.forEach((trackedLift) { print(trackedLift.toMap()); });
+        onDone: (email, password) {
+          // print(user.toMap());
+          // user.trackedLifts.forEach((trackedLift) { print(trackedLift.toMap()); });
+          signUpAndCreateUser(email, password, user);
         },
       )
     ];

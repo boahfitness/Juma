@@ -14,6 +14,17 @@ class AuthService {
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
   }
 
+  Future<String> registerWithEmailAndPassword(String email, String password) async {
+    try {
+      var result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      return result.user.uid;
+    }
+    catch(e) {
+      print(e);
+      return null;
+    }
+  }
+
   // sign in anom
   Future signInAnon() async {
     try {

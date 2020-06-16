@@ -4,21 +4,31 @@ import 'package:juma/models/lifting/personalRecords.dart';
 class PersonalRecordService {
   CollectionReference _prCollection = Firestore.instance.collection('personalRecords');
 
-  Future<bool> createTrackedLift (TrackedLift newTrackedLift) async {
-    //must be connected to a user
-    if (newTrackedLift.uid.isEmpty || newTrackedLift.uid == null) return false;
+  final String uid;
+
+  PersonalRecordService(this.uid);
+
+  Future<String> createTrackedLift (TrackedLift newTrackedLift) async {
+    newTrackedLift.uid = uid;
 
     //check if trackedLift descriptor exists for uid in database
-    var x = await _prCollection
-      .where('uid', isEqualTo: newTrackedLift.uid)
-      .where('liftDescriptor', isEqualTo: newTrackedLift.liftDescriptor.toString())
-      .snapshots()
-      .single;
+    try {
+      var result = await _prCollection
+        .where('uid', isEqualTo: uid)
+        .where('liftDescriptor', isEqualTo: newTrackedLift.liftDescriptor.toString())
+        .snapshots()
+        .first;
+      
+      if (result.documents.length == 0) {
+        // if it doesn't exist, add the new trackedLift and return the new docID
+        var newDoc = await _prCollection.add(newTrackedLift.toMap());
+        return newDoc.documentID;
+      }
+    }
+    catch(e, st) { print('ERROOORRR\n$e'); 
+      print(st);
+    }
 
-    if (x.documents.length == 0) return false;
-
-    await _prCollection.add(newTrackedLift.toMap());
-
-    return true;
+    return null;
   }
 }

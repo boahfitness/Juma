@@ -49,10 +49,10 @@ class TrackedLift {
     return false;
   }
 
-  Map<int, List<Map>> get dataMap {
-    return _data.map<int, List<Map<String, dynamic>>>((reps, prList) {
+  Map<String, List<Map>> get dataMap {
+    return _data.map<String, List<Map<String, dynamic>>>((reps, prList) {
       List<Map<String, dynamic>> prMaps = prList.map((pr) => pr.toMap()).toList();
-      return MapEntry(reps, prMaps);
+      return MapEntry(reps.toString(), prMaps);
     });
   }
 
