@@ -26,7 +26,7 @@ class Entry extends StatefulWidget {
 
 class _EntryState extends State<Entry> {
 
-  bool showOnboarding;
+  bool showOnboarding = true;
   
   LogoState logoState = LogoState.center;
 
@@ -34,22 +34,9 @@ class _EntryState extends State<Entry> {
 
   @override
   void initState() {
-    //showOnboarding = await checkFirstTime();
-    showOnboarding = true;
+    checkFirstTime().then((value) => showOnboarding = value);
+    //showOnboarding = true;
     super.initState();
-
-    Timer(Duration(seconds: 3,), () {
-      setState(() {
-        logoState = LogoState.topLeft;
-      });
-    });
-
-    Timer(Duration(seconds: 4,), () {
-      setState(() {
-        pageOpacity = 1.0;
-      });
-    });
-
   }
 
   @override
@@ -94,7 +81,21 @@ class _EntryState extends State<Entry> {
                   },
                 ),
               ),
-              AnimatedStrokeLogo(logoState: logoState,)
+              AnimatedStrokeLogo(logoState: logoState, 
+                drawDone: () {
+                  setState(() {
+                    if (showOnboarding) {
+                      logoState = LogoState.topLeft;
+                      Timer(Duration(seconds: 1), () {
+                        pageOpacity = 1.0;
+                      });
+                    }
+                    else {
+                      pageOpacity = 1.0;
+                    }
+                  });
+                },
+              )
             ],
           ),
         ),
@@ -115,6 +116,8 @@ class _EntryState extends State<Entry> {
   Future<bool> checkFirstTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool firstTime = prefs.getBool('firstTime') ?? true;
+
+    print('first time? $firstTime');
 
     if (firstTime) {
       prefs.setBool('firstTime', false);

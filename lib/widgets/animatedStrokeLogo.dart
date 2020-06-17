@@ -3,8 +3,9 @@ import 'package:flare_flutter/flare_actor.dart';
 
 class AnimatedStrokeLogo extends StatefulWidget {
   final LogoState logoState;
+  final Function() drawDone;
 
-  AnimatedStrokeLogo({this.logoState});
+  AnimatedStrokeLogo({this.logoState=LogoState.center, this.drawDone});
 
   @override
   _AnimatedStrokeLogoState createState() => _AnimatedStrokeLogoState();
@@ -54,12 +55,14 @@ class _AnimatedStrokeLogoState extends State<AnimatedStrokeLogo> {
         width: width,
         curve: Curves.easeInOut,
         child: FlareActor(
-          'assets/animations/jumaLightDrawThick.flr',
+          'assets/animations/jumaLightDrawThick2.flr',
           animation: animation,
           callback: (val) {
             setState(() {
               if (animation == 'glowDraw')
                 animation = 'idle';
+              if (widget.drawDone != null)
+                widget.drawDone();
             });
           },
         ),
