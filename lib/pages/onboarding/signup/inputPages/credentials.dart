@@ -59,7 +59,12 @@ class _InputCredentialsState extends State<InputCredentials> {
                 borderSide: BorderSide(
                   color: Colors.white,
                 ),
-              )
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.white,
+                ),
+              ),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) return 'please enter email';
@@ -80,7 +85,12 @@ class _InputCredentialsState extends State<InputCredentials> {
                 borderSide: BorderSide(
                   color: Colors.white,
                 ),
-              )
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.white,
+                ),
+              ),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) return 'please enter password';
@@ -104,7 +114,12 @@ class _InputCredentialsState extends State<InputCredentials> {
                 borderSide: BorderSide(
                   color: Colors.white,
                 ),
-              )
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.white,
+                ),
+              ),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) return 'please enter password';

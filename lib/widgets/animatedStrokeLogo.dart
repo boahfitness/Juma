@@ -36,6 +36,12 @@ class _AnimatedStrokeLogoState extends State<AnimatedStrokeLogo> {
         ypos = MediaQuery.of(context).size.height * 0.85;
       }
         break;
+      case LogoState.midTopCenter: {
+        width = 200;
+        xpos = MediaQuery.of(context).size.width / 2 - (width / 2);
+        ypos = MediaQuery.of(context).size.height * .15;
+      }
+        break;
     }
   }
 
@@ -75,4 +81,5 @@ enum LogoState {
   center,
   topLeft,
   bottomLeft,
+  midTopCenter
 }

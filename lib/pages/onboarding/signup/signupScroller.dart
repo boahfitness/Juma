@@ -15,8 +15,9 @@ class SignupScroller extends StatefulWidget {
 
   final void Function() onStart;
   final void Function() onReturnHome;
+  final void Function() onLogin;
 
-  SignupScroller({this.onStart, this.onReturnHome});
+  SignupScroller({this.onStart, this.onReturnHome, this.onLogin});
 
   @override
   _SignupScrollerState createState() => _SignupScrollerState();
@@ -79,6 +80,7 @@ class _SignupScrollerState extends State<SignupScroller> {
             widget.onStart();
           });
         },
+        onLoginPressed: widget.onLogin,
       ),
       InputDisplayName(displayName),
       EnterMaxes(user),
