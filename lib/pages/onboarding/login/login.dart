@@ -40,6 +40,7 @@ class _LoginState extends State<Login> {
             //Text('Login', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w100, fontSize: 20),),
             SizedBox(height: 40,),
             TextFormField(
+              autocorrect: false,
               controller: emailController,
               cursorColor: Colors.white,
               style: TextStyle(color: Colors.white),
@@ -65,6 +66,7 @@ class _LoginState extends State<Login> {
               },
             ),
             TextFormField(
+              autocorrect: false,
               controller: passwordController,
               cursorColor: Colors.white,
               style: TextStyle(color: Colors.white),

@@ -145,6 +145,7 @@ class _EntryState extends State<Entry> {
       );
     }
     else {
+      logoState = LogoState.center;
       return Home();
     }
   }

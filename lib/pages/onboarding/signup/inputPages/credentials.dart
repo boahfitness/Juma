@@ -132,8 +132,6 @@ class _InputCredentialsState extends State<InputCredentials> {
             onPressed: () {
               setState(() {
                 if (formKey.currentState.validate()) {
-                  // print('Email: ${emailController.text}');
-                  // print('Password: ${passwordController.text}');
                   widget.onDone(emailController.text, passwordController.text);
                 }
                 // TODO if email ends in udayton.edu or other school eamil, suggest to add to school team
