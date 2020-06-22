@@ -15,7 +15,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   User testUser = User();
-  Program testProgram = Program();
+  Program testProgram = ProgramTemplate();
   
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,7 @@ class _HomeState extends State<Home> {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Text("${testProgram.currentDay.exercises.elementAt(0).name.toUpperCase()} 5 X 5", style: wkText(),),
+                      child: Text("current day lift 5 X 5", style: wkText(),),
                     ),
                     Expanded(
                       flex: 1,

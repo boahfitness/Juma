@@ -3,8 +3,16 @@ import 'package:juma/models/lifting/program.dart';
 import 'package:juma/models/lifting/weight.dart';
 
 class User {
-  String uid;
-  String displayName;
+  String get uid => identifier.uid;
+  set uid(String val) {
+    identifier.uid = val;
+  }
+  String get displayName => identifier.displayName;
+  set displayName(String val) {
+    identifier.displayName = val;
+  }
+  UserIdentifier identifier = UserIdentifier();
+
   WeightUnit unitPreference;
   Program currentProgram;
   List<Program> programHistory = List();
@@ -15,7 +23,9 @@ class User {
   Gender gender;
   Weight bodyweight = Weight();
 
-  User({this.uid, this.displayName="", this.unitPreference=WeightUnit.pounds, this.gender=Gender.unspecified});
+  User({String uid, String displayName, this.unitPreference=WeightUnit.pounds, this.gender=Gender.unspecified}) {
+    this.uid = uid; this.displayName = displayName;
+  }
 
   bool addNewPR(PersonalRecord newPR) {
     if (newPR == null) return false;
@@ -46,4 +56,18 @@ enum Gender {
   male,
   female,
   unspecified
+}
+
+class UserIdentifier {
+  String uid;
+  String displayName;
+
+  UserIdentifier({this.uid, this.displayName});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'displayName': displayName
+    };
+  }
 }

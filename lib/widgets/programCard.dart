@@ -16,7 +16,7 @@ class ProgramCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool _usePicture = (program.pathToPicture == null || program.pathToPicture.isEmpty)
+    bool _usePicture = (program.pathToMedia == null || program.pathToMedia.isEmpty)
       ? false : usePicture;
 
     ColorTheme theme = program.theme ?? ColorTheme.getTheme(null);
@@ -36,7 +36,7 @@ class ProgramCard extends StatelessWidget {
                 child: _usePicture ? Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('${program.pathToPicture}'),
+                      image: AssetImage('${program.pathToMedia}'),
                       fit: BoxFit.cover,
                       colorFilter: ColorFilter.mode(Colors.grey, BlendMode.saturation)
                     ),
@@ -74,7 +74,7 @@ class ProgramCard extends StatelessWidget {
                     ),
                     Expanded(
                       flex: 3,
-                      child: showAuthor ? Text(program.authorName, style: authText(constraints),) : Container(),
+                      child: showAuthor ? Text(program.author.displayName, style: authText(constraints),) : Container(),
                     )
                   ],
                 ),

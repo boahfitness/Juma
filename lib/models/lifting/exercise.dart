@@ -1,15 +1,13 @@
 import 'package:juma/models/lifting/weight.dart';
 import 'package:path/path.dart' as path;
 
-class Exercise {
+class Exercise with ExerciseHistoryMixin {
   String name;
   int sets;
   int reps;
   Weight weight = Weight();
-  Duration rest;
   String coachNotes;
   String athleteNotes;
-  DateTime completed;
   //String pathToVideo;
 
   double get workload {
@@ -17,31 +15,104 @@ class Exercise {
   }
 
   Exercise({this.name, this.sets=0, this.reps=0,
-    this.weight, this.rest,
-    this.athleteNotes, this.coachNotes, this.completed});
+    this.weight, this.coachNotes});
 
-  Map<String, dynamic> toMap() {
-    return {
+  Map<String, dynamic> toMap([bool includeHistory=false]) {
+    var m =  {
       'name': name,
       'sets': sets,
       'reps': reps,
       'weight': weight.toMap(),
       'coachNotes': coachNotes,
-      'athleteNotes': athleteNotes,
-      'completed': completed
     };
+    if (includeHistory) m.addEntries([MapEntry(
+      'historyStatus', status.index.toString()
+    )]);
+    return m;
   }
 }
 
 class DurationExercise extends Exercise {
   Duration duration;
-
-  double get workload => null;
 }
 
+class ExerciseHistoryMixin {
+  HistoryStatus status = HistoryStatus.incomplete;
+}
+
+enum HistoryStatus {
+  complete,
+  incomplete,
+  skipped
+}
+
+
+
+
+
+
+
+class WorkloadPrescriber {
+  double _value;
+  double get value {
+    switch(type) {
+      case WorkloadPrescriberType.percent: return _value * 100; // value: 0.32 => 32%
+      case WorkloadPrescriberType.rpe: return roundToHalf(_value * 10); // value: 0.32 => RPE 3
+      default: return 0.0;
+    }
+  }
+  set value(double val) {
+    _value = val.clamp(0.0, 1.0);
+  }
+
+  set rpe(double val) {
+    type = WorkloadPrescriberType.rpe;
+    val = roundToHalf(val);
+    value = val / 10;
+  }
+
+  double get rpe {
+    type = WorkloadPrescriberType.rpe;
+    return value;
+  }
+
+  set percentage(double val) {
+    type = WorkloadPrescriberType.percent;
+    value = val / 100;
+  }
+
+  double get percentage {
+    type = WorkloadPrescriberType.percent;
+    return value;
+  }
+
+  WorkloadPrescriberType type;
+
+  WorkloadPrescriber(this.type, {double value}) {
+    value ??= 0.0;
+    this.value = value;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'type': type.index,
+      'value': _value
+    };
+  }
+}
+enum WorkloadPrescriberType {
+  rpe,
+  percent
+}
+
+
+
+
+
+
+
 abstract class MainLift extends Exercise {
-  double percentage;
-  double rpe;
+  WorkloadPrescriber prescribedWorkload;
   bool isPR;
   MainLiftDescriptor get descriptor;
   MainLiftType get type;
@@ -59,7 +130,8 @@ abstract class MainLift extends Exercise {
   }
 
   double get rpeWorkload {
-    return weight.pounds * (reps + (10.0 - rpe));
+    //return weight.pounds * (reps + (10.0 - rpe));
+    return null;
   }
 
   String calculateDescriptorValue();
@@ -75,6 +147,18 @@ abstract class MainLift extends Exercise {
 
   @override
   int get hashCode => descriptor.hashCode;
+
+  @override
+  Map<String, dynamic> toMap([bool includeHistory=false]) {
+    var m = super.toMap(includeHistory);
+    
+    m.addEntries([
+      MapEntry('prescribedWorkload', prescribedWorkload.toMap()),
+      MapEntry('mainLiftType', type.index.toString())
+    ]);
+
+    return m;
+  }
 
 }
 
@@ -119,6 +203,12 @@ enum MainLiftType {
   bench,
   deadlift
 }
+
+
+
+
+
+
 
 class Squat extends MainLift {
   KneeEquipment _kneeEquipment;
@@ -242,6 +332,14 @@ enum SquatVariation {
   lowBar
 }
 
+
+
+
+
+
+
+
+
 class Bench extends MainLift {
   BenchEquipment _equipment;
   BenchEquipment get equipment => _equipment;
@@ -317,6 +415,15 @@ enum BenchEquipment {
   slingshot,
   shirt
 }
+
+
+
+
+
+
+
+
+
 
 class Deadlift extends MainLift {
   DeadliftEquipment _equipment;
