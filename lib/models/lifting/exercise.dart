@@ -15,18 +15,20 @@ class Exercise with ExerciseHistoryMixin {
   }
 
   Exercise({this.name, this.sets=0, this.reps=0,
-    this.weight, this.coachNotes});
+    this.weight, this.coachNotes, this.athleteNotes}) {
+      weight??=Weight();
+    }
 
   Map<String, dynamic> toMap([bool includeHistory=false]) {
     var m =  {
       'name': name,
       'sets': sets,
       'reps': reps,
-      'weight': weight.toMap(),
+      'weight': weight != null ? weight.toMap() : null,
       'coachNotes': coachNotes,
     };
     if (includeHistory) m.addEntries([MapEntry(
-      'historyStatus', status.index.toString()
+      'historyStatus', status != null ? status.index.toString() : null
     )]);
     return m;
   }
@@ -117,7 +119,8 @@ abstract class MainLift extends Exercise {
   MainLiftDescriptor get descriptor;
   MainLiftType get type;
 
-  MainLift();
+  MainLift({int sets, int reps, Weight weight, String coachNotes, String athleteNotes, this.prescribedWorkload})
+    : super(sets: sets, reps: reps, weight: weight, coachNotes: coachNotes, athleteNotes: athleteNotes);
 
   static MainLift fromDescriptor(MainLiftDescriptor d) {
     MainLiftType type = d.getType();
@@ -153,8 +156,8 @@ abstract class MainLift extends Exercise {
     var m = super.toMap(includeHistory);
     
     m.addEntries([
-      MapEntry('prescribedWorkload', prescribedWorkload.toMap()),
-      MapEntry('mainLiftType', type.index.toString())
+      MapEntry('prescribedWorkload', prescribedWorkload != null ?  prescribedWorkload.toMap() : null),
+      MapEntry('descriptor', descriptor != null ? descriptor.toString() : null)
     ]);
 
     return m;
@@ -246,17 +249,16 @@ class Squat extends MainLift {
   MainLiftType get type => MainLiftType.squat;
 
   Squat({
+    int reps=1, int sets=1, Weight weight, String coachNotes, String athleteNotes,
+    WorkloadPrescriber prescribedWorkload,
     SquatVariation variation = SquatVariation.lowBar,
     SquatEquipment equipment = SquatEquipment.raw,
     KneeEquipment kneeEquipment = KneeEquipment.none,
-    int reps=1
-  }) {
+  }) : super(reps: reps, sets: sets, weight: weight, coachNotes: coachNotes, athleteNotes: athleteNotes, prescribedWorkload: prescribedWorkload) {
     _variation = variation;
     _equipment = equipment;
     _kneeEquipment = kneeEquipment;
     _descriptor = MainLiftDescriptor(path: calculateDescriptorPath(), value: calculateDescriptorValue());
-    this.weight = Weight();
-    this.reps = reps;
   }
 
   Squat.fromDescriptor(MainLiftDescriptor d) {
@@ -360,9 +362,10 @@ class Bench extends MainLift {
   MainLiftType get type => MainLiftType.bench;
 
   Bench({
+    int reps=1, int sets=1, Weight weight, String coachNotes, String athleteNotes,
+    WorkloadPrescriber prescribedWorkload,
     BenchEquipment equipment = BenchEquipment.raw,
-    int reps=1
-  }) {
+  }) : super(reps: reps, sets: sets, weight: weight, coachNotes: coachNotes, athleteNotes: athleteNotes, prescribedWorkload: prescribedWorkload) {
     _equipment = equipment;
     _descriptor = MainLiftDescriptor(value: calculateDescriptorValue(), path: calculateDescriptorPath());
     this.weight = Weight();
@@ -453,10 +456,11 @@ class Deadlift extends MainLift {
   MainLiftType get type => MainLiftType.deadlift;
 
   Deadlift({
+    int reps=1, int sets=1, Weight weight, String coachNotes, String athleteNotes,
+    WorkloadPrescriber prescribedWorkload,
     DeadliftVariation variation = DeadliftVariation.conv,
     DeadliftEquipment equipment = DeadliftEquipment.raw,
-    int reps=1
-  }) {
+  }) : super(reps: reps, sets: sets, weight: weight, coachNotes: coachNotes, athleteNotes: athleteNotes, prescribedWorkload: prescribedWorkload) {
     _variation = variation;
     _equipment = equipment;
     _descriptor = MainLiftDescriptor(value: calculateDescriptorValue(), path: calculateDescriptorPath());

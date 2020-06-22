@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:juma/pages/app/home.dart';
 import 'package:juma/pages/authenticate/authenticate.dart';
 import 'package:provider/provider.dart';
 import 'package:juma/services/authService.dart';
@@ -29,6 +28,7 @@ class Juma extends StatelessWidget {
   }
 }
 
+///************* DEPRECATED ***************
 class AuthChecker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

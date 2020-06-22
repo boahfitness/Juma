@@ -2,7 +2,13 @@ import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/theme/Colors.dart';
 import 'package:juma/models/users/user.dart';
 
+// TODO program and exercise copy methods that do not pass by reference
+
 class ProgramTemplate extends Program {
+
+  ProgramTemplate({String id, String title, UserIdentifier author, String description, String pathToMedia, List<TrainingBlock> trainingBlocks}) 
+  : super(id: id, title: title, author: author, description: description, pathToMedia: pathToMedia, trainingBlocks: trainingBlocks);
+
   Map<String, dynamic> toMap([bool x=false]) {
     return super.toMap();
   }
@@ -13,8 +19,23 @@ class ProgramHistory extends Program {
   String templateId;
   String uid;
 
+  ProgramHistory.fromTemplate(ProgramTemplate programTemplate, {this.uid}) {
+    this.title = programTemplate.title;
+    this.author = programTemplate.author;
+    this.description = programTemplate.description;
+    this.pathToMedia = programTemplate.pathToMedia;
+    this.theme = programTemplate.theme;
+    this.trainingBlocks = programTemplate.trainingBlocks;
+    this.templateId = programTemplate.id;
+  }
+
   Map<String, dynamic> toMap([bool x=false]) {
-    return super.toMap(true);
+    var m = super.toMap(true);
+    m.addEntries([
+      MapEntry('templateId', templateId),
+      MapEntry('uid', uid)
+    ]);
+    return m;
   }
 }
 
@@ -25,6 +46,8 @@ abstract class Program {
   String description;
   String pathToMedia;
   ColorTheme theme;
+
+  Program({this.id, this.title, this.author, this.description, this.pathToMedia, this.trainingBlocks, this.theme});
 
   List<TrainingBlock> trainingBlocks = List();
 
@@ -49,6 +72,10 @@ class TrainingBlock {
   Week split;
   List<Week> weeks = List();
 
+  TrainingBlock({this.split, this.weeks}) {
+    weeks??=[];
+  }
+
   bool get isComplete {
     for (Week week in weeks) {
       if (!week.isComplete) return false;
@@ -56,45 +83,57 @@ class TrainingBlock {
     return true;
   }
 
+  void addTemplateWeek() {
+    if (split == null) return;
+    weeks.add(split);
+  }
+
   Map<String, dynamic> toMap([bool includeHistory=false]) {
     return {
-      'split': split.toMap(),
-      'weeks': weeks.map<Map<String, dynamic>>((w) => w.toMap(includeHistory)).toList(),
+      'split': split != null ? split.toMap() : null,
+      'weeks': weeks != null ? weeks.map<Map<String, dynamic>>((w) => w.toMap(includeHistory)).toList() : null,
     };
   }
 }
 
 class Week {
-  Map<Weekday, Day> days = {
-    Weekday.sunday: null,
-    Weekday.monday: null,
-    Weekday.tuesday: null,
-    Weekday.wednesday: null,
-    Weekday.thursday: null,
-    Weekday.friday: null,
-    Weekday.saturday: null
-  };
+  Map<Weekday, Day> days;
+
+  Week({
+    Day sunday, Day monday, Day tuesday, Day wednesday, Day thursday, Day friday, Day saturday
+  }) {
+    this.days = {};
+    this.sunday = sunday??=Day.restDay; 
+    this.monday = monday??=Day.restDay;
+    this.tuesday = tuesday??=Day.restDay; 
+    this.wednesday = wednesday??=Day.restDay; 
+    this.thursday = thursday??=Day.restDay; 
+    this.friday = friday??=Day.restDay; 
+    this.saturday = saturday??=Day.restDay;
+  }
+
+  Week.fromDays({this.days}) {if (days == null) days = {};}
 
   Day get sunday => days[Weekday.sunday];
-  set sunday(Day day) => days.update(Weekday.sunday, (value) => day);
+  set sunday(Day day) => days.update(Weekday.sunday, (value) => day, ifAbsent: () => day);
 
   Day get monday => days[Weekday.monday];
-  set monday(Day day) => days.update(Weekday.monday, (value) => day);
+  set monday(Day day) => days.update(Weekday.monday, (value) => day, ifAbsent: () => day);
 
   Day get tuesday => days[Weekday.tuesday];
-  set tuesday(Day day) => days.update(Weekday.tuesday, (value) => day);
+  set tuesday(Day day) => days.update(Weekday.tuesday, (value) => day, ifAbsent: () => day);
 
   Day get wednesday => days[Weekday.wednesday];
-  set wednesday(Day day) => days.update(Weekday.wednesday, (value) => day);
+  set wednesday(Day day) => days.update(Weekday.wednesday, (value) => day, ifAbsent: () => day);
 
   Day get thursday => days[Weekday.thursday];
-  set thursday(Day day) => days.update(Weekday.thursday, (value) => day);
+  set thursday(Day day) => days.update(Weekday.thursday, (value) => day, ifAbsent: () => day);
 
   Day get friday => days[Weekday.friday];
-  set friday(Day day) => days.update(Weekday.friday, (value) => day);
+  set friday(Day day) => days.update(Weekday.friday, (value) => day, ifAbsent: () => day);
 
   Day get saturday => days[Weekday.saturday];
-  set saturday(Day day) => days.update(Weekday.saturday, (value) => day);
+  set saturday(Day day) => days.update(Weekday.saturday, (value) => day, ifAbsent: () => day);
 
   bool get isComplete {
     for (Day d in days.values) {
@@ -104,9 +143,9 @@ class Week {
   }
 
   Map<String, dynamic> toMap([bool includeHistory=false]) {
-    return days.map<String, dynamic>((weekday, day) {
+    return days != null ? days.map<String, dynamic>((weekday, day) {
       return MapEntry(weekday.index.toString(), day.toMap(includeHistory));
-    });
+    }) : null;
   }
 
 }
@@ -119,6 +158,10 @@ class Day {
   String label;
   List<Exercise> exercises;
 
+  Day({this.label, this.exercises}) {
+    exercises ??= [];
+  }
+
   static Day get restDay => RestDay();
 
   bool get isComplete {
@@ -130,8 +173,8 @@ class Day {
 
   Map<String, dynamic> toMap([bool includeHistory=false]) {
     return {
-      'label': label,
-      'exercises': exercises.map((e) => e.toMap(includeHistory)).toList(),
+      'label': label != null ? label : null,
+      'exercises': exercises != null ? exercises.map((e) => e.toMap(includeHistory)).toList() : null,
     };
   }
 }
