@@ -34,8 +34,35 @@ class Exercise with ExerciseHistoryMixin {
   }
 }
 
+class ExerciseDuration {
+  int hours, minutes, seconds;
+  ExerciseDuration({this.hours=0, this.minutes=0, this.seconds=0});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'hours': hours, 'minutes': minutes, 'seconds': seconds
+    };
+  }
+}
+
 class DurationExercise extends Exercise {
-  Duration duration;
+  ExerciseDuration duration;
+  int get reps => null;
+  set reps(val) => null;
+
+  Map<String, dynamic> toMap([bool includeHistory=false]) {
+    var m =  {
+      'name': name,
+      'sets': sets,
+      'duration': duration != null ? duration.toMap() : null,
+      'weight': weight != null ? weight.toMap() : null,
+      'coachNotes': coachNotes,
+    };
+    if (includeHistory) m.addEntries([MapEntry(
+      'historyStatus', status != null ? status.index.toString() : null
+    )]);
+    return m;
+  }
 }
 
 class ExerciseHistoryMixin {
