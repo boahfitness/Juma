@@ -92,8 +92,6 @@ class _WeightPickerState extends State<WeightPicker> {
               setState(() {
                 if (widget.unit == WeightUnit.kilograms) {
                   widget.weight.kilograms = double.parse(val);
-                  //f.unfocus();
-                  // TODO fix focusing for the createPR screen
                 }
                 else {
                   widget.weight.pounds = double.parse(val);

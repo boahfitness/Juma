@@ -1,8 +1,11 @@
+import 'dart:collection';
+
 import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/theme/Colors.dart';
 import 'package:juma/models/users/user.dart';
 
 // TODO program and exercise copy methods that do not pass by reference
+// TODO program template better configuration
 
 class ProgramTemplate extends Program {
 
@@ -27,6 +30,7 @@ class ProgramHistory extends Program {
     this.theme = programTemplate.theme;
     this.trainingBlocks = programTemplate.trainingBlocks;
     this.templateId = programTemplate.id;
+    // TODO do with no config of exercises
   }
 
   Map<String, dynamic> toMap([bool x=false]) {
@@ -70,28 +74,28 @@ abstract class Program {
 
 class TrainingBlock {
   Week split;
-  List<Week> weeks = List();
+  Map<int, Week> weeks;
 
   TrainingBlock({this.split, this.weeks}) {
-    weeks??=[];
+    weeks??=SplayTreeMap();
   }
 
   bool get isComplete {
-    for (Week week in weeks) {
+    for (Week week in weeks.values) {
       if (!week.isComplete) return false;
     }
     return true;
   }
 
-  void addTemplateWeek() {
-    if (split == null) return;
-    weeks.add(split);
-  }
+  // void addTemplateWeek() {
+  //   if (split == null) return;
+  //   weeks.add(split);
+  // }
 
   Map<String, dynamic> toMap([bool includeHistory=false]) {
     return {
       'split': split != null ? split.toMap() : null,
-      'weeks': weeks != null ? weeks.map<Map<String, dynamic>>((w) => w.toMap(includeHistory)).toList() : null,
+      'weeks': weeks != null ? weeks.map<String, dynamic>((key, value) => MapEntry(key.toString(), value.toMap(includeHistory))) : null,
     };
   }
 }
@@ -156,16 +160,16 @@ enum Weekday {
 
 class Day {
   String label;
-  List<Exercise> exercises;
+  SplayTreeMap<int, Exercise> exercises;
 
   Day({this.label, this.exercises}) {
-    exercises ??= [];
+    exercises ??= SplayTreeMap();
   }
 
   static Day get restDay => RestDay();
 
   bool get isComplete {
-    for (Exercise x in exercises) {
+    for (Exercise x in exercises.values) {
       if (x.status == HistoryStatus.incomplete) return false;
     }
     return true;
@@ -174,15 +178,15 @@ class Day {
   Map<String, dynamic> toMap([bool includeHistory=false]) {
     return {
       'label': label != null ? label : null,
-      'exercises': exercises != null ? exercises.map((e) => e.toMap(includeHistory)).toList() : null,
+      'exercises': exercises != null ? exercises.map((key, value) => MapEntry(key.toString(), value.toMap(includeHistory))) : null,
     };
   }
 }
 
 class RestDay extends Day {
   String get label => 'rest';
-  List<Exercise> get exercises => List(0);
+  SplayTreeMap<int, Exercise> get exercises => null;
 
-  set exercises(List<Exercise> val) => null;
+  set exercises(SplayTreeMap<int, Exercise> val) => null;
 }
 

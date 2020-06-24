@@ -39,7 +39,6 @@ class _InputDisplayNameState extends State<InputDisplayName> {
               if (val.length > 29) return 'too long';
               if (val.endsWith('.') || val.contains('..') || val.startsWith('.')) return 'invalid input';
               if (val.contains(RegExp(r'[^\w.]'))) return 'no special characters';
-              // TODO check for uniqueness in the name with other users
               return null;
             },
           )
