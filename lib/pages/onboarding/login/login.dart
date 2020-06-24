@@ -111,7 +111,7 @@ class _LoginState extends State<Login> {
                 }
               }
             },
-            child: Text('Log In', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+            child: Text('Log In', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),),
             color: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 75, vertical: 12),
             shape: RoundedRectangleBorder(
