@@ -71,14 +71,14 @@ flutter:
   fonts:
     - family: Oswald
       fonts:
-        - asset: fonts/Oswald-Bold.ttf
+        - asset: fonts/Oswald/Oswald-Bold.ttf
           weight: 700
-        - asset: fonts/Oswald-Regular.ttf
-        - asset: fonts/Oswald-Medium.ttf
+        - asset: fonts/Oswald/Oswald-Regular.ttf
+        - asset: fonts/Oswald/Oswald-Medium.ttf
           weight: 500
-        - asset: fonts/Oswald-Light.ttf
+        - asset: fonts/Oswald/Oswald-Light.ttf
           weight: 300
-        - asset: fonts/Oswald-ExtraLight.ttf
+        - asset: fonts/Oswald/Oswald-ExtraLight.ttf
           weight: 200
     - family: Montserrat
       fonts:
