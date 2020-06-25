@@ -135,7 +135,6 @@ class _InputCredentialsState extends State<InputCredentials> {
                   widget.onDone(emailController.text, passwordController.text);
                 }
                 // TODO if email ends in udayton.edu or other school eamil, suggest to add to school team
-                // TODO show error from sign in attempt if any
               });
             },
             child: Text('Done', style: TextStyle(color: Colors.black),),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:juma/models/users/user.dart';
 import 'package:juma/pages/onboarding/welcomePage.dart';
 import 'package:juma/pages/onboarding/signup/signupScrollUI.dart';
@@ -55,9 +56,24 @@ class _SignupScrollerState extends State<SignupScroller> {
   void signUpAndCreateUser(String email, String password, User user) async {
     AuthService authSerivce = AuthService();
     UserService userService = UserService();
-
-    String newUID = await authSerivce.registerWithEmailAndPassword(email, password);
-    if (newUID == null) return;
+    String newUID = "";
+    try {
+      newUID = await authSerivce.registerWithEmailAndPassword(email, password);
+      if (newUID == null) return;
+    }
+    on PlatformException catch (e) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Container(
+            height: 50.0,
+            child: Center(
+              child: Text(e.message, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            )
+          ),
+        )
+      );
+    }
 
     user.uid = newUID;
 
@@ -92,8 +108,6 @@ class _SignupScrollerState extends State<SignupScroller> {
       ),
       InputCredentials(user,
         onDone: (email, password) {
-          // print(user.toMap());
-          // user.trackedLifts.forEach((trackedLift) { print(trackedLift.toMap()); });
           signUpAndCreateUser(email, password, user);
         },
       )
