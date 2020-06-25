@@ -7,6 +7,17 @@ import 'package:juma/models/users/user.dart';
 // TODO program and exercise copy methods that do not pass by reference
 // TODO program template better configuration
 
+class ProgramDescriptor {
+  String id;
+  String title;
+  UserIdentifier author;
+  String description;
+  String pathToMedia;
+  ColorTheme theme;
+
+  ProgramDescriptor({this.id, this.title, this.author, this.description, this.pathToMedia, this.theme});
+}
+
 class ProgramTemplate extends Program {
 
   ProgramTemplate({String id, String title, UserIdentifier author, String description, String pathToMedia, List<TrainingBlock> trainingBlocks}) 
