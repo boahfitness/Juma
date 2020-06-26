@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:juma/pages/app/browse.dart';
 import 'package:juma/theme/Colors.dart';
 
 import 'package:juma/pages/app/home.dart';
@@ -15,14 +16,24 @@ class _AppScaffoldState extends State<AppScaffold> {
   @override
   Widget build(BuildContext context) {
 
-    List<Widget> navPages = [
-      Home(),
-      Profile(),
-    ];
+    Map<BottomNavigationBarItem, Widget> navPages = {
+      BottomNavigationBarItem(
+            title: Text('Home'),
+            icon: Icon(Icons.home)
+      ): Home(),
+      BottomNavigationBarItem(
+            title: Text('Browse'),
+            icon: Icon(Icons.search)
+      ): Browse(),
+      BottomNavigationBarItem(
+            title: Text('Profile'),
+            icon: Icon(Icons.person)
+      ): Profile(),
+    };
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: navPages[currentIndex],
+      body: navPages.values.toList()[currentIndex],
       
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
@@ -36,16 +47,7 @@ class _AppScaffoldState extends State<AppScaffold> {
         backgroundColor: Colors.grey[900],
         selectedItemColor: JumaColors.boahOrange,
         unselectedItemColor: Colors.grey,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            title: Text('Home'),
-            icon: Icon(Icons.home)
-          ),
-          BottomNavigationBarItem(
-            title: Text('Profile'),
-            icon: Icon(Icons.person)
-          ),
-        ],
+        items: navPages.keys.toList(),
       ),
     );
   }
