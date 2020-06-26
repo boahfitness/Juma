@@ -33,6 +33,7 @@ class JumaColors {
 // TODO implement OrangeTheme and make it default in getTheme
 
 class GreenTheme implements ColorTheme{
+  Color get textColor => Colors.white;
   ThemeType get type => ThemeType.gold;
   LinearGradient get gradient {
     return LinearGradient(
@@ -62,6 +63,7 @@ class GreenTheme implements ColorTheme{
 }
 
 class RedTheme implements ColorTheme {
+  Color get textColor => Colors.white;
   ThemeType get type => ThemeType.red;
   LinearGradient get gradient {
     return LinearGradient(
@@ -91,6 +93,7 @@ class RedTheme implements ColorTheme {
 }
 
 class PurpleTheme implements ColorTheme {
+  Color get textColor => Colors.white;
   ThemeType get type => ThemeType.purple;
   LinearGradient get gradient {
     return LinearGradient(
@@ -120,6 +123,7 @@ class PurpleTheme implements ColorTheme {
 }
 
 class GoldTheme implements ColorTheme {
+  Color get textColor => Colors.white;
   ThemeType get type => ThemeType.green;
   LinearGradient get gradient {
     return LinearGradient(
@@ -150,6 +154,7 @@ class GoldTheme implements ColorTheme {
 
 class BlackTheme implements ColorTheme {
   ThemeType get type => ThemeType.black;
+  Color get textColor => Colors.black;
   LinearGradient get gradient {
     return LinearGradient(
       end: Alignment.bottomLeft,
@@ -183,6 +188,7 @@ abstract class ColorTheme {
   Color get solid;
   Color get accent;
   ThemeType get type;
+  Color get textColor;
 
   static ColorTheme getTheme(ThemeType type) {
     switch (type) {

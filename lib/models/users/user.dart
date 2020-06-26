@@ -14,7 +14,7 @@ class User {
   UserIdentifier identifier = UserIdentifier();
 
   WeightUnit unitPreference;
-  ProgramHistory currentProgram;
+  String currentProgramId;
   //List<ProgramHistory> programHistory = List();
   List<String> programCatalog = List();
 
@@ -56,6 +56,15 @@ class User {
     this.gender = genderIndex != null && genderIndex >= 0 && genderIndex < Gender.values.length ? Gender.values[genderIndex] : Gender.unspecified;
 
     this.bodyweight = data['bodyweight'] is Map<String, dynamic> ? Weight.fromMap(data['bodyweight']) : Weight();
+
+    this.currentProgramId = data['currentProgramId'] is String ? data['currentProgramId'] : null;
+    this.programCatalog = [];
+    if (data['programCatalog'] is List) {
+      List pLog = data['programCatalog'];
+      pLog.forEach((programId) {
+        if (programId is String) this.programCatalog.add(programId);
+      });
+    }
   }
 
   Map<String, dynamic> toMap() {
@@ -63,7 +72,9 @@ class User {
       'displayName': displayName,
       'unitPreference': unitPreference.index,
       'gender': gender.index,
-      'bodyweight': bodyweight.toMap()
+      'bodyweight': bodyweight.toMap(),
+      'currentProgramId': currentProgramId,
+      'programCatalog': programCatalog
     };
   }
 }

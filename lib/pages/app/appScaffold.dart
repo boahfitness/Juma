@@ -33,7 +33,10 @@ class _AppScaffoldState extends State<AppScaffold> {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: navPages.values.toList()[currentIndex],
+      body: IndexedStack(
+        index: currentIndex,
+        children: navPages.values.toList(),
+      ),
       
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,

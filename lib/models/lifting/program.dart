@@ -15,6 +15,20 @@ class ProgramDescriptor {
   ColorTheme theme;
 
   ProgramDescriptor({this.id, this.title, this.author, this.description, this.pathToMedia, this.theme});
+
+  ProgramDescriptor.fromMap(Map<String, dynamic> data) {
+    this.id = data['id'] is String ? data['id'] : null;
+    this.title = data['title'] is String ? data['title'] : null;
+    this.author = data['author'] is Map ? UserIdentifier.fromMap(data['author']) : null;
+    this.description = data['description'] is String ? data['description'] : null;
+    this.pathToMedia = data['pathToMedia'] is String ? data['pathToMedia'] : null;
+
+    int themeIndex = data['theme'] is int ? data['theme'] : null;
+    if (themeIndex != null && themeIndex >= 0  && themeIndex < ThemeType.values.length)
+      this.theme = ColorTheme.getTheme(ThemeType.values[themeIndex]);
+    else
+      this.theme = null;
+  }
 }
 
 class ProgramTemplate extends Program {
@@ -49,6 +63,13 @@ class ProgramHistory extends Program {
     this.templateId = programTemplate.id;
     // TODO do with no config of exercises
   }
+
+ static ProgramHistory fromMap(Map<String, dynamic> data) {
+   ProgramHistory m = Program.fromMap(data, true);
+   m.templateId = data['templateId'] is String ? data['templateId'] : null;
+   m.uid = data['uid'] is String ? data['uid'] : null;
+   return m;
+ }
 
   Map<String, dynamic> toMap([bool x=false]) {
     var m = super.toMap(true);
@@ -117,7 +138,7 @@ abstract class Program {
       'description': description,
       'pathToMedia': pathToMedia,
       'theme': theme != null ? theme.type.index : null,
-      'trainingBlocks': trainingBlocks.map<Map<String, dynamic>>((tb) => tb.toMap(includeHistory)).toList()
+      'trainingBlocks': trainingBlocks != null ? trainingBlocks.map<Map<String, dynamic>>((tb) => tb.toMap(includeHistory)).toList() : null
     };
   }
 }

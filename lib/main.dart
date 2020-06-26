@@ -7,23 +7,44 @@ import 'package:juma/models/users/user.dart';
 import 'package:juma/routeGenerator.dart';
 import 'package:flutter/services.dart';
 
-void main() => runApp(Juma());
+void main() => runApp(
+  AuthenticationProvider(
+    child: Juma(),
+  )
+);
 
 class Juma extends StatelessWidget {
-  @override
+  @override 
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown
     ]);
+    return MaterialApp(
+      themeMode: ThemeMode.dark,
+      theme: ThemeData(fontFamily: 'Montserrat', brightness: Brightness.dark),
+      initialRoute: '/',
+      onGenerateRoute: RouteGenerator.generateRoute,
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class AuthenticationProvider extends StatelessWidget {
+  final Widget child;
+  AuthenticationProvider({this.child});
+  @override
+  Widget build(BuildContext context) {
     return StreamProvider<FirebaseUser>.value(
       value: AuthService().user,
-      child: UserProvider(),
+      child: UserProvider(child: child,),
     );
   }
 }
 
 class UserProvider extends StatelessWidget {
+  final Widget child;
+  UserProvider({this.child});
   @override
   Widget build(BuildContext context) {
     return StreamProvider<User>.value(
@@ -31,13 +52,7 @@ class UserProvider extends StatelessWidget {
       catchError: (context, object) {
         return null;
       },
-      child: MaterialApp(
-        themeMode: ThemeMode.dark,
-        theme: ThemeData(fontFamily: 'Montserrat', brightness: Brightness.dark),
-        initialRoute: '/',
-        onGenerateRoute: RouteGenerator.generateRoute,
-        debugShowCheckedModeBanner: false,  
-      ),
+      child: child,
     );
   }
 }
