@@ -5,6 +5,10 @@ import './personalRecordService.dart';
 class UserService {
   CollectionReference _userCollection = Firestore.instance.collection('users');
 
+  Stream<User> user(String uid) {
+    return _userCollection.document(uid).snapshots().map<User>((docSnap) => User.fromMap(docSnap.data));
+  }
+
   Future<bool> createUser(User newUser) async {
     // need uid to make documentID
     if (newUser.uid.isEmpty || newUser.uid == null) return false;

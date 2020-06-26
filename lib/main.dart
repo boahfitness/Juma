@@ -1,5 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:juma/pages/authenticate/authenticate.dart';
+import 'package:juma/services/userService.dart';
 import 'package:provider/provider.dart';
 import 'package:juma/services/authService.dart';
 import 'package:juma/models/users/user.dart';
@@ -15,8 +16,21 @@ class Juma extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown
     ]);
-    return StreamProvider<User>.value(
+    return StreamProvider<FirebaseUser>.value(
       value: AuthService().user,
+      child: UserProvider(),
+    );
+  }
+}
+
+class UserProvider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamProvider<User>.value(
+      value: UserService().user(Provider.of<FirebaseUser>(context) != null ? Provider.of<FirebaseUser>(context).uid : 'thisIsABadUserID'),
+      catchError: (context, object) {
+        return null;
+      },
       child: MaterialApp(
         themeMode: ThemeMode.dark,
         theme: ThemeData(fontFamily: 'Montserrat', brightness: Brightness.dark),
@@ -25,24 +39,5 @@ class Juma extends StatelessWidget {
         debugShowCheckedModeBanner: false,  
       ),
     );
-  }
-}
-
-///************* DEPRECATED ***************
-class AuthChecker extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-
-    // if user return app else return authenticate
-    if (user == null) {
-      return Authenticate();
-    }
-    else {
-      //return Home();
-      return Center(
-        child: Text('Welcome to JUMA', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
-      );
-    }
   }
 }
