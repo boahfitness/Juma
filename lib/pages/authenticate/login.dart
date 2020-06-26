@@ -46,7 +46,7 @@ class _LoginState extends State<Login> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Image.asset('assets/juma-logo-stroke-grad.png'),
+                              Image.asset('assets/logo/juma-logo-stroke-grad.png'),
                               SizedBox( height: 30),
                               Text(
                                 'JUMA',

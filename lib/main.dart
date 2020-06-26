@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:juma/pages/app/home.dart';
 import 'package:juma/pages/authenticate/authenticate.dart';
 import 'package:provider/provider.dart';
 import 'package:juma/services/authService.dart';
@@ -16,11 +15,11 @@ class Juma extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown
     ]);
-    //SystemChrome.setEnabledSystemUIOverlays([]);
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(
-        theme: ThemeData(fontFamily: 'Montserrat'),
+        themeMode: ThemeMode.dark,
+        theme: ThemeData(fontFamily: 'Montserrat', brightness: Brightness.dark),
         initialRoute: '/',
         onGenerateRoute: RouteGenerator.generateRoute,
         debugShowCheckedModeBanner: false,  
@@ -29,6 +28,7 @@ class Juma extends StatelessWidget {
   }
 }
 
+///************* DEPRECATED ***************
 class AuthChecker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,10 @@ class AuthChecker extends StatelessWidget {
       return Authenticate();
     }
     else {
-      return Home();
+      //return Home();
+      return Center(
+        child: Text('Welcome to JUMA', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
+      );
     }
   }
 }

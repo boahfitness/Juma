@@ -4,8 +4,9 @@ import 'package:juma/theme/Colors.dart';
 class WelcomePage extends StatefulWidget {
 
   final void Function() onJoinPressed;
+  final void Function() onLoginPressed;
 
-  WelcomePage({this.onJoinPressed});
+  WelcomePage({this.onJoinPressed, this.onLoginPressed});
 
   @override
   _WelcomePageState createState() => _WelcomePageState();
@@ -131,9 +132,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
           Opacity(
             opacity: taglineAnim.value,
             child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed('/auth/login');
-              },
+              onTap: widget.onLoginPressed,
               child: Column(
                 children: <Widget>[
                   Text(

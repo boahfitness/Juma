@@ -11,7 +11,7 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.1.1+1
+version: 0.1.2+1
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -27,6 +27,7 @@ dependencies:
   flare_flutter: ^2.0.3
   shared_preferences: ^0.5.7+1
   path: ^1.6.4
+  email_validator: '^1.0.0'
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -54,6 +55,7 @@ flutter:
    - assets/video/
    - assets/onboardingScreens/
    - assets/animations/
+   - assets/logo/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -69,14 +71,14 @@ flutter:
   fonts:
     - family: Oswald
       fonts:
-        - asset: fonts/Oswald-Bold.ttf
+        - asset: fonts/Oswald/Oswald-Bold.ttf
           weight: 700
-        - asset: fonts/Oswald-Regular.ttf
-        - asset: fonts/Oswald-Medium.ttf
+        - asset: fonts/Oswald/Oswald-Regular.ttf
+        - asset: fonts/Oswald/Oswald-Medium.ttf
           weight: 500
-        - asset: fonts/Oswald-Light.ttf
+        - asset: fonts/Oswald/Oswald-Light.ttf
           weight: 300
-        - asset: fonts/Oswald-ExtraLight.ttf
+        - asset: fonts/Oswald/Oswald-ExtraLight.ttf
           weight: 200
     - family: Montserrat
       fonts:

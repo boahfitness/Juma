@@ -1,6 +1,29 @@
 import 'dart:collection';
 import 'package:juma/models/lifting/exercise.dart';
 
+class PersonalRecords {
+  String uid;
+  Set<TrackedLift> _data = Set();
+  Set<TrackedLift> get data => _data;
+
+  PersonalRecords(this.uid);
+
+  bool addNewPR(PersonalRecord newPR) {
+    if (newPR == null) return false;
+
+    TrackedLift newTL = TrackedLift(newPR.lift.descriptor, uid: uid);
+    TrackedLift tl = _data.lookup(newTL);
+
+    if (tl == null) {
+      data.add(newTL);
+      return newTL.addPersonalRecord(newPR);
+    }
+    else {
+      return tl.addPersonalRecord(newPR);
+    }
+  }
+}
+
 class TrackedLift {
   String id;
   String uid;
@@ -10,7 +33,7 @@ class TrackedLift {
   Map<int, List<PersonalRecord>> _data;
   Map<int, List<PersonalRecord>> get data => _data;
 
-  TrackedLift(MainLiftDescriptor liftDescriptor) {
+  TrackedLift(MainLiftDescriptor liftDescriptor, {this.uid, this.id}) {
     _liftDescriptor = MainLiftDescriptor(path: liftDescriptor.path, value: liftDescriptor.value);
     _data = SplayTreeMap();
   }
@@ -24,6 +47,21 @@ class TrackedLift {
       }
     }
     return false;
+  }
+
+  Map<String, List<Map>> get dataMap {
+    return _data.map<String, List<Map<String, dynamic>>>((reps, prList) {
+      List<Map<String, dynamic>> prMaps = prList.map((pr) => pr.toMap()).toList();
+      return MapEntry(reps.toString(), prMaps);
+    });
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'liftDescriptor': _liftDescriptor.value,
+      'data': dataMap
+    };
   }
 
   @override
@@ -82,4 +120,13 @@ class PersonalRecord {
   MainLift lift;
 
   PersonalRecord(this.programId, this.weekIndex, this.dayIndex, this.lift);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'programId': programId,
+      'weekIndex': weekIndex,
+      'dayIndex': dayIndex,
+      'lift': lift.toMap()
+    };
+  }
 }

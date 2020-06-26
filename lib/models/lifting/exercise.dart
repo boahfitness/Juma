@@ -1,15 +1,13 @@
 import 'package:juma/models/lifting/weight.dart';
 import 'package:path/path.dart' as path;
 
-class Exercise {
+class Exercise with ExerciseHistoryMixin {
   String name;
   int sets;
   int reps;
   Weight weight = Weight();
-  Duration rest;
   String coachNotes;
   String athleteNotes;
-  DateTime completed;
   //String pathToVideo;
 
   double get workload {
@@ -17,24 +15,162 @@ class Exercise {
   }
 
   Exercise({this.name, this.sets=0, this.reps=0,
-    this.weight, this.rest,
-    this.athleteNotes, this.coachNotes, this.completed});
+    this.weight, this.coachNotes, this.athleteNotes}) {
+      weight??=Weight();
+    }
+
+  Exercise.fromMap(Map<String, dynamic> data, [bool includeHistory = false]) {
+    this.name = data['name'] is String ? data['name'] : null;
+    if (data['sets'] is num) {
+      num s = data['sets'];
+      this.sets = s.toInt();
+    }
+    else this.sets = 0;
+    if (data['reps'] is num) {
+      num r = data['reps'];
+      this.reps = r.toInt();
+    }
+    else this.reps = 0;
+    this.weight = data['weight'] is Map<String, dynamic> ? Weight.fromMap(data['weight']) : Weight();
+    this.coachNotes = data['coachNotes'] is String ? data['coachNotes'] : null;
+
+    if (includeHistory && data['historyStatus'] is int) {
+      int statusIndex = data['historyStatus'];
+      if (statusIndex >= 0 && statusIndex < HistoryStatus.values.length) {
+        this.status = HistoryStatus.values[statusIndex];
+      }
+    }
+  }
+
+  Map<String, dynamic> toMap([bool includeHistory=false]) {
+    var m =  {
+      'name': name,
+      'sets': sets,
+      'reps': reps,
+      'weight': weight != null ? weight.toMap() : null,
+      'coachNotes': coachNotes,
+    };
+    if (includeHistory) m.addEntries([MapEntry(
+      'historyStatus', status != null ? status.index : null
+    )]);
+    return m;
+  }
+}
+
+class ExerciseDuration {
+  int hours, minutes, seconds;
+  ExerciseDuration({this.hours=0, this.minutes=0, this.seconds=0});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'hours': hours, 'minutes': minutes, 'seconds': seconds
+    };
+  }
 }
 
 class DurationExercise extends Exercise {
-  Duration duration;
+  ExerciseDuration duration;
+  int get reps => null;
+  set reps(val) => null;
 
-  double get workload => null;
+  Map<String, dynamic> toMap([bool includeHistory=false]) {
+    var m =  {
+      'name': name,
+      'sets': sets,
+      'duration': duration != null ? duration.toMap() : null,
+      'weight': weight != null ? weight.toMap() : null,
+      'coachNotes': coachNotes,
+    };
+    if (includeHistory) m.addEntries([MapEntry(
+      'historyStatus', status != null ? status.index.toString() : null
+    )]);
+    return m;
+  }
 }
 
+class ExerciseHistoryMixin {
+  HistoryStatus status = HistoryStatus.incomplete;
+}
+
+enum HistoryStatus {
+  complete,
+  incomplete,
+  skipped
+}
+
+
+
+
+
+
+
+class WorkloadPrescriber {
+  double _value;
+  double get value {
+    switch(type) {
+      case WorkloadPrescriberType.percent: return _value * 100; // value: 0.32 => 32%
+      case WorkloadPrescriberType.rpe: return roundToHalf(_value * 10); // value: 0.32 => RPE 3
+      default: return 0.0;
+    }
+  }
+  set value(double val) {
+    _value = val.clamp(0.0, 1.0);
+  }
+
+  set rpe(double val) {
+    type = WorkloadPrescriberType.rpe;
+    val = roundToHalf(val);
+    value = val / 10;
+  }
+
+  double get rpe {
+    type = WorkloadPrescriberType.rpe;
+    return value;
+  }
+
+  set percentage(double val) {
+    type = WorkloadPrescriberType.percent;
+    value = val / 100;
+  }
+
+  double get percentage {
+    type = WorkloadPrescriberType.percent;
+    return value;
+  }
+
+  WorkloadPrescriberType type;
+
+  WorkloadPrescriber(this.type, {double value}) {
+    value ??= 0.0;
+    this.value = value;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'type': type.index,
+      'value': _value
+    };
+  }
+}
+enum WorkloadPrescriberType {
+  rpe,
+  percent
+}
+
+
+
+
+
+
+
 abstract class MainLift extends Exercise {
-  double percentage;
-  double rpe;
+  WorkloadPrescriber prescribedWorkload;
   bool isPR;
   MainLiftDescriptor get descriptor;
   MainLiftType get type;
 
-  MainLift();
+  MainLift({int sets, int reps, Weight weight, String coachNotes, String athleteNotes, this.prescribedWorkload})
+    : super(sets: sets, reps: reps, weight: weight, coachNotes: coachNotes, athleteNotes: athleteNotes);
 
   static MainLift fromDescriptor(MainLiftDescriptor d) {
     MainLiftType type = d.getType();
@@ -47,7 +183,8 @@ abstract class MainLift extends Exercise {
   }
 
   double get rpeWorkload {
-    return weight.pounds * (reps + (10.0 - rpe));
+    //return weight.pounds * (reps + (10.0 - rpe));
+    return null;
   }
 
   String calculateDescriptorValue();
@@ -63,6 +200,18 @@ abstract class MainLift extends Exercise {
 
   @override
   int get hashCode => descriptor.hashCode;
+
+  @override
+  Map<String, dynamic> toMap([bool includeHistory=false]) {
+    var m = super.toMap(includeHistory);
+    
+    m.addEntries([
+      MapEntry('prescribedWorkload', prescribedWorkload != null ?  prescribedWorkload.toMap() : null),
+      MapEntry('descriptor', descriptor != null ? descriptor.toString() : null)
+    ]);
+
+    return m;
+  }
 
 }
 
@@ -99,6 +248,7 @@ class MainLiftDescriptor {
   String toString() {
     return value;
   }
+
 }
 
 enum MainLiftType {
@@ -106,6 +256,12 @@ enum MainLiftType {
   bench,
   deadlift
 }
+
+
+
+
+
+
 
 class Squat extends MainLift {
   KneeEquipment _kneeEquipment;
@@ -143,17 +299,16 @@ class Squat extends MainLift {
   MainLiftType get type => MainLiftType.squat;
 
   Squat({
+    int reps=1, int sets=1, Weight weight, String coachNotes, String athleteNotes,
+    WorkloadPrescriber prescribedWorkload,
     SquatVariation variation = SquatVariation.lowBar,
     SquatEquipment equipment = SquatEquipment.raw,
     KneeEquipment kneeEquipment = KneeEquipment.none,
-    int reps=1
-  }) {
+  }) : super(reps: reps, sets: sets, weight: weight, coachNotes: coachNotes, athleteNotes: athleteNotes, prescribedWorkload: prescribedWorkload) {
     _variation = variation;
     _equipment = equipment;
     _kneeEquipment = kneeEquipment;
     _descriptor = MainLiftDescriptor(path: calculateDescriptorPath(), value: calculateDescriptorValue());
-    this.weight = Weight();
-    this.reps = reps;
   }
 
   Squat.fromDescriptor(MainLiftDescriptor d) {
@@ -229,6 +384,14 @@ enum SquatVariation {
   lowBar
 }
 
+
+
+
+
+
+
+
+
 class Bench extends MainLift {
   BenchEquipment _equipment;
   BenchEquipment get equipment => _equipment;
@@ -249,9 +412,10 @@ class Bench extends MainLift {
   MainLiftType get type => MainLiftType.bench;
 
   Bench({
+    int reps=1, int sets=1, Weight weight, String coachNotes, String athleteNotes,
+    WorkloadPrescriber prescribedWorkload,
     BenchEquipment equipment = BenchEquipment.raw,
-    int reps=1
-  }) {
+  }) : super(reps: reps, sets: sets, weight: weight, coachNotes: coachNotes, athleteNotes: athleteNotes, prescribedWorkload: prescribedWorkload) {
     _equipment = equipment;
     _descriptor = MainLiftDescriptor(value: calculateDescriptorValue(), path: calculateDescriptorPath());
     this.weight = Weight();
@@ -305,6 +469,15 @@ enum BenchEquipment {
   shirt
 }
 
+
+
+
+
+
+
+
+
+
 class Deadlift extends MainLift {
   DeadliftEquipment _equipment;
   DeadliftEquipment get equipment => _equipment;
@@ -333,10 +506,11 @@ class Deadlift extends MainLift {
   MainLiftType get type => MainLiftType.deadlift;
 
   Deadlift({
+    int reps=1, int sets=1, Weight weight, String coachNotes, String athleteNotes,
+    WorkloadPrescriber prescribedWorkload,
     DeadliftVariation variation = DeadliftVariation.conv,
     DeadliftEquipment equipment = DeadliftEquipment.raw,
-    int reps=1
-  }) {
+  }) : super(reps: reps, sets: sets, weight: weight, coachNotes: coachNotes, athleteNotes: athleteNotes, prescribedWorkload: prescribedWorkload) {
     _variation = variation;
     _equipment = equipment;
     _descriptor = MainLiftDescriptor(value: calculateDescriptorValue(), path: calculateDescriptorPath());

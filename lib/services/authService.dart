@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:juma/models/users/user.dart';
 
 class AuthService {
@@ -14,6 +15,20 @@ class AuthService {
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
   }
 
+  Future<String> registerWithEmailAndPassword(String email, String password) async {
+    try {
+      var result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      return result.user.uid;
+    }
+    on PlatformException catch(e) {
+      throw e;
+    }
+    catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   // sign in anom
   Future signInAnon() async {
     try {
@@ -27,7 +42,7 @@ class AuthService {
   }
 
   // sign in with email and password
-  Future signInWithEmailAndPassword(String email, String password) async {
+  Future<dynamic> signInWithEmailAndPassword(String email, String password) async {
     try {
       AuthResult rs = await _auth.signInWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = rs.user;

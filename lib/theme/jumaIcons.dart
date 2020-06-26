@@ -23,4 +23,8 @@ class JumaIcons {
 
   static const IconData female = IconData(0xe900, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData male = IconData(0xe901, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData navDown = IconData(0xe902, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData navLeft = IconData(0xe903, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData navRight = IconData(0xe904, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData navUp = IconData(0xe905, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
