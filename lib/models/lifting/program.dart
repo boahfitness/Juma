@@ -5,7 +5,6 @@ import 'package:juma/theme/Colors.dart';
 import 'package:juma/models/users/user.dart';
 
 // TODO program and exercise copy methods that do not pass by reference
-// TODO program template better configuration
 
 class ProgramDescriptor {
   String id;
@@ -23,6 +22,10 @@ class ProgramTemplate extends Program {
   ProgramTemplate({String id, String title, UserIdentifier author, String description, String pathToMedia, List<TrainingBlock> trainingBlocks}) 
   : super(id: id, title: title, author: author, description: description, pathToMedia: pathToMedia, trainingBlocks: trainingBlocks);
 
+  static ProgramTemplate fromMap(Map<String, dynamic> data) {
+    return Program.fromMap(data);
+  }
+
   Map<String, dynamic> toMap([bool x=false]) {
     return super.toMap();
   }
@@ -32,6 +35,9 @@ class ProgramHistory extends Program {
   bool get completed => null;
   String templateId;
   String uid;
+
+  ProgramHistory() 
+  : super();
 
   ProgramHistory.fromTemplate(ProgramTemplate programTemplate, {this.uid}) {
     this.title = programTemplate.title;
@@ -66,6 +72,39 @@ abstract class Program {
 
   List<TrainingBlock> trainingBlocks = List();
 
+  static Program fromMap(Map<String, dynamic> data, [bool includeHistory = false]) {
+    Program p;
+    if (includeHistory) p = ProgramHistory();
+    else p = ProgramTemplate();
+    p.id = data['id'] is String ? data['id'] : null;
+    p.title = data['title'] is String ? data['title'] : null;
+    p.author = data['author'] is Map ? UserIdentifier.fromMap(data['author']) : null;
+    p.description = data['description'] is String ? data['description'] : null;
+    p.pathToMedia = data['pathToMedia'] is String ? data['pathToMedia'] : null;
+
+    int themeIndex = data['theme'] is int ? data['theme'] : null;
+    if (themeIndex != null && themeIndex >= 0  && themeIndex < ThemeType.values.length)
+      p.theme = ColorTheme.getTheme(ThemeType.values[themeIndex]);
+    else
+      p.theme = null;
+
+    if (data['trainingBlocks'] is List) {
+      List tbs = data['trainingBlocks'];
+      List<TrainingBlock> trainingBlocks = List();
+      tbs.forEach((tb) {
+        if (tb is Map<String, dynamic>) {
+          trainingBlocks.add(TrainingBlock.fromMap(tb));
+        }
+      });
+      p.trainingBlocks = trainingBlocks;
+    }
+    else {
+      p.trainingBlocks = List();
+    }
+
+    return p;
+  }
+
   bool get isComplete {
     for (TrainingBlock t in trainingBlocks) if (!t.isComplete) return false;
     return true;
@@ -77,7 +116,7 @@ abstract class Program {
       'author': author != null ? author.toMap() : null,
       'description': description,
       'pathToMedia': pathToMedia,
-      'theme': theme != null ? theme.runtimeType : null,
+      'theme': theme != null ? theme.type.index : null,
       'trainingBlocks': trainingBlocks.map<Map<String, dynamic>>((tb) => tb.toMap(includeHistory)).toList()
     };
   }
@@ -89,6 +128,20 @@ class TrainingBlock {
 
   TrainingBlock({this.split, this.weeks}) {
     weeks??=SplayTreeMap();
+  }
+
+  TrainingBlock.fromMap(Map<String, dynamic> data, [bool includeHistory=false]) {
+    this.split = data['split'] is Map<String, dynamic> ? Week.fromMap(data['split']) : null;
+    this.weeks = SplayTreeMap();
+    if (data['weeks'] is Map<String, dynamic>) {
+      Map<String, dynamic> weeksData = data['weeks'];
+      weeksData.keys.forEach((key) { 
+        int weekNum = int.tryParse(key);
+        if (weekNum != null && weeksData[key] is Map<String, dynamic>) {
+          this.weeks.addEntries([MapEntry(weekNum, Week.fromMap(weeksData[key], includeHistory))]);
+        }
+      });
+    }
   }
 
   bool get isComplete {
@@ -118,16 +171,26 @@ class Week {
     Day sunday, Day monday, Day tuesday, Day wednesday, Day thursday, Day friday, Day saturday
   }) {
     this.days = {};
-    this.sunday = sunday??=Day.restDay; 
-    this.monday = monday??=Day.restDay;
-    this.tuesday = tuesday??=Day.restDay; 
-    this.wednesday = wednesday??=Day.restDay; 
-    this.thursday = thursday??=Day.restDay; 
-    this.friday = friday??=Day.restDay; 
-    this.saturday = saturday??=Day.restDay;
+    if (sunday != null) this.sunday = sunday; 
+    if (monday != null) this.monday = monday;
+    if (tuesday != null) this.tuesday = tuesday; 
+    if (wednesday != null) this.wednesday = wednesday; 
+    if (thursday != null) this.thursday = thursday; 
+    if (friday != null) this.friday = friday; 
+    if (saturday != null) this.saturday = saturday;
   }
 
   Week.fromDays({this.days}) {if (days == null) days = {};}
+
+  Week.fromMap(Map<String, dynamic> data, [bool includeHistory=false]) {
+    this.days = {};
+    data.keys.forEach((key) {
+      int dayNum = int.tryParse(key);
+      if (dayNum != null && dayNum >= 0 && dayNum < Weekday.values.length && data[key] is Map<String, dynamic>) {
+        this.days.addEntries([MapEntry(Weekday.values[dayNum], Day.fromMap(data[key], includeHistory))]);
+      }
+    });
+  }
 
   Day get sunday => days[Weekday.sunday];
   set sunday(Day day) => days.update(Weekday.sunday, (value) => day, ifAbsent: () => day);
@@ -175,6 +238,20 @@ class Day {
 
   Day({this.label, this.exercises}) {
     exercises ??= SplayTreeMap();
+  }
+
+  Day.fromMap(Map<String, dynamic> data, [bool includeHistory = false]) {
+    this.label = data['labal'] is String ? data['label'] : null;
+    exercises = SplayTreeMap();
+    if (data['exercises'] is Map<String, dynamic>) {
+      Map<String, dynamic> exerciseData = data['exercises'];
+      exerciseData.keys.forEach((key) {
+        int exerciseNum = int.tryParse(key);
+        if (exerciseNum != null && exerciseData[key] is Map<String, dynamic>) {
+          this.exercises.addEntries([MapEntry(exerciseNum, Exercise.fromMap(exerciseData[key], includeHistory))]);
+        }
+      });
+    }
   }
 
   static Day get restDay => RestDay();

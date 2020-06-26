@@ -4,18 +4,44 @@ class Weight {
 
   // Variables
   double _pounds, _kilograms;
+  WeightUnit _origin;
+
+  Weight.fromMap(Map<String, dynamic> data) {
+    int originIndex = data['origin'] is int ? data['origin'] : null;
+    if (originIndex == WeightUnit.pounds.index) {
+      this.pounds = data['pounds'] is num ? data['pounds'] : 0.0;
+    }
+    else if (originIndex == WeightUnit.kilograms.index) {
+      this.kilograms = data['kilograms'] is num ?  data['kilograms'] : 0.0;
+    }
+    else if (data['pounds'] is num) {
+      num p = data['pounds'];
+      this.pounds = p.toDouble();
+    }
+    else {
+      this.pounds = 0.0;
+    }
+  }
 
   Map<String, dynamic> toMap() {
     return {
+      'origin': _origin.index,
       'pounds': _pounds,
       'kilograms': _kilograms
     };
   }
 
+  String toString() {
+    return this.toMap().toString();
+  }
+
+  WeightUnit get origin => _origin;
+
   double get pounds {
     return _pounds;
   }
   set pounds(double val) {
+    _origin = WeightUnit.pounds;
     _pounds = val;
     _kilograms = poundsToKilos(val);
   }
@@ -24,16 +50,19 @@ class Weight {
     return _kilograms;
   }
   set kilograms(double val) {
+    _origin = WeightUnit.kilograms;
     _kilograms = val;
     _pounds = kilosToPounds(val);
   }
 
   // Constructors
   Weight.kilograms(double val) {
+    _origin = WeightUnit.kilograms;
     kilograms = val;
   }
 
   Weight.pounds(double val) {
+    _origin = WeightUnit.pounds;
     pounds = val;
   }
 

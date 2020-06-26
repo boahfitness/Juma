@@ -19,6 +19,29 @@ class Exercise with ExerciseHistoryMixin {
       weight??=Weight();
     }
 
+  Exercise.fromMap(Map<String, dynamic> data, [bool includeHistory = false]) {
+    this.name = data['name'] is String ? data['name'] : null;
+    if (data['sets'] is num) {
+      num s = data['sets'];
+      this.sets = s.toInt();
+    }
+    else this.sets = 0;
+    if (data['reps'] is num) {
+      num r = data['reps'];
+      this.reps = r.toInt();
+    }
+    else this.reps = 0;
+    this.weight = data['weight'] is Map<String, dynamic> ? Weight.fromMap(data['weight']) : Weight();
+    this.coachNotes = data['coachNotes'] is String ? data['coachNotes'] : null;
+
+    if (includeHistory && data['historyStatus'] is int) {
+      int statusIndex = data['historyStatus'];
+      if (statusIndex >= 0 && statusIndex < HistoryStatus.values.length) {
+        this.status = HistoryStatus.values[statusIndex];
+      }
+    }
+  }
+
   Map<String, dynamic> toMap([bool includeHistory=false]) {
     var m =  {
       'name': name,
@@ -28,7 +51,7 @@ class Exercise with ExerciseHistoryMixin {
       'coachNotes': coachNotes,
     };
     if (includeHistory) m.addEntries([MapEntry(
-      'historyStatus', status != null ? status.index.toString() : null
+      'historyStatus', status != null ? status.index : null
     )]);
     return m;
   }

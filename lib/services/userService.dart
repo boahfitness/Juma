@@ -22,4 +22,21 @@ class UserService {
     
     return true;
   }
+
+  Future<User> getUserById(String uid) async {
+    try {
+      var doc = await _userCollection.document(uid).get();
+      if (doc != null) {
+        return User.fromMap(doc.data);
+      }
+      else {
+        return null;
+      }
+    }
+    catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
 }
