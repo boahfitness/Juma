@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:juma/pages/app/browse.dart';
-import 'package:juma/theme/Colors.dart';
+import 'package:juma/pages/app/browse/browse.dart';
 
-import 'package:juma/pages/app/home.dart';
-import 'package:juma/pages/app/profile.dart';
+import 'package:juma/pages/app/home/navigator.dart';
+import 'package:juma/pages/app/profile/profile.dart';
 
 class AppScaffold extends StatefulWidget {
   @override
@@ -20,7 +19,7 @@ class _AppScaffoldState extends State<AppScaffold> {
       BottomNavigationBarItem(
             title: Text('Home'),
             icon: Icon(Icons.home)
-      ): Home(),
+      ): HomeNavigator(),
       BottomNavigationBarItem(
             title: Text('Browse'),
             icon: Icon(Icons.search)
@@ -48,9 +47,10 @@ class _AppScaffoldState extends State<AppScaffold> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         backgroundColor: Colors.grey[900],
-        selectedItemColor: JumaColors.boahOrange,
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey[700],
         items: navPages.keys.toList(),
+        iconSize: 30,
       ),
     );
   }

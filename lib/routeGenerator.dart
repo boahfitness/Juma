@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:juma/pages/onboarding/onboarding.dart';
-import 'package:juma/pages/app/home.dart';
+import 'package:juma/pages/app/home/home.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:juma/pages/entryExperience.dart';
 
@@ -31,10 +31,12 @@ class RouteGenerator {
           title: Text('Error'),
         ),
         body: Center(
-          child: Text('ERROR'),
+          child: Text('INVALID ROUTE'),
         ),
       );
     });
   }
+
+  static Route<dynamic> get errorRoute => _errorRoute();
 
 }
