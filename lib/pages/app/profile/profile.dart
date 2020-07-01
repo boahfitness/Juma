@@ -12,9 +12,8 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
-    if (user == null) Navigator.of(context).pushReplacementNamed('/');
 
-    return Scaffold(
+    return user != null ? Scaffold(
       backgroundColor: Colors.transparent,
 
       appBar: AppBar(
@@ -34,6 +33,8 @@ class _ProfileState extends State<Profile> {
           },
         ),
       ),
-    );
+    )
+    :
+    Container();
   }
 }

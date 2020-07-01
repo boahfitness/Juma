@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:juma/pages/app/browse/browse.dart';
 
 import 'package:juma/pages/app/home/navigator.dart';
-import 'package:juma/pages/app/profile/profile.dart';
+import 'package:juma/pages/app/profile/navigator.dart';
 
 class AppScaffold extends StatefulWidget {
   @override
@@ -19,7 +19,7 @@ class _AppScaffoldState extends State<AppScaffold> {
       BottomNavigationBarItem(
             title: Text('Home'),
             icon: Icon(Icons.home)
-      ): HomeNavigator(),
+      ): homeNav,
       BottomNavigationBarItem(
             title: Text('Browse'),
             icon: Icon(Icons.search)
@@ -27,7 +27,7 @@ class _AppScaffoldState extends State<AppScaffold> {
       BottomNavigationBarItem(
             title: Text('Profile'),
             icon: Icon(Icons.person)
-      ): Profile(),
+      ): profileNav,
     };
 
     return Scaffold(

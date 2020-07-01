@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:juma/pages/app/home/home.dart';
+import 'package:juma/pages/app/profile/profile.dart';
 import 'package:juma/routeGenerator.dart';
 
-
-var homeNav = Navigator(
+var profileNav = Navigator(
   initialRoute: '/',
   onGenerateRoute: (settings) {
     switch(settings.name) {
-      case '/': return MaterialPageRoute(builder: (context) => Home());
+      case '/': return MaterialPageRoute(builder: (context) => Profile());
       default: return RouteGenerator.errorRoute;
     }
   },

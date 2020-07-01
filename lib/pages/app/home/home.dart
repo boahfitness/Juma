@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
 
-    return FutureBuilder(
+    return user != null ? FutureBuilder(
       future: getProgramData(user),
       builder: (context, snapshot) {
         return Scaffold(
@@ -101,7 +101,7 @@ class _HomeState extends State<Home> {
           drawer: Drawer(),
         );
       },
-    );
+    ) : Container();
   }
 }
 
