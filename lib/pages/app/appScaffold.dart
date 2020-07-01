@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:juma/pages/app/browse/browse.dart';
 
-import 'package:juma/pages/app/home/navigator.dart';
-import 'package:juma/pages/app/profile/navigator.dart';
+import 'package:juma/pages/app/home/home.dart';
+import 'package:juma/pages/app/profile/profile.dart';
+
+import './appNavigator.dart';
 
 class AppScaffold extends StatefulWidget {
   @override
@@ -11,23 +13,30 @@ class AppScaffold extends StatefulWidget {
 
 class _AppScaffoldState extends State<AppScaffold> {
   int currentIndex = 0;
+  GlobalKey<NavigatorState> homeKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
 
-    Map<BottomNavigationBarItem, Widget> navPages = {
+    List<GlobalKey<NavigatorState>> navKeys = [
+      GlobalKey(),
+      GlobalKey(),
+      GlobalKey()
+    ];
+
+    Map<BottomNavigationBarItem, Navigator> navPages = {
       BottomNavigationBarItem(
             title: Text('Home'),
             icon: Icon(Icons.home)
-      ): homeNav,
+      ): AppNavigator(Home(), key: navKeys[0]).nav,
       BottomNavigationBarItem(
             title: Text('Browse'),
             icon: Icon(Icons.search)
-      ): Browse(),
+      ): AppNavigator(Browse(), key: navKeys[1]).nav,
       BottomNavigationBarItem(
             title: Text('Profile'),
             icon: Icon(Icons.person)
-      ): profileNav,
+      ): AppNavigator(Profile(), key: navKeys[2]).nav,
     };
 
     return Scaffold(
@@ -40,9 +49,14 @@ class _AppScaffoldState extends State<AppScaffold> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
+          if (currentIndex == index) {
+            navKeys[index].currentState.popUntil((route) => route.isFirst == true);
+          }
+          else {
+            setState(() {
+              currentIndex = index;
+            });
+          }
         },
         showSelectedLabels: false,
         showUnselectedLabels: false,

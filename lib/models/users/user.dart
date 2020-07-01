@@ -1,5 +1,4 @@
 import 'package:juma/models/lifting/personalRecords.dart';
-import 'package:juma/models/lifting/program.dart';
 import 'package:juma/models/lifting/weight.dart';
 
 class User {
