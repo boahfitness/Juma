@@ -118,7 +118,7 @@ class CurrentProgramDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed('/current-program');
+        Navigator.of(context).pushNamed('/current-program', arguments: currentProgram);
       },
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,

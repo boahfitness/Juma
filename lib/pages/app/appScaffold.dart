@@ -13,18 +13,18 @@ class AppScaffold extends StatefulWidget {
 
 class _AppScaffoldState extends State<AppScaffold> {
   int currentIndex = 0;
-  GlobalKey<NavigatorState> homeKey = GlobalKey();
+  List<GlobalKey<NavigatorState>> navKeys;
+  Map<BottomNavigationBarItem, Navigator> navPages;
 
   @override
-  Widget build(BuildContext context) {
-
-    List<GlobalKey<NavigatorState>> navKeys = [
+  void initState() {
+    navKeys = [
       GlobalKey(),
       GlobalKey(),
       GlobalKey()
     ];
 
-    Map<BottomNavigationBarItem, Navigator> navPages = {
+    navPages = {
       BottomNavigationBarItem(
             title: Text('Home'),
             icon: Icon(Icons.home)
@@ -38,7 +38,11 @@ class _AppScaffoldState extends State<AppScaffold> {
             icon: Icon(Icons.person)
       ): AppNavigator(Profile(), key: navKeys[2]).nav,
     };
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: IndexedStack(

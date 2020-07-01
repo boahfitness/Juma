@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:juma/models/lifting/program.dart';
 
 class CurrentProgram extends StatefulWidget {
+  final ProgramHistory program;
+  CurrentProgram(this.program);
   @override
   _CurrentProgramState createState() => _CurrentProgramState();
 }
@@ -17,7 +20,7 @@ class _CurrentProgramState extends State<CurrentProgram> {
       ),
 
       body: Center(
-        child: Text('CURRENT PROGRAM'),
+        child: Text('CURRENT PROGRAM: ${widget.program.title}'),
       ),
     );
   }
