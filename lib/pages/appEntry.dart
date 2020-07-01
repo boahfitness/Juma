@@ -4,12 +4,12 @@ import 'package:juma/pages/app/appScaffold.dart';
 import 'package:juma/pages/onboarding/welcomeScaffold.dart';
 import 'package:provider/provider.dart';
 
-class Entry extends StatefulWidget {
+class AppEntry extends StatefulWidget {
   @override
-  _EntryState createState() => _EntryState();
+  _AppEntryState createState() => _AppEntryState();
 }
 
-class _EntryState extends State<Entry> {
+class _AppEntryState extends State<AppEntry> {
   @override
   Widget build(BuildContext context) {
     FirebaseUser user = Provider.of<FirebaseUser>(context);
