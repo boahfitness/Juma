@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/models/lifting/program.dart';
 import 'package:juma/models/users/user.dart';
 import 'package:juma/services/programService.dart';
@@ -43,7 +44,7 @@ class _HomeState extends State<Home> {
                 color: Colors.white,
                 child: Center(
                   child: Text(
-                    "JUMA", 
+                    "JUMA",
                     style: TextStyle(color: Colors.black, fontFamily: 'Oswald', fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -116,6 +117,9 @@ class CurrentProgramDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Day nextDay = currentProgram.nextDay;
+    Exercise nextEx = nextDay != null ? nextDay.firstExercise : null;
+
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed('/current-program', arguments: currentProgram);
@@ -131,25 +135,12 @@ class CurrentProgramDisplay extends StatelessWidget {
           margin: const EdgeInsets.all(25),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text(currentProgram.title ?? '', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text(currentProgram.description ?? '', textAlign: TextAlign.left,),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text(currentProgram.author != null ? currentProgram.author.displayName ?? '' : '', textAlign: TextAlign.left,),
-                ],
-              )
+              Text(currentProgram.title ?? '', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+              Text(currentProgram.description ?? '', textAlign: TextAlign.left,),
+              Text(currentProgram.author != null ? currentProgram.author.displayName ?? '' : '', textAlign: TextAlign.left,),
+              Text(nextEx != null ? nextEx.name : '')
             ],
           )
         ),

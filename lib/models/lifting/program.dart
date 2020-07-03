@@ -46,7 +46,22 @@ class ProgramTemplate extends Program {
 }
 
 class ProgramHistory extends Program {
-  bool get completed => null;
+  bool get isComplete {
+    for (TrainingBlock t in trainingBlocks) if (!t.isComplete) return false;
+    return true;
+  }
+  TrainingBlock get nextTrainingBlock {
+    return trainingBlocks.isNotEmpty ? trainingBlocks.firstWhere((tb) => !tb.isComplete, orElse: () => null) : null;
+  }
+
+  Day get nextDay {
+    var nextTB = this.nextTrainingBlock;
+    if (nextTB == null) return null;
+    var nextWeek = nextTB.nextWeek;
+    if (nextWeek == null) return null;
+    return nextWeek.nextDay;
+  }
+
   String templateId;
   String uid;
 
@@ -126,11 +141,6 @@ abstract class Program {
     return p;
   }
 
-  bool get isComplete {
-    for (TrainingBlock t in trainingBlocks) if (!t.isComplete) return false;
-    return true;
-  }
-
   Map<String, dynamic> toMap([bool includeHistory=false]) {
     return {
       'title': title,
@@ -172,6 +182,10 @@ class TrainingBlock {
     return true;
   }
 
+  Week get nextWeek {
+    return weeks.values.isNotEmpty ? weeks.values.firstWhere((week) => !week.isComplete, orElse: () => null) : null;
+  }
+
   // void addTemplateWeek() {
   //   if (split == null) return;
   //   weeks.add(split);
@@ -211,6 +225,10 @@ class Week {
         this.days.addEntries([MapEntry(Weekday.values[dayNum], Day.fromMap(data[key], includeHistory))]);
       }
     });
+  }
+
+  Day get nextDay {
+    return days.values.isNotEmpty ? days.values.firstWhere((day) => !day.isComplete, orElse: () => null) : null;
   }
 
   Day get sunday => days[Weekday.sunday];
@@ -282,6 +300,14 @@ class Day {
       if (x.status == HistoryStatus.incomplete) return false;
     }
     return true;
+  }
+
+  // Exercise get nextExercise {
+  //   return exercises.values.firstWhere((ex) => ex.status != HistoryStatus.complete);
+  // }
+
+  Exercise get firstExercise {
+    return exercises.values.isNotEmpty ? exercises.values.first : null;
   }
 
   Map<String, dynamic> toMap([bool includeHistory=false]) {

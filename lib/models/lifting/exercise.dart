@@ -17,6 +17,7 @@ class Exercise with ExerciseHistoryMixin {
   Exercise({this.name, this.sets=0, this.reps=0,
     this.weight, this.coachNotes, this.athleteNotes}) {
       weight??=Weight();
+      this.status = HistoryStatus.incomplete;
     }
 
   Exercise.fromMap(Map<String, dynamic> data, [bool includeHistory = false]) {
