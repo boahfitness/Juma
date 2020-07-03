@@ -43,32 +43,35 @@ class _AppScaffoldState extends State<AppScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: IndexedStack(
-        index: currentIndex,
-        children: navPages.values.toList(),
-      ),
-      
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index) {
-          if (currentIndex == index) {
-            navKeys[index].currentState.popUntil((route) => route.isFirst == true);
-          }
-          else {
-            setState(() {
-              currentIndex = index;
-            });
-          }
-        },
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        backgroundColor: Colors.grey[900],
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey[700],
-        items: navPages.keys.toList(),
-        iconSize: 30,
+    return WillPopScope(
+      onWillPop: () async => !await navKeys[currentIndex].currentState.maybePop(),
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: IndexedStack(
+          index: currentIndex,
+          children: navPages.values.toList(),
+        ),
+        
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: currentIndex,
+          onTap: (index) {
+            if (currentIndex == index) {
+              navKeys[index].currentState.popUntil((route) => route.isFirst == true);
+            }
+            else {
+              setState(() {
+                currentIndex = index;
+              });
+            }
+          },
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          backgroundColor: Colors.grey[900],
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey[700],
+          items: navPages.keys.toList(),
+          iconSize: 30,
+        ),
       ),
     );
   }

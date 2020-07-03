@@ -117,7 +117,7 @@ class CurrentProgramDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Day nextDay = currentProgram.nextDay;
+    Day nextDay = currentProgram != null ? currentProgram.nextDay : null;
     Exercise nextEx = nextDay != null ? nextDay.firstExercise : null;
 
     return GestureDetector(

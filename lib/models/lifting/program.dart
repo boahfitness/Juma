@@ -51,7 +51,7 @@ class ProgramHistory extends Program {
     return true;
   }
   TrainingBlock get nextTrainingBlock {
-    return trainingBlocks.isNotEmpty ? trainingBlocks.firstWhere((tb) => !tb.isComplete, orElse: () => null) : null;
+    return trainingBlocks != null && trainingBlocks.isNotEmpty ? trainingBlocks.firstWhere((tb) => !tb.isComplete, orElse: () => null) : null;
   }
 
   Day get nextDay {
@@ -183,7 +183,7 @@ class TrainingBlock {
   }
 
   Week get nextWeek {
-    return weeks.values.isNotEmpty ? weeks.values.firstWhere((week) => !week.isComplete, orElse: () => null) : null;
+    return weeks != null && weeks.values.isNotEmpty ? weeks.values.firstWhere((week) => !week.isComplete, orElse: () => null) : null;
   }
 
   // void addTemplateWeek() {
@@ -228,7 +228,7 @@ class Week {
   }
 
   Day get nextDay {
-    return days.values.isNotEmpty ? days.values.firstWhere((day) => !day.isComplete, orElse: () => null) : null;
+    return days != null && days.values.isNotEmpty ? days.values.firstWhere((day) => !day.isComplete, orElse: () => null) : null;
   }
 
   Day get sunday => days[Weekday.sunday];
@@ -307,7 +307,7 @@ class Day {
   // }
 
   Exercise get firstExercise {
-    return exercises.values.isNotEmpty ? exercises.values.first : null;
+    return exercises != null && exercises.values.isNotEmpty ? exercises.values.first : null;
   }
 
   Map<String, dynamic> toMap([bool includeHistory=false]) {
