@@ -99,6 +99,9 @@ flutter:
     - family: JumaIcons
       fonts:
         - asset: icons/JumaIcons.ttf
+    - family: Socicon
+      fonts:
+        - asset: icons/Socicon.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
