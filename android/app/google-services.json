@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "202351898027-lg9has7uj53ido72cue35r2mb4uhmukf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.boahfitness.juma",
+            "certificate_hash": "669b30ea1853e64d8ce2aca52aeb26226b0a51d7"
+          }
+        },
+        {
           "client_id": "202351898027-240vammssca6svtma5bpp2b3b673c5dq.apps.googleusercontent.com",
           "client_type": 3
         }
