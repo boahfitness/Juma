@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:juma/models/users/user.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:juma/theme/socicon.dart';
 
 class InputCredentials extends StatefulWidget {
   final User user;
   final void Function(String email, String password) onDone;
-  InputCredentials(this.user, {this.onDone});
+  final void Function() onGoogleSignUp;
+  InputCredentials(this.user, {this.onDone, this.onGoogleSignUp});
   @override
   _InputCredentialsState createState() => _InputCredentialsState();
 }
@@ -143,7 +145,32 @@ class _InputCredentialsState extends State<InputCredentials> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
-          )
+          ),
+          SizedBox(height: 20,),
+          SizedBox(
+            width: MediaQuery.of(context).size.width*0.6,
+            child: RaisedButton(
+              onPressed: widget.onGoogleSignUp,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Icon(Socicon.google, color: Colors.red,)
+                  ),
+                  Expanded(
+                    flex: 8,
+                    child: Text('Sign up with Google', textAlign: TextAlign.center, style: TextStyle(color: Colors.white))
+                  )
+                ],
+              ),
+              color: Colors.grey[900],
+              elevation: 10.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              //padding: const EdgeInsets.symmetric(horizontal: 75, vertical: 12),
+            ),
+          ),
         ],
       ),
     );

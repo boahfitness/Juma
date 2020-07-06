@@ -66,7 +66,7 @@ class AuthService {
   // google sign in
   Future<String> signInWithGoogle() async {
     try {
-      GoogleSignInAccount googleAccount = await _googleSignIn.signIn();
+      GoogleSignInAccount googleAccount = await _googleSignIn.signIn().catchError((err) => null);
       if (googleAccount == null) return null;
 
       GoogleSignInAuthentication accountCreds = await googleAccount.authentication;
@@ -76,6 +76,10 @@ class AuthService {
       );
 
       return result.user.uid;
+    }
+    on PlatformException catch(e) {
+      print(e);
+      return null;
     }
     catch (e) {
       print(e);

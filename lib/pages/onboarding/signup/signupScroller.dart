@@ -38,6 +38,9 @@ class _SignupScrollerState extends State<SignupScroller> {
   final displayName = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
+  AuthService authSerivce = AuthService();
+  UserService userService = UserService();
+
   @override
   void initState() {
     super.initState();
@@ -54,8 +57,6 @@ class _SignupScrollerState extends State<SignupScroller> {
   }
 
   void signUpAndCreateUser(String email, String password, User user) async {
-    AuthService authSerivce = AuthService();
-    UserService userService = UserService();
     String newUID = "";
     try {
       newUID = await authSerivce.registerWithEmailAndPassword(email, password);
@@ -78,8 +79,14 @@ class _SignupScrollerState extends State<SignupScroller> {
     user.uid = newUID;
 
     await userService.createUser(user);
+  }
 
-    //authSerivce.signOut();
+  void createUserWithGoogle(User user) async {
+    String newUID = await authSerivce.signInWithGoogle();
+    if (newUID == null) return;
+
+    user.uid = newUID;
+    await userService.createUser(user);
   }
 
   @override
@@ -109,6 +116,9 @@ class _SignupScrollerState extends State<SignupScroller> {
       InputCredentials(user,
         onDone: (email, password) {
           signUpAndCreateUser(email, password, user);
+        },
+        onGoogleSignUp: () {
+          createUserWithGoogle(user);
         },
       )
     ];
