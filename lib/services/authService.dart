@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/services.dart';
-import 'package:juma/models/users/user.dart';
 
 class AuthService {
 
@@ -12,11 +11,6 @@ class AuthService {
       "https://www.googleapis.com/auth/drive.file",
     ]
   );
-
-  User _userFromFirebaseUser(FirebaseUser user) {
-    return user == null ? null 
-    : User(uid: user.uid);
-  }
 
   // on auth changed user stream
   Stream<FirebaseUser> get user {
@@ -39,11 +33,10 @@ class AuthService {
   }
 
   // sign in anom
-  Future signInAnon() async {
+  Future<String> signInAnon() async {
     try {
       AuthResult rs = await _auth.signInAnonymously();
-      FirebaseUser user = rs.user;
-      return _userFromFirebaseUser(user);
+      return rs.user.uid;
     } catch(e) {
       print(e.toString());
       return null;
@@ -51,11 +44,10 @@ class AuthService {
   }
 
   // sign in with email and password
-  Future<dynamic> signInWithEmailAndPassword(String email, String password) async {
+  Future<String> signInWithEmailAndPassword(String email, String password) async {
     try {
       AuthResult rs = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      FirebaseUser user = rs.user;
-      return _userFromFirebaseUser(user);
+      return rs.user.uid;
     }
     catch (e) {
       print(e.toString());
@@ -71,15 +63,55 @@ class AuthService {
 
       GoogleSignInAuthentication accountCreds = await googleAccount.authentication;
 
-      var result = await _auth.signInWithCredential(
-        GoogleAuthProvider.getCredential(idToken: accountCreds.idToken, accessToken: accountCreds.accessToken)
-      );
+      // cases:
+        // no account at all - error, go to sign up
+        // account with google set up - sign in with creds
+        // account without google set up - link account and sign in
+      var signInMethods = await _auth.fetchSignInMethodsForEmail(email: googleAccount.email);
 
-      return result.user.uid;
+      if (signInMethods.length == 0) {
+        _googleSignIn.signOut();
+        throw PlatformException(code: 'INVALID_ACCOUNT', message: 'google account does not exist in the system');
+      }
+      else if (signInMethods.contains('google.com')) {
+        var result = await _auth.signInWithCredential(
+          GoogleAuthProvider.getCredential(idToken: accountCreds.idToken, accessToken: accountCreds.accessToken)
+        );
+        return result.user.uid;
+      }
+      else {
+        throw PlatformException(code: 'ACCOUNT_NOT_LINKED', message: 'Account already exists but google account not linked');
+      }
     }
-    on PlatformException catch(e) {
+    catch (e) {
       print(e);
       return null;
+    }
+  }
+
+  // google sign up
+  Future<String> signUpWithGoogle() async {
+    try {
+      GoogleSignInAccount googleAccount = await _googleSignIn.signIn().catchError((err) => null);
+      if (googleAccount == null) return null;
+
+      GoogleSignInAuthentication accountCreds = await googleAccount.authentication;
+
+      //cases:
+        // no account at all - create account with sign in with cred
+        // account with google set up - error, account already exists
+        // acocount without google set up - error, account already exists
+      var signInMethods = await _auth.fetchSignInMethodsForEmail(email: googleAccount.email);
+
+      if (signInMethods.length == 0) {
+        var result = await _auth.signInWithCredential(
+          GoogleAuthProvider.getCredential(idToken: accountCreds.idToken, accessToken: accountCreds.accessToken)
+        );
+        return result.user.uid;
+      }
+      else {
+        throw PlatformException(code: 'ACCOUNT_ALREADY_EXISTS', message: 'A Juma account already exists with this email');
+      }
     }
     catch (e) {
       print(e);
