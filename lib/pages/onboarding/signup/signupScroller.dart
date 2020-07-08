@@ -82,8 +82,26 @@ class _SignupScrollerState extends State<SignupScroller> {
   }
 
   void createUserWithGoogle(User user) async {
-    String newUID = await authSerivce.signInWithGoogle();
-    if (newUID == null) return;
+    String newUID = "";
+    try {
+      newUID = await authSerivce.signUpWithGoogle();
+      if (newUID == null) return;
+    }
+    on PlatformException catch (e) {
+      if (e.code == "ACCOUNT_ALREADY_EXISTS") {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Container(
+              height: 50.0,
+              child: Center(
+                child: Text(e.message, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+              ),
+            ),
+          )
+        );
+      }
+    }
 
     user.uid = newUID;
     await userService.createUser(user);

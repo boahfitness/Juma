@@ -57,65 +57,85 @@ class AuthService {
 
   // google sign in
   Future<String> signInWithGoogle() async {
+    List<String> signInMethods;
+    GoogleSignInAuthentication accountCreds;
+
     try {
       GoogleSignInAccount googleAccount = await _googleSignIn.signIn().catchError((err) => null);
       if (googleAccount == null) return null;
 
-      GoogleSignInAuthentication accountCreds = await googleAccount.authentication;
+      accountCreds = await googleAccount.authentication;
 
-      // cases:
+      signInMethods = await _auth.fetchSignInMethodsForEmail(email: googleAccount.email);
+    }
+    catch (e) {
+      print(e);
+      return null;
+    }
+
+    // cases:
         // no account at all - error, go to sign up
         // account with google set up - sign in with creds
         // account without google set up - link account and sign in
-      var signInMethods = await _auth.fetchSignInMethodsForEmail(email: googleAccount.email);
-
-      if (signInMethods.length == 0) {
-        _googleSignIn.signOut();
-        throw PlatformException(code: 'INVALID_ACCOUNT', message: 'google account does not exist in the system');
-      }
-      else if (signInMethods.contains('google.com')) {
+    if (signInMethods.length == 0) {
+      _googleSignIn.signOut();
+      throw PlatformException(code: 'INVALID_ACCOUNT', message: 'This google account does not exist in Juma');
+    }
+    else if (signInMethods.contains('google.com')) {
+      try {
         var result = await _auth.signInWithCredential(
           GoogleAuthProvider.getCredential(idToken: accountCreds.idToken, accessToken: accountCreds.accessToken)
         );
         return result.user.uid;
       }
-      else {
-        throw PlatformException(code: 'ACCOUNT_NOT_LINKED', message: 'Account already exists but google account not linked');
+      catch (e) {
+        print(e);
+        return null;
       }
     }
-    catch (e) {
-      print(e);
-      return null;
+    else {
+      _googleSignIn.signOut();
+      throw PlatformException(code: 'ACCOUNT_NOT_LINKED', message: 'This google account does not exist in Juma');
     }
   }
 
   // google sign up
   Future<String> signUpWithGoogle() async {
+    List<String> signInMethods;
+    GoogleSignInAuthentication accountCreds;
+
     try {
       GoogleSignInAccount googleAccount = await _googleSignIn.signIn().catchError((err) => null);
       if (googleAccount == null) return null;
 
-      GoogleSignInAuthentication accountCreds = await googleAccount.authentication;
+      accountCreds = await googleAccount.authentication;
 
-      //cases:
+      signInMethods = await _auth.fetchSignInMethodsForEmail(email: googleAccount.email);
+    }
+    catch (e) {
+      print(e);
+      return null;
+    }
+
+    //cases:
         // no account at all - create account with sign in with cred
         // account with google set up - error, account already exists
         // acocount without google set up - error, account already exists
-      var signInMethods = await _auth.fetchSignInMethodsForEmail(email: googleAccount.email);
-
-      if (signInMethods.length == 0) {
+    if (signInMethods.length == 0) {
+      try {
         var result = await _auth.signInWithCredential(
           GoogleAuthProvider.getCredential(idToken: accountCreds.idToken, accessToken: accountCreds.accessToken)
         );
         return result.user.uid;
       }
-      else {
-        throw PlatformException(code: 'ACCOUNT_ALREADY_EXISTS', message: 'A Juma account already exists with this email');
+      catch (e) {
+        print(e);
+        return null;
       }
     }
-    catch (e) {
-      print(e);
-      return null;
+    else {
+      _googleSignIn.signOut();
+      throw PlatformException(code: 'ACCOUNT_ALREADY_EXISTS', message: 'A Juma account already exists with this email');
     }
   }
 
