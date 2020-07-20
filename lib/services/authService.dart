@@ -8,13 +8,16 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       "email",
-      "https://www.googleapis.com/auth/drive.file",
     ]
   );
 
   // on auth changed user stream
   Stream<FirebaseUser> get user {
     return _auth.onAuthStateChanged;
+  }
+
+  Future<FirebaseUser> get currentUser async {
+    return await _auth.currentUser();
   }
 
   // register with email and password

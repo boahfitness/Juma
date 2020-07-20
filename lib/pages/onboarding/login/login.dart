@@ -37,11 +37,10 @@ class _LoginState extends State<Login> {
       child: Form(
         key: formKey,
         child: Padding(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.05),
+          padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              //Text('Login', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w100, fontSize: 20),),
               SizedBox(height: 40,),
               TextFormField(
                 autocorrect: false,

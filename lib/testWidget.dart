@@ -18,7 +18,7 @@ Map<String, String> appServiceAccountCreds =
 
 void main() async {
   
-  final gsheets = GSheets(appServiceAccountCreds);
+  final GSheets gsheets = GSheets(appServiceAccountCreds);
   print(gsheets.toString());
 }
 

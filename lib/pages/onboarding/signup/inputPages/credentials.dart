@@ -50,6 +50,7 @@ class _InputCredentialsState extends State<InputCredentials> {
           ),
           SizedBox(height: 40,),
           TextFormField(
+            autocorrect: false,
             controller: emailController,
             cursorColor: Colors.white,
             style: TextStyle(color: Colors.white),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/models/lifting/program.dart';
 import 'package:juma/models/users/user.dart';
+import 'package:juma/services/authService.dart';
+import 'package:juma/services/googleSheetsService.dart';
 import 'package:juma/services/programService.dart';
 import 'package:juma/theme/Colors.dart';
 import 'package:provider/provider.dart';
@@ -70,8 +72,23 @@ class _HomeState extends State<Home> {
                 : Container(
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: MediaQuery.of(context).size.height * 0.4,
-                  child: Center(
-                    child: Text('NO PROGRAM'),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Create a New Program"),
+                      SizedBox(height: 15,),
+                      FlatButton(
+                        onPressed: () async {
+                          var account = await AuthService().currentUser;
+                          await GoogleSheetsService().createSpreadsheet(account.email);
+                        },
+                        color: RedTheme().solid,
+                        child: Icon(Icons.add),
+                        shape: CircleBorder(),
+                        padding: const EdgeInsets.all(10),
+                      )
+                    ],
                   ),
                 ),
                 Padding(
