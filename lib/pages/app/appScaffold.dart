@@ -46,7 +46,7 @@ class _AppScaffoldState extends State<AppScaffold> {
     return WillPopScope(
       onWillPop: () async => !await navKeys[currentIndex].currentState.maybePop(),
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xff121212),
         body: IndexedStack(
           index: currentIndex,
           children: navPages.values.toList(),

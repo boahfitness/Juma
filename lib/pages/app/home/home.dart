@@ -64,29 +64,33 @@ class _HomeState extends State<Home> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Text('Current Program', textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                      currentProgram != null ? Text('Next Workout', textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),) : Container(height: 0, width: 0,),
                     ],
                   ),
                 ),
                 currentProgram != null ? CurrentProgramDisplay(currentProgram: currentProgram) 
-                : Container(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                : 
+                GestureDetector(
+                  onTap: () {},
+                  child: Stack(
                     children: <Widget>[
-                      Text("Create a New Program"),
-                      SizedBox(height: 15,),
-                      FlatButton(
-                        onPressed: () async {
-                          var account = await AuthService().currentUser;
-                          await GoogleSheetsService().createSpreadsheet(account.email);
-                        },
-                        color: RedTheme().solid,
-                        child: Icon(Icons.add),
-                        shape: CircleBorder(),
-                        padding: const EdgeInsets.all(10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                        child: Container(
+                          height: 200,
+                          decoration: BoxDecoration(
+                            gradient: JumaColors.redOrangeGradient,
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+                        child: Column(
+                          children: <Widget>[
+                            Text('Browse\nPrograms', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)
+                          ],
+                        ),
                       )
                     ],
                   ),
@@ -104,13 +108,32 @@ class _HomeState extends State<Home> {
                   height: 160,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20),
-                    child: userLibrary != null ? ListView.builder(
+                    child: userLibrary != null && userLibrary.isNotEmpty ? ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: userLibrary.length,
                       itemBuilder: (context, index) {
                         return ProgramDecal(userLibrary[index]);
                       }
-                    ) : Container(),
+                    ) 
+                    :
+                    Container(
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text('Add to your library', style: TextStyle(fontWeight: FontWeight.w600),),
+                          ),
+                          FlatButton(
+                            onPressed: () {},
+                            child: Text('Browse Programs'),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)
+                            ),
+                            color: JumaColors.boahOrange,
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
