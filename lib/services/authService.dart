@@ -12,6 +12,8 @@ class AuthService {
   );
 
   // on auth changed user stream
+  ///Provides a stream of the currently logged in user
+  ///if there is no user the result is null
   Stream<FirebaseUser> get user {
     return _auth.onAuthStateChanged;
   }
@@ -59,6 +61,9 @@ class AuthService {
   }
 
   // google sign in
+  ///Starts the Google Authentication process.
+  ///
+  ///returns uid of user if successful.
   Future<String> signInWithGoogle() async {
     List<String> signInMethods;
     GoogleSignInAuthentication accountCreds;

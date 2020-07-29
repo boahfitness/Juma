@@ -1,8 +1,8 @@
 import 'package:gsheets/gsheets.dart';
 
 class GoogleSheetsService {
-  static final Map<String, String> _appServiceAccountCreds = 
-  {
+  static final _templateSheetID = "1K-dQCCMpV3UimiGH-DUf5eEAMTDUkNsiT3a8m3-Zk9A";
+  static final Map<String, String> _appServiceAccountCreds = {
     "type": "service_account",
     "project_id": "juma-ee630f",
     "private_key_id": "35164a8b64fb00ef3f1f93fed09021397d862f20",
@@ -14,16 +14,44 @@ class GoogleSheetsService {
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
     "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/juma-ee630f%40appspot.gserviceaccount.com"
   };
+
   final GSheets _gsheets = GSheets(_appServiceAccountCreds);
 
   Future<void> createSpreadsheet(String email, {String title}) async {
+    // TODO email should end in @gmail.com
+
     title ??= 'Created By Juma ${DateTime.now()}';
     try {
-      var spreadsheet = await _gsheets.createSpreadsheet(title);
-      await spreadsheet.share(email, type: PermType.user, role: PermRole.owner);
-      await spreadsheet.sheets.first.updateTitle("Week 1");
-      await spreadsheet.addWorksheet("Week 2");
-      print(spreadsheet.id);
+      var sheetsClient = await _gsheets.client;
+      // get template
+      var templateSheet = await _gsheets.spreadsheet(_templateSheetID);
+      if (templateSheet == null) return;
+      var newSheet = await _gsheets.createSpreadsheet(title);
+
+      for (Worksheet ws in templateSheet.sheets) {
+        var res = await sheetsClient.post('https://sheets.googleapis.com/v4/spreadsheets/${templateSheet.id}/sheets/${ws.id}:copyTo', body: {"destinationSpreadsheetId": "${newSheet.id}"});
+
+        if (res.statusCode != 200) {
+          // TODO handling error for copying worksheet
+        }
+      }
+
+      await newSheet.refresh();
+      var sheet1 = newSheet.worksheetByTitle("Sheet1");
+      if (sheet1 != null) {
+        await newSheet.deleteWorksheet(sheet1);
+        await newSheet.refresh();
+      }
+      
+      for (int i=0; i<newSheet.sheets.length; i++) {
+        Worksheet ws = newSheet.worksheetByIndex(i);
+        if (ws.title.contains("Copy of")) {
+          await ws.updateTitle(ws.title.replaceAll("Copy of ", ''));
+        }
+      }
+      
+      await newSheet.share(email, type: PermType.user, role: PermRole.owner);
+      await newSheet.share(_appServiceAccountCreds['client_email'], type: PermType.user, role: PermRole.writer);
     }
     catch (e) {
       print(e);
