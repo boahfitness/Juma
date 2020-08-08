@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:gsheets/gsheets.dart';
 
 class GoogleSheetsService {
@@ -17,23 +18,25 @@ class GoogleSheetsService {
 
   final GSheets _gsheets = GSheets(_appServiceAccountCreds);
 
-  Future<void> createSpreadsheet(String email, {String title}) async {
-    // TODO email should end in @gmail.com
-
-    title ??= 'Created By Juma ${DateTime.now()}';
+  /// Creates a google spreadsheet for editing a Juma program
+  /// 
+  /// Returns the url to edit the sheet on success.
+  /// Returns null on failure.
+  Future<String> createSpreadsheet(String email, {String title}) async {
     try {
+      if (!EmailValidator.validate(email) || !email.contains('@gmail.com')) return null;
+
+      title ??= 'Created By Juma ${DateTime.now()}';
       var sheetsClient = await _gsheets.client;
       // get template
       var templateSheet = await _gsheets.spreadsheet(_templateSheetID);
-      if (templateSheet == null) return;
+      if (templateSheet == null) return null;
       var newSheet = await _gsheets.createSpreadsheet(title);
 
       for (Worksheet ws in templateSheet.sheets) {
         var res = await sheetsClient.post('https://sheets.googleapis.com/v4/spreadsheets/${templateSheet.id}/sheets/${ws.id}:copyTo', body: {"destinationSpreadsheetId": "${newSheet.id}"});
 
-        if (res.statusCode != 200) {
-          // TODO handling error for copying worksheet
-        }
+        if (res.statusCode != 200) return null;
       }
 
       await newSheet.refresh();
@@ -52,9 +55,12 @@ class GoogleSheetsService {
       
       await newSheet.share(email, type: PermType.user, role: PermRole.owner);
       await newSheet.share(_appServiceAccountCreds['client_email'], type: PermType.user, role: PermRole.writer);
+
+      return "https://docs.google.com/spreadsheets/d/${newSheet.id}/edit#gid=0";
     }
     catch (e) {
       print(e);
+      return null;
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:juma/services/googleSheetsService.dart';
 import 'package:juma/services/authService.dart';
+import 'package:url_launcher/url_launcher.dart' as urlLauncher;
 
 void main() async {
   print('*****RUNNING TEST*****');
@@ -14,10 +15,14 @@ void main() async {
 
   await authService.signInWithGoogle();
   user = await authService.currentUser;
-  await googleSheetService.createSpreadsheet(user.email);
+  String newSheetUrl = await googleSheetService.createSpreadsheet(user.email);
 
-  // await authService.signInWithEmailAndPassword('kevboah@gmail.com', 'Compeng!997');
-  // await googleSheetService.createSpreadsheet('kevboah@gmail.com');
+  if (newSheetUrl != null) {
+    await urlLauncher.launch(newSheetUrl);
+  }
+  else {
+    print('error creating google sheet');
+  }
 }
 
 class Test extends StatefulWidget {
