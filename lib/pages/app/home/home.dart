@@ -71,7 +71,9 @@ class _HomeState extends State<Home> {
                 currentProgram != null ? CurrentProgramDisplay(currentProgram: currentProgram) 
                 : 
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/create-program-template');
+                  },
                   child: Stack(
                     children: <Widget>[
                       Padding(
@@ -88,7 +90,7 @@ class _HomeState extends State<Home> {
                         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
                         child: Column(
                           children: <Widget>[
-                            Text('Browse\nPrograms', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)
+                            Text('Create a\nProgram Template', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)
                           ],
                         ),
                       )

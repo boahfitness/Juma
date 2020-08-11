@@ -63,5 +63,10 @@
 	<string>Dark</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Giving access to the Juma app allows you to upload photos and videos.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Giving access to the Juma app allows you to upload photos and videos.</string>
+	<!-- NSMicrophoneUsageDescription -->
 </dict>
 </plist>

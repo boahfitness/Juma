@@ -3,6 +3,7 @@ import 'package:juma/models/lifting/program.dart';
 import 'package:juma/routeGenerator.dart';
 
 import 'package:juma/pages/app/routes/currentProgram.dart';
+import 'package:juma/pages/app/routes/createProgramTemplate.dart';
 
 class AppNavigator {
   Widget baseRoute;
@@ -18,6 +19,7 @@ class AppNavigator {
         switch(settings.name) {
           case '/': return MaterialPageRoute(builder: (context) => baseRoute);
           case '/current-program': return MaterialPageRoute(builder: (context) => CurrentProgram(settings.arguments is ProgramHistory ? settings.arguments : null));
+          case '/create-program-template': return MaterialPageRoute(builder: (context) => CreateProgramTemplate());
           default: return RouteGenerator.errorRoute;
         }
       },
