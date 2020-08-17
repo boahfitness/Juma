@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
+//import 'package:image_cropper/image_cropper.dart';
 import 'package:juma/pages/app/routes/baseScaffold.dart';
 import 'package:juma/theme/Colors.dart';
 
@@ -15,12 +15,14 @@ class _CreateProgramTemplateState extends State<CreateProgramTemplate> {
   TextEditingController programTitleController;
   ThemeType selectedTheme;
   TextEditingController descriptionController;
+  TextEditingController imagePathController;
 
   @override
   void initState() {
     selectedTheme = ThemeType.red;
     programTitleController = TextEditingController();
     descriptionController = TextEditingController();
+    imagePathController = TextEditingController();
     super.initState();
   }
 
@@ -28,6 +30,7 @@ class _CreateProgramTemplateState extends State<CreateProgramTemplate> {
   void dispose() {
     programTitleController.dispose();
     descriptionController.dispose();
+    imagePathController.dispose();
     super.dispose();
   }
 
@@ -47,33 +50,10 @@ class _CreateProgramTemplateState extends State<CreateProgramTemplate> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed('/media-capture');
-                },
-                child: Container(
-                  height: 120,
-                  width: 120,
-                  color: Colors.grey,
-                  child: Stack(
-                    children: [
-                      Center(
-                        child: Icon(Icons.landscape, size: 50, color: Colors.grey[400],),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            color: Colors.black.withOpacity(0.7),
-                            height: 20,
-                            width: 120,
-                            child: Center(child: Text('Select Image', textAlign: TextAlign.center, style: TextStyle(fontSize: 11),)),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
+              Stack(
+                children: [
+                  ImageCapture(imagePathController: imagePathController, overlayTheme: selectedTheme,),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
@@ -132,33 +112,88 @@ class _CreateProgramTemplateState extends State<CreateProgramTemplate> {
 }
 
 class ImageCapture extends StatefulWidget {
+  final TextEditingController imagePathController;
+  final ThemeType overlayTheme;
+  ImageCapture({this.imagePathController, this.overlayTheme=ThemeType.red});
   @override
   _ImageCaptureState createState() => _ImageCaptureState();
 }
 
 class _ImageCaptureState extends State<ImageCapture> {
   File imageFile;
+  ColorTheme theme;
 
   Future<void> _pickImage(ImageSource source) async {
     var pickedFile = await ImagePicker().getImage(source: source);
 
     setState(() {
-      imageFile = File(pickedFile.path);
+      if (pickedFile != null) {
+        imageFile = File(pickedFile.path);
+        if (widget.imagePathController != null) widget.imagePathController.text = pickedFile.path;
+      }
     });
   }
 
-  Future<void> _cropImage() async {
-    var croppedFile = await ImageCropper.cropImage(sourcePath: imageFile.path);
+  // Future<void> _cropImage() async {
+  //   var croppedFile = await ImageCropper.cropImage(sourcePath: imageFile.path);
 
-    setState(() {
-      imageFile = croppedFile ?? imageFile;
-    });
-  }
+  //   setState(() {
+  //     imageFile = croppedFile ?? imageFile;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    theme = ColorTheme.getTheme(widget.overlayTheme);
+
+    return GestureDetector(
+      onTap: () async {
+        await _pickImage(ImageSource.gallery);
+      },
+      child: Container(
+        height: 120,
+        width: 120,
+        color: Colors.grey,
+        child: imageFile == null ? Stack(
+          children: [
+            Center(
+              child: Icon(Icons.landscape, size: 50, color: Colors.grey[400],),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  color: Colors.black.withOpacity(0.7),
+                  height: 20,
+                  width: 120,
+                  child: Center(child: Text('Select Image', textAlign: TextAlign.center, style: TextStyle(fontSize: 11),)),
+                ),
+              ],
+            )
+          ],
+        ) :
+        Stack(
+          children: [
+            Container(
+              width: 120, height: 120,
+              child: Image.file(imageFile, fit: BoxFit.cover)
+            ),
+            Container(
+              width: 120, height: 120,
+              decoration: BoxDecoration(
+                gradient: imageFile != null ?
+                  LinearGradient(
+                    colors: [theme.solid, theme.solid.withOpacity(0.5), theme.solid.withOpacity(0.0)],
+                    begin: Alignment.bottomLeft, end: Alignment.topRight,
+                    stops: [0.0, 0.2, 0.6]
+                  )
+                  :
+                  null
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
