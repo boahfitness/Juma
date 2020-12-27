@@ -190,6 +190,9 @@ abstract class ColorTheme {
   ThemeType get type;
   Color get textColor;
 
+
+  //TODO remove depreacted
+  /// deprecated
   static ColorTheme getTheme(ThemeType type) {
     switch (type) {
       case ThemeType.green: {
@@ -223,6 +226,7 @@ abstract class ColorTheme {
     }
   }
 
+  /// depracated
   static ColorTheme getLiftTheme(LiftTheme lift) {
     switch (lift) {
       case LiftTheme.squat: return RedTheme();
@@ -245,4 +249,18 @@ enum LiftTheme {
   squat,
   bench,
   deadlift
+}
+
+abstract class ColorThemes {
+  static ColorTheme green = GreenTheme();
+  static ColorTheme red = RedTheme();
+  static ColorTheme purple = PurpleTheme();
+  static ColorTheme gold = GoldTheme();
+  static ColorTheme black = BlackTheme();
+}
+
+abstract class LiftThemes {
+  static ColorTheme squat = RedTheme();
+  static ColorTheme bench = GreenTheme();
+  static ColorTheme deadlift = PurpleTheme();
 }

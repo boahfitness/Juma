@@ -26,15 +26,15 @@ class _AppScaffoldState extends State<AppScaffold> {
 
     navPages = {
       BottomNavigationBarItem(
-            title: Text('Home'),
+            label: 'Home',
             icon: Icon(Icons.home)
       ): AppNavigator(Home(), key: navKeys[0]).nav,
       BottomNavigationBarItem(
-            title: Text('Browse'),
+            label: 'Browse',
             icon: Icon(Icons.search)
       ): AppNavigator(Browse(), key: navKeys[1]).nav,
       BottomNavigationBarItem(
-            title: Text('Profile'),
+            label: 'Profile',
             icon: Icon(Icons.person)
       ): AppNavigator(Profile(), key: navKeys[2]).nav,
     };

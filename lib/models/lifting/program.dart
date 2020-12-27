@@ -33,8 +33,8 @@ class ProgramDescriptor {
 
 class ProgramTemplate extends Program {
 
-  ProgramTemplate({String id, String title, UserIdentifier author, String description, String pathToMedia, List<TrainingBlock> trainingBlocks}) 
-  : super(id: id, title: title, author: author, description: description, pathToMedia: pathToMedia, trainingBlocks: trainingBlocks);
+  ProgramTemplate({String id, String title, UserIdentifier author, String description, String pathToMedia, List<TrainingBlock> trainingBlocks, ColorTheme theme}) 
+  : super(id: id, title: title, author: author, description: description, pathToMedia: pathToMedia, trainingBlocks: trainingBlocks, theme: theme);
 
   static ProgramTemplate fromMap(Map<String, dynamic> data) {
     return Program.fromMap(data);
