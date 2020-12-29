@@ -23,13 +23,15 @@ class Juma extends StatelessWidget {
     return MaterialApp(
       themeMode: ThemeMode.dark,
       theme: ThemeData(fontFamily: 'Montserrat', brightness: Brightness.dark),
-      initialRoute: '/',
+      initialRoute: '/test',
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
+
+/// Authentcation wrapper for the whole app. Checks to make sure a firebase user is logged in
 class AuthenticationProvider extends StatelessWidget {
   final Widget child;
   AuthenticationProvider({this.child});
@@ -42,6 +44,7 @@ class AuthenticationProvider extends StatelessWidget {
   }
 }
 
+/// The user data provider for the whole app. If Authprovider has a user logged, this will provide that users data
 class UserProvider extends StatelessWidget {
   final Widget child;
   UserProvider({this.child});

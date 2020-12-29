@@ -48,7 +48,7 @@ List<ProgramTemplate> testPrograms =
     ),
     description: "One goal and one goal only: Become the monolith of strength.",
     pathToMedia: "assets/photos/russ.png",
-    theme: ColorThemes.purple,
+    theme: ColorThemes.red,
     trainingBlocks: []
   ),
 
@@ -60,6 +60,7 @@ List<ProgramTemplate> testPrograms =
     ),
     description: "For the beginner lifter. Skyrocket your training by starting off on the right foot.",
     pathToMedia: "assets/photos/sageNaruto.jpg",
+    theme: ColorThemes.black,
     trainingBlocks: []
   ),
 
@@ -71,6 +72,7 @@ List<ProgramTemplate> testPrograms =
     ),
     description: "Reactive training for the experienced Powerlifter. Get these gains the right way.",
     pathToMedia: "assets/photos/deadlift.jpg",
+    theme: ColorThemes.green,
     trainingBlocks: []
   ),
   

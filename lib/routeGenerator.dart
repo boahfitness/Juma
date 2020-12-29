@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:juma/pages/onboarding/onboarding.dart';
-import 'package:juma/pages/app/home/home.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:juma/pages/appEntry.dart';
 
-//import 'package:juma/testWidget.dart';
+import 'package:juma/test/testWidget.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     //final args = settings.arguments;
 
     switch(settings.name) {
-      case '/': {
+      case '/':
         return PageTransition(type: PageTransitionType.fade, child: AppEntry());
-        //return MaterialPageRoute(builder: (_) => Test());
-      }
-      case '/onboarding':
-        return PageTransition(type: PageTransitionType.fade, child: Onboarding());
-      case '/home':
-        return MaterialPageRoute(builder: (_) => Home());
+      case '/test':
+        return MaterialPageRoute(builder: (_) => Test());
       default:
         return _errorRoute();
     }

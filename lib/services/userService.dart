@@ -5,6 +5,9 @@ import './personalRecordService.dart';
 class UserService {
   CollectionReference _userCollection = Firestore.instance.collection('users');
 
+  /// stream for firebase user as Juma User class
+  /// if the uid is not currently present, an auto-generated ID is used
+  /// and a blank User class is returned.
   Stream<User> user(String uid) {
     return _userCollection.document(uid).snapshots().map<User>((docSnap) {
       User user = User.fromMap(docSnap.data);
