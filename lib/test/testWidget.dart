@@ -2,11 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/program.dart';
+import 'package:juma/pages/app/routes/baseScaffold.dart';
 import 'package:juma/services/googleSheetsService.dart';
 import 'package:juma/services/authService.dart';
 import 'package:url_launcher/url_launcher.dart' as urlLauncher;
 
 import 'package:juma/pages/app/appNavigator.dart';
+import 'package:juma/pages/app/home/util/contentSections/recommended.dart';
+import 'package:juma/pages/app/home/util/contentSections/yourLibrary.dart';
 
 import 'package:juma/test/data/programsData.dart';
 
@@ -53,86 +56,12 @@ class _TestState extends State<Test> {
       backgroundColor: Color(0xff121212),
       body: AppNavigator(
         SingleChildScrollView(
-          padding: const EdgeInsets.only(left: 15, top: 20),
+          padding: const EdgeInsets.only(top: 20),
           scrollDirection: Axis.vertical,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Recommended", textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-              Container(
-                height: 430,
-                padding: const EdgeInsets.only(top: 10),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: testPrograms.length,
-                  itemBuilder: (context, index) {
-                    Program program = testPrograms[index];
-                    Random rand = Random();
-                    int numWeeks = rand.nextInt(16);
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 15),
-                          height: 350,
-                          width: 250,
-                          child: Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(30),
-                                child: ShaderMask(
-                                  blendMode: BlendMode.color,
-                                  shaderCallback: (bounds) {
-                                    return program.theme.gradient.createShader(bounds);
-                                  },
-                                  child: ShaderMask(
-                                    shaderCallback: (bounds) {
-                                      return LinearGradient(
-                                        colors: [Colors.transparent, Colors.black],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        stops: [0.0, 0.5]
-                                      ).createShader(bounds);
-                                    },
-                                    blendMode: BlendMode.dstATop,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: AssetImage(program.pathToMedia)
-                                        ),
-                                        borderRadius: BorderRadius.circular(30)
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(
-                            program.title,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Text(
-                            "$numWeeks ${numWeeks == 1 ? 'week' : 'weeks'}"
-                          )
-                        )
-                      ],
-                    );
-                  },
-                ),
-              )
+              YourLibrarySection(testPrograms: testPrograms),
+              RecommendedSection(testPrograms: testPrograms),
             ],
           ),
         ),
@@ -174,3 +103,86 @@ class _TestState extends State<Test> {
     );
   }
 }
+
+class TestTwo extends StatelessWidget {
+  final Program program;
+  TestTwo({@required this.program});
+
+  @override
+  Widget build(BuildContext context) {
+    var numWeeks = Random().nextInt(15) + 1;
+    return BaseScaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Hero(
+              tag: program.id,
+              child: Container(
+                height: 350,
+                width: 250,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: ShaderMask(
+                    blendMode: BlendMode.color,
+                    shaderCallback: (bounds) {
+                      return program.theme.gradient.createShader(bounds);
+                    },
+                    child: ShaderMask(
+                      shaderCallback: (bounds) {
+                        return LinearGradient(
+                          colors: [Colors.transparent, Colors.black],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          stops: [0.0, 0.5]
+                        ).createShader(bounds);
+                      },
+                      blendMode: BlendMode.dstATop,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(program.pathToMedia)
+                          ),
+                          borderRadius: BorderRadius.circular(30)
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 0, top: 0),
+              child: Hero(
+                tag: "title_${program.id}",
+                child: Text(
+                  program.title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15
+                  ),
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 0, top: 0),
+              child: Hero(
+                tag: "weeks_${program.id}",
+                child: Text(
+                  "$numWeeks ${numWeeks == 1 ? 'week' : 'weeks'}"
+                ),
+              )
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+

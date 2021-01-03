@@ -5,6 +5,7 @@ import 'package:juma/theme/Colors.dart';
 List<ProgramTemplate> testPrograms = 
 [
   ProgramTemplate(
+    id: "7623gvfe82gvfiueg83487gfi3",
     title: "Sheiko Cycle 5",
     author: UserIdentifier(
       uid: "mLSHdKz6Engo1bciB4tfRTqs6IS2",
@@ -17,6 +18,7 @@ List<ProgramTemplate> testPrograms =
   ),
 
   ProgramTemplate(
+    id: "98348f7fg887fg239fh028bfydf",
     title: "The Powerbuilding Program",
     author: UserIdentifier(
       uid: "mLSHdKz6Engo1bciB4tfRTqs6IS2",
@@ -29,6 +31,7 @@ List<ProgramTemplate> testPrograms =
   ),
 
   ProgramTemplate(
+    id: "beyfu2efgi2b3oif9uef8yvdkfisfbie",
     title: "Hurtin' Bombs",
     author: UserIdentifier(
       uid: "mLSHdKz6Engo1bciB4tfRTqs6IS2",
@@ -41,6 +44,7 @@ List<ProgramTemplate> testPrograms =
   ),
   
   ProgramTemplate(
+    id: "2c3iougr9oinfob4fbkjdbjnfldwibew8",
     title: "The Monolith",
     author: UserIdentifier(
       uid: "mLSHdKz6Engo1bciB4tfRTqs6IS2",
@@ -53,6 +57,7 @@ List<ProgramTemplate> testPrograms =
   ),
 
   ProgramTemplate(
+    id: "027gb97efhvdt9u23grdbfvidsg",
     title: "Five By Five",
     author: UserIdentifier(
       uid: "mLSHdKz6Engo1bciB4tfRTqs6IS2",
@@ -65,6 +70,7 @@ List<ProgramTemplate> testPrograms =
   ),
 
   ProgramTemplate(
+    id: "0273bfef8viedjsf78wefgdsvjf",
     title: "Flexx Fire",
     author: UserIdentifier(
       uid: "mLSHdKz6Engo1bciB4tfRTqs6IS2",

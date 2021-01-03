@@ -10,8 +10,7 @@ class RouteGenerator {
 
     switch(settings.name) {
       case '/':
-        return PageTransition(type: PageTransitionType.fade, child: AppEntry());
-      case '/test':
+        //return PageTransition(type: PageTransitionType.fade, child: AppEntry());
         return MaterialPageRoute(builder: (_) => Test());
       default:
         return _errorRoute();

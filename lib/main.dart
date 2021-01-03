@@ -23,7 +23,7 @@ class Juma extends StatelessWidget {
     return MaterialApp(
       themeMode: ThemeMode.dark,
       theme: ThemeData(fontFamily: 'Montserrat', brightness: Brightness.dark),
-      initialRoute: '/test',
+      initialRoute: '/',
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
     );

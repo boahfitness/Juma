@@ -10,7 +10,7 @@ class BaseScaffold extends Scaffold {
     DragStartBehavior drawerDragStartBehavior = DragStartBehavior.start, bool extendBody = false, bool extendBodyBehindAppBar = false, Color drawerScrimColor, 
     double drawerEdgeDragWidth, bool drawerEnableOpenDragGesture = true, bool endDrawerEnableOpenDragGesture = true})
     :
-    super(key: key, appBar: appBar, floatingActionButton: floatingActionButton, 
+    super(key: key, appBar: appBar, body: body, floatingActionButton: floatingActionButton, 
     floatingActionButtonLocation: floatingActionButtonLocation, floatingActionButtonAnimator: floatingActionButtonAnimator, 
     persistentFooterButtons: persistentFooterButtons, drawer: drawer, endDrawer: endDrawer,bottomNavigationBar: bottomNavigationBar, bottomSheet: bottomSheet, 
     resizeToAvoidBottomPadding: resizeToAvoidBottomPadding, resizeToAvoidBottomInset: resizeToAvoidBottomInset, primary: primary, 
@@ -18,10 +18,10 @@ class BaseScaffold extends Scaffold {
     drawerEdgeDragWidth: drawerEdgeDragWidth, drawerEnableOpenDragGesture: drawerEnableOpenDragGesture, endDrawerEnableOpenDragGesture: endDrawerEnableOpenDragGesture,
     
     // CONSTANTS
-    body: Padding(
-      padding: EdgeInsets.only(left: 30.0),
-      child: body,
-    ),
+    // body: Padding(
+    //   padding: EdgeInsets.only(left: 0.0),
+    //   child: body,
+    // ),
 
     backgroundColor: backgroundColor ?? Color(0xff121212)
     );

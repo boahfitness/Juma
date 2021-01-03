@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/models/lifting/program.dart';
 import 'package:juma/models/users/user.dart';
-import 'package:juma/services/authService.dart';
-import 'package:juma/services/googleSheetsService.dart';
 import 'package:juma/services/programService.dart';
 import 'package:juma/theme/Colors.dart';
 import 'package:provider/provider.dart';
+import './util/programDecal.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -188,37 +187,5 @@ class CurrentProgramDisplay extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class ProgramDecal extends StatelessWidget {
-  final ProgramDescriptor program;
-  ProgramDecal(this.program);
-  @override
-  Widget build(BuildContext context) {
-    ColorTheme theme = program != null ? program.theme ?? BlackTheme() : BlackTheme();
-    return program != null ? Padding(
-      padding: const EdgeInsets.only(right: 15.0),
-      child: SizedBox(
-        width: 160,
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: theme.gradient,
-            borderRadius: BorderRadius.circular(20)
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(program.title ?? '', style: TextStyle(fontWeight: FontWeight.bold, color: theme.textColor)),
-                Text(program.author != null ? program.author.displayName ?? '' : '', style: TextStyle(color: theme.textColor),)
-              ],
-            ),
-          ),
-        ),
-      ),
-    ) : Container(width: 0, height: 0,);
   }
 }
