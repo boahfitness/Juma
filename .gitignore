@@ -9,6 +9,7 @@
 .history
 .svn/
 /devNotes/
+/ios/build
 
 # IntelliJ related
 *.iml
