@@ -1,7 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/program.dart';
+import 'package:juma/pages/app/home/util/CustomRectTween.dart';
+import 'package:juma/pages/app/home/util/ui/jumaAppBar.dart';
 import 'package:juma/pages/app/routes/baseScaffold.dart';
 import 'package:juma/services/googleSheetsService.dart';
 import 'package:juma/services/authService.dart';
@@ -82,24 +82,7 @@ class _TestState extends State<Test> {
           )
         ],
       ),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        elevation: 0,
-        title: SizedBox(
-          width: 55,
-          height: 30,
-          child: Container(
-            color: Colors.white,
-            child: Center(
-              child: Text(
-                "JUMA",
-                style: TextStyle(color: Colors.black, fontFamily: 'Oswald', fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-          )
-        ),
-      ),
+      appBar: JumaAppBar(),
     );
   }
 }
@@ -110,7 +93,6 @@ class TestTwo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var numWeeks = Random().nextInt(15) + 1;
     return BaseScaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -157,8 +139,11 @@ class TestTwo extends StatelessWidget {
             ),
 
             Padding(
-              padding: const EdgeInsets.only(left: 0, top: 0),
+              padding: const EdgeInsets.only(left: 0, top: 10),
               child: Hero(
+                createRectTween: (begin, end) {
+                  return CustomRectTween(a: begin, b: end, curveTransform: (t) => Cubic(.72,0,.39,.08).transform(t));
+                },
                 tag: "title_${program.id}",
                 child: Text(
                   program.title,
@@ -171,11 +156,14 @@ class TestTwo extends StatelessWidget {
             ),
 
             Padding(
-              padding: const EdgeInsets.only(left: 0, top: 0),
+              padding: const EdgeInsets.only(left: 0, top: 5),
               child: Hero(
-                tag: "weeks_${program.id}",
+                createRectTween: (begin, end) {
+                  return CustomRectTween(a: begin, b: end, curveTransform: (t) => Cubic(.72,0,.39,.08).transform(t));
+                },
+                tag: "author_${program.id}",
                 child: Text(
-                  "$numWeeks ${numWeeks == 1 ? 'week' : 'weeks'}"
+                  "${program.author.displayName}"
                 ),
               )
             )

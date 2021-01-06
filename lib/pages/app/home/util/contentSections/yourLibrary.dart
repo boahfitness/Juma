@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/program.dart';
-import 'package:juma/pages/app/home/util/programDecal.dart';
+import 'package:juma/pages/app/home/util/ui/programDecal.dart';
 
 class YourLibrarySection extends StatelessWidget {
   final List<Program> testPrograms;

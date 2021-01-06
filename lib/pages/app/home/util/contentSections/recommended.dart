@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:juma/models/lifting/program.dart';
 
@@ -24,14 +23,12 @@ class RecommendedSection extends StatelessWidget {
             itemCount: testPrograms.length,
             itemBuilder: (context, index) {
               Program program = testPrograms[index];
-              Random rand = Random();
-              int numWeeks = rand.nextInt(15) + 1;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed('/test', arguments: program);
+                      Navigator.of(context).pushNamed('/program-detail', arguments: program);
                     },
                     child: Hero(
                       tag: program.id,
@@ -89,9 +86,9 @@ class RecommendedSection extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 10, top: 5),
                     child: Hero(
-                      tag: "weeks_${program.id}",
+                      tag: "author_${program.id}",
                       child: Text(
-                        "$numWeeks ${numWeeks == 1 ? 'week' : 'weeks'}"
+                        "${program.author.displayName}"
                       ),
                     )
                   )

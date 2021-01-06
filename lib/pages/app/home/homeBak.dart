@@ -1,137 +1,175 @@
 import 'package:flutter/material.dart';
-import 'package:juma/models/users/user.dart';
-import 'package:juma/services/authService.dart';
-import 'package:juma/theme/Colors.dart';
+import 'package:juma/models/lifting/exercise.dart';
 import 'package:juma/models/lifting/program.dart';
-import 'package:juma/widgets/programCard.dart';
-
-AuthService auth = AuthService();
+import 'package:juma/models/users/user.dart';
+import 'package:juma/pages/app/home/util/ui/jumaAppBar.dart';
+import 'package:juma/services/programService.dart';
+import 'package:juma/theme/Colors.dart';
+import 'package:provider/provider.dart';
+import 'util/ui/programDecal.dart';
 
 class Home extends StatefulWidget {
-
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  User testUser = User();
-  Program testProgram = ProgramTemplate();
-  
+  ProgramService programService = ProgramService();
+  ProgramHistory currentProgram = ProgramHistory();
+  List<ProgramDescriptor> userLibrary= [];
+
+  Future<void> getProgramData(User user) async {
+    currentProgram = await programService.getProgramHistory(user.currentProgramId);
+    userLibrary = await programService.getProgramTemplates(user.programCatalog);
+    if (userLibrary != null) userLibrary = userLibrary.reversed.toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    ColorTheme theme = testProgram.theme;
+    User user = Provider.of<User>(context);
 
-    return Scaffold(
-      body: Container(
-        child: Stack(
-          children: <Widget>[
+    return user != null ? 
+    FutureBuilder(
+      future: getProgramData(user),
+      builder: (context, snapshot) {
+        return Scaffold(
+          backgroundColor: Colors.transparent,
 
-            ProgramCard(
-              testProgram,
-              showBorder: false,
-              showAuthor: false,
-              showTitle: false,
-            ),
-            
-            //interactive content
-            Scaffold(
-              backgroundColor: Colors.transparent,
-              drawer: Drawer(
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: <Widget>[
-                    DrawerHeader(
-                      child: SizedBox(height: 5,),
-                    ),
-                    ListTile(
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+          appBar: JumaAppBar(),
+
+          body: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0, bottom: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      currentProgram != null ? Text('Next Workout', textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),) : Container(height: 0, width: 0,),
+                    ],
+                  ),
+                ),
+                currentProgram != null ? CurrentProgramDisplay(currentProgram: currentProgram) 
+                : 
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/create-program-template');
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                        child: Container(
+                          height: 200,
+                          decoration: BoxDecoration(
+                            gradient: JumaColors.redOrangeGradient,
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+                        child: Column(
+                          children: <Widget>[
+                            Text('Create a\nProgram Template', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0, bottom: 8.0, top: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text('Your Library', textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: 160,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: userLibrary != null && userLibrary.isNotEmpty ? ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: userLibrary.length,
+                      itemBuilder: (context, index) {
+                        return ProgramDecal(userLibrary[index]);
+                      }
+                    ) 
+                    :
+                    Container(
+                      child: Column(
                         children: <Widget>[
-                          Icon(Icons.person),
-                          Text("Sign Out")
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text('Add to your library', style: TextStyle(fontWeight: FontWeight.w600),),
+                          ),
+                          FlatButton(
+                            onPressed: () {},
+                            child: Text('Browse Programs'),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)
+                            ),
+                            color: JumaColors.boahOrange,
+                          )
                         ],
                       ),
-                      onTap: () {auth.signOut();},
                     ),
-                  ],
+                  ),
                 ),
-              ),
-              appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                centerTitle: true,
-                elevation: 0,
-                title: SizedBox(
-                  width: 50,
-                  height: 35,
-                  child: Container(
-                    color: Colors.white,
-                    child: Center(
-                      child: Text(
-                        "JUMA", 
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  )
-                ),
-              ),
-              body: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 6,
-                      child: Container(),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text("NEXT WORKOUT", style: wkText(),),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text("current day lift 5 X 5", style: wkText(),),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text("RPE 7", style: wkText(),),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Container(),
-                    ),
-                  ],
-                ),
-              ),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () {},
-                backgroundColor: theme.solid,
-                child: Icon(
-                  Icons.play_arrow,
-                  color: Colors.white,
-                ),
-              ),
-              bottomNavigationBar: BottomNavigationBar(
-                backgroundColor: JumaColors.boahDarkGrey,
-                selectedItemColor: Colors.white,
-                unselectedItemColor: Colors.grey[600],
-                items: <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
-                  BottomNavigationBarItem(icon: Icon(Icons.style), title: Text("Programs")),
-                  BottomNavigationBarItem(icon: Icon(Icons.person), title: Text("Profile"))
-                ],
-              ),
+              ],
             ),
-          ],
-        ),
-      )
-    );
+          ),
+
+          drawer: Drawer(),
+        );
+      },
+    ) : Container();
   }
 }
 
-TextStyle wkText() {
-  return TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.bold,
-    fontSize: 36
-  );
+class CurrentProgramDisplay extends StatelessWidget {
+  const CurrentProgramDisplay({
+    Key key,
+    @required this.currentProgram,
+  }) : super(key: key);
+
+  final ProgramHistory currentProgram;
+
+  @override
+  Widget build(BuildContext context) {
+    Day nextDay = currentProgram != null ? currentProgram.nextDay : null;
+    Exercise nextEx = nextDay != null ? nextDay.firstExercise : null;
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed('/current-program', arguments: currentProgram);
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: MediaQuery.of(context).size.height * 0.4,
+        decoration: BoxDecoration(
+          gradient: currentProgram.theme != null ? currentProgram.theme.gradient : JumaColors.lightGreyGradient,
+          borderRadius: BorderRadius.circular(40)
+        ),
+        child: Container(
+          margin: const EdgeInsets.all(25),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(currentProgram.title ?? '', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+              Text(currentProgram.description ?? '', textAlign: TextAlign.left,),
+              Text(currentProgram.author != null ? currentProgram.author.displayName ?? '' : '', textAlign: TextAlign.left,),
+              Text(nextEx != null ? nextEx.name : '')
+            ],
+          )
+        ),
+      ),
+    );
+  }
 }
