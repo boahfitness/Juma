@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+//https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=00E676
+
 class JumaColors {
+  // Constant Brand Colors
   static Color get boahOrange { return Color(0xffee630f); }
 
   static Color get boahDarkGrey { return Color(0xff211f1d); }
@@ -30,237 +33,147 @@ class JumaColors {
   
 }
 
-// TODO implement OrangeTheme and make it default in getTheme
+class ColorTheme {
+  LinearGradient gradient;
+  Color solid;
+  Color accent; //up 2 [800]
 
-class GreenTheme implements ColorTheme{
-  Color get textColor => Colors.white;
-  ThemeType get type => ThemeType.gold;
-  LinearGradient get gradient {
-    return LinearGradient(
-      begin: Alignment.bottomLeft,
-      end: Alignment.topRight,
+  ColorTheme({@required this.gradient,
+    @required this.solid,
+    @required this.accent});
+  
+  /// to select the text color for the solid 
+  Color get textColor {
+    int threshold = 186; // can be adjusted for different results
+    // anywhere from 150 to 200
+    double value = solid.red * 0.299 + solid.green * 0.587 + solid.blue * 0.114;
+    if (value > threshold) return Colors.black;
+    else return Colors.white;
+  }
+}
+
+
+/// defines constant color themes for Juma
+abstract class ColorThemes {
+
+  static ColorTheme _green = ColorTheme(
+    solid: Colors.green,
+    accent: Colors.cyan[800],
+    gradient: LinearGradient(
+      begin: Alignment.bottomLeft, end: Alignment.topRight,
+      //colors: [Colors.greenAccent[400], Colors.tealAccent]
       colors: [Color(0xffaafae0), Color(0xff59f2cc), Color(0xff59f2cc)],
       stops: [0.0, 0.4, 0.85]
-    );
-  }
+    ),
+  );
 
-  LinearGradient get accentGradient {
-    return LinearGradient(
-      begin: Alignment.bottomLeft,
-      end: Alignment.topRight,
-      colors: [Color(0xFF1e3c72), Color(0xe61e3c72), Color(0x001e3c72)],
-      stops: [0.0, 0.4, 0.6]
-    );
-  }
+  static ColorTheme get green => _green;
 
-  Color get solid {
-    return Color(0xff29db42);
-  }
+  static ColorTheme _red = ColorTheme(
+    solid: Colors.red,
+    accent: Colors.orange[800],
+    gradient: LinearGradient(
+      begin: Alignment.bottomLeft, end: Alignment.topRight,
+      colors: [Colors.redAccent[400], Colors.deepOrangeAccent]
+      //colors: [Color(0xffff934c), Color(0xfffc686f)],
+    )
+  );
 
-  Color get accent {
-    return Color(0xff1e3c72);
-  }
-}
+  static ColorTheme get red => _red;
 
-class RedTheme implements ColorTheme {
-  Color get textColor => Colors.white;
-  ThemeType get type => ThemeType.red;
-  LinearGradient get gradient {
-    return LinearGradient(
-      end: Alignment.bottomLeft,
-      begin: Alignment.topRight,
-      colors: [Color(0xffff934c), Color(0xfffc686f)],
-      stops: [0.0, 0.85]
-    );
-  }
+  static ColorTheme _blue = ColorTheme(
+    solid: Colors.blue,
+    accent: Colors.deepPurple[800],
+    gradient: LinearGradient(
+      begin: Alignment.bottomLeft, end: Alignment.topRight,
+      colors: [Colors.blueAccent[400], Colors.indigoAccent],
+    )
+  );
 
-  LinearGradient get accentGradient {
-    return LinearGradient(
-      begin: Alignment.bottomLeft,
-      end: Alignment.topRight,
-      colors: [Color(0xFF800107), Color(0xe6800107), Color(0x00800107)],
-      stops: [0.0, 0.4, 0.6]
-    );
-  }
+  static ColorTheme get blue => _blue;
 
-  Color get solid {
-    return Color(0xffec1b25);
-  }
+  static ColorTheme _purple = ColorTheme(
+    solid: Colors.deepPurple,
+    accent: Colors.pink[800],
+    gradient: LinearGradient(
+      begin: Alignment.bottomLeft, end: Alignment.topRight,
+      colors: [Colors.deepPurpleAccent[400], Colors.purpleAccent]
+    )
+  );
 
-  Color get accent {
-    return Color(0xff800107);
-  }
-}
+  static ColorTheme get purple => _purple;
 
-class PurpleTheme implements ColorTheme {
-  Color get textColor => Colors.white;
-  ThemeType get type => ThemeType.purple;
-  LinearGradient get gradient {
-    return LinearGradient(
-      end: Alignment.bottomLeft,
-      begin: Alignment.topRight,
-      colors: [Color(0xff7530e3), Color(0xffe1afcc)],
-      stops: [0.0, 0.85]
-    );
-  }
-
-  LinearGradient get accentGradient {
-    return LinearGradient(
-      begin: Alignment.bottomLeft,
-      end: Alignment.topRight,
-      colors: [Color(0xFF43129c), Color(0xe643129c), Color(0x0043129c)],
-      stops: [0.0, 0.4, 0.6]
-    );
-  }
-
-  Color get solid {
-    return Color(0xff823ef9);
-  }
-
-  Color get accent {
-    return Color(0xff43129c);
-  }
-}
-
-class GoldTheme implements ColorTheme {
-  Color get textColor => Colors.white;
-  ThemeType get type => ThemeType.green;
-  LinearGradient get gradient {
-    return LinearGradient(
-      end: Alignment.bottomLeft,
-      begin: Alignment.topRight,
+  static ColorTheme _gold = ColorTheme(
+    solid: Colors.amber,
+    accent: Colors.lime[800],
+    gradient: LinearGradient(
+      begin: Alignment.bottomLeft, end: Alignment.topRight,
+      //colors: [Colors.amberAccent[400], Colors.yellowAccent[400]]
       colors: [Color(0xfff7cb6b), Color(0xfffba980)],
-      stops: [0.0, 0.85]
-    );
-  }
+    )
+  );
 
-  LinearGradient get accentGradient {
-    return LinearGradient(
-      begin: Alignment.bottomLeft,
-      end: Alignment.topRight,
-      colors: [Color(0xFFcd9825), Color(0xe6cd9825), Color(0x00cd9825)],
-      stops: [0.0, 0.4, 0.6]
-    );
-  }
+  static ColorTheme get gold => _gold;
 
-  Color get solid {
-    return Color(0xffecda17);
-  }
-
-  Color get accent {
-    return Color(0xffcd9825);
-  }
-}
-
-class BlackTheme implements ColorTheme {
-  ThemeType get type => ThemeType.black;
-  Color get textColor => Colors.black;
-  LinearGradient get gradient {
-    return LinearGradient(
-      end: Alignment.bottomLeft,
-      begin: Alignment.topRight,
-      colors: [Color(0xffe8f8f6), Color(0xfffaeafa)],
-      stops: [0.0, 0.85]
-    );
-  }
-
-  LinearGradient get accentGradient {
-    return LinearGradient(
-      begin: Alignment.bottomLeft,
-      end: Alignment.topRight,
+  static ColorTheme _black = ColorTheme(
+    solid: Colors.black,
+    accent: Color(0xff0d0d0c),
+    gradient: LinearGradient(
+      begin: Alignment.bottomLeft, end: Alignment.topRight,
       colors: [Color(0xFF0d0d0c), Color(0xe60d0d0c), Color(0x000d0d0c)],
       stops: [0.0, 0.4, 0.6]
-    );
+    )
+  );
+
+  static ColorTheme get black => _black;
+
+  static ColorTheme _orange = ColorTheme(
+    solid: Colors.deepOrange,
+    accent: Colors.amber[800],
+    gradient: LinearGradient(
+      begin: Alignment.bottomLeft, end: Alignment.topRight,
+      colors: [Colors.deepOrangeAccent, Colors.orangeAccent]
+    )
+  );
+
+  static ColorTheme get orange => _orange;
+
+  static List<ColorTheme> _themeList = [
+    _green,
+    _red,
+    _purple,
+    _gold,
+    _black,
+    _blue,
+    _orange
+  ];
+
+  static List<ColorTheme> get themeList => _themeList;
+
+  /// Gets the index of a predefinded Juma ColorTheme
+  /// if theme is not found in Juma ColorThemes -1 is returned
+  static int getIndex(ColorTheme theme) {
+    return _themeList.indexWhere((element) {
+      return element.solid == theme.solid &&
+        element.accent == theme.accent &&
+        element.gradient == theme.gradient;
+    });
   }
 
-  Color get solid {
-    return Colors.black;
-  }
-
-  Color get accent {
-    return Color(0xff0d0d0c);
-  }
-}
-
-abstract class ColorTheme {
-  LinearGradient get gradient;
-  LinearGradient get accentGradient;
-  Color get solid;
-  Color get accent;
-  ThemeType get type;
-  Color get textColor;
-
-
-  //TODO remove depreacted
-  /// deprecated
-  static ColorTheme getTheme(ThemeType type) {
-    switch (type) {
-      case ThemeType.green: {
-        return GreenTheme();
-      }
-      break;
-
-      case ThemeType.red: {
-        return RedTheme();
-      }
-      break;
-
-      case ThemeType.purple: {
-        return PurpleTheme();
-      }
-      break;
-
-      case ThemeType.gold: {
-        return GoldTheme();
-      }
-      break;
-
-      case ThemeType.black: {
-        return BlackTheme();
-      }
-      break;
-
-      default: {
-        return null;
-      }
+  /// get a Juma ColorTheme by index
+  /// if index is invalid, orange theme is returned
+  static ColorTheme getThemeByIndex(int index) {
+    if (index == null || index < 0 || index > _themeList.length - 1) {
+      return _orange;
     }
+
+    return _themeList[index];
   }
 
-  /// depracated
-  static ColorTheme getLiftTheme(LiftTheme lift) {
-    switch (lift) {
-      case LiftTheme.squat: return RedTheme();
-      case LiftTheme.bench: return GreenTheme();
-      case LiftTheme.deadlift: return PurpleTheme();
-      default: return null;
-    }
-  }
-}
-
-enum ThemeType {
-  green,
-  red,
-  purple,
-  gold,
-  black
-}
-
-enum LiftTheme {
-  squat,
-  bench,
-  deadlift
-}
-
-abstract class ColorThemes {
-  static ColorTheme green = GreenTheme();
-  static ColorTheme red = RedTheme();
-  static ColorTheme purple = PurpleTheme();
-  static ColorTheme gold = GoldTheme();
-  static ColorTheme black = BlackTheme();
 }
 
 abstract class LiftThemes {
-  static ColorTheme squat = RedTheme();
-  static ColorTheme bench = GreenTheme();
-  static ColorTheme deadlift = PurpleTheme();
+  static ColorTheme squat = ColorThemes.red;
+  static ColorTheme bench = ColorThemes.green;
+  static ColorTheme deadlift = ColorThemes.purple;
 }
