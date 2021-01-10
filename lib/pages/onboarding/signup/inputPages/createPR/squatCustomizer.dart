@@ -13,7 +13,7 @@ class SquatCustomizer extends StatefulWidget {
 
 class _SquatCustomizerState extends State<SquatCustomizer> {
   final Squat lift;
-  final ColorTheme theme = ColorTheme.getLiftTheme(LiftTheme.squat);
+  final ColorTheme theme = LiftThemes.squat;
   _SquatCustomizerState(this.lift);
   @override
   Widget build(BuildContext context) {

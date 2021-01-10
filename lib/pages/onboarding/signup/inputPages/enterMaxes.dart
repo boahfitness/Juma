@@ -205,17 +205,17 @@ class LiftItemBar extends StatelessWidget {
     switch (lift.type) {
       case MainLiftType.squat: {
         liftIcon = LiftIcons.squat;
-        liftTheme = ColorTheme.getLiftTheme(LiftTheme.squat);
+        liftTheme = LiftThemes.squat;
         break;
       }
       case MainLiftType.bench: {
         liftIcon = LiftIcons.bench;
-        liftTheme = ColorTheme.getLiftTheme(LiftTheme.bench);
+        liftTheme = LiftThemes.bench;
         break;
       }
       case MainLiftType.deadlift: {
         liftIcon = LiftIcons.deadlift;
-        liftTheme = ColorTheme.getLiftTheme(LiftTheme.deadlift);
+        liftTheme = LiftThemes.deadlift;
         break;
       }
     }

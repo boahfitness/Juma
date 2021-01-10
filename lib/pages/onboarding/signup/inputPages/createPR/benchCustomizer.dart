@@ -13,7 +13,7 @@ class BenchCustomizer extends StatefulWidget {
 
 class _BenchCustomizerState extends State<BenchCustomizer> {
   final Bench lift;
-  final ColorTheme theme = ColorTheme.getLiftTheme(LiftTheme.bench);
+  final ColorTheme theme = LiftThemes.bench;
   _BenchCustomizerState(this.lift);
   @override
   Widget build(BuildContext context) {

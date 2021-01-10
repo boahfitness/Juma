@@ -31,19 +31,19 @@ class _ChooseLiftState extends State<ChooseLift> {
 
     switch (widget.personalRecord.lift.type) {
       case MainLiftType.squat:
-        iconColor = ColorTheme.getLiftTheme(LiftTheme.squat).solid;
+        iconColor = LiftThemes.squat.solid;
         icon = LiftIcons.squat;
         break;
       case MainLiftType.bench:
-        iconColor = ColorTheme.getLiftTheme(LiftTheme.bench).solid;
+        iconColor = LiftThemes.bench.solid;
         icon = LiftIcons.bench;
         break;
       case MainLiftType.deadlift:
-        iconColor = ColorTheme.getLiftTheme(LiftTheme.deadlift).solid;
+        iconColor = LiftThemes.deadlift.solid;
         icon = LiftIcons.deadlift;
         break;
       default:
-        iconColor = ColorTheme.getTheme(ThemeType.gold).solid;
+        iconColor = ColorThemes.gold.solid;
         icon = LiftIcons.deadlift;
         break;
     }
@@ -127,19 +127,19 @@ class _LiftPickerState extends State<LiftPicker> {
   void initState() {
     switch (widget.lift.type) {
       case MainLiftType.squat:
-        theme = ColorTheme.getLiftTheme(LiftTheme.squat);
+        theme = LiftThemes.squat;
         icon = LiftIcons.squat;
         break;
       case MainLiftType.bench:
-        theme = ColorTheme.getLiftTheme(LiftTheme.bench);
+        theme = LiftThemes.bench;
         icon = LiftIcons.bench;
         break;
       case MainLiftType.deadlift:
-        theme = ColorTheme.getLiftTheme(LiftTheme.deadlift);
+        theme = LiftThemes.deadlift;
         icon = LiftIcons.deadlift;
         break;
       default:
-        theme = ColorTheme.getTheme(ThemeType.gold);
+        theme = ColorThemes.gold;
         icon = LiftIcons.deadlift;
         break;
     }

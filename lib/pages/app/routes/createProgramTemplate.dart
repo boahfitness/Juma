@@ -13,13 +13,13 @@ class CreateProgramTemplate extends StatefulWidget {
 class _CreateProgramTemplateState extends State<CreateProgramTemplate> {
   File imageFile;
   TextEditingController programTitleController;
-  ThemeType selectedTheme;
+  int selectedTheme;
   TextEditingController descriptionController;
   TextEditingController imagePathController;
 
   @override
   void initState() {
-    selectedTheme = ThemeType.red;
+    selectedTheme = 1;
     programTitleController = TextEditingController();
     descriptionController = TextEditingController();
     imagePathController = TextEditingController();
@@ -83,20 +83,19 @@ class _CreateProgramTemplateState extends State<CreateProgramTemplate> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: ThemeType.values.map<Widget>((themeType) {
-              ColorTheme theme = ColorTheme.getTheme(themeType);
+            children: ColorThemes.themeList.map<Widget>((theme) {
               return GestureDetector(
                 onTap: () {
                   setState(() {
-                    selectedTheme = themeType;
+                    selectedTheme = ColorThemes.getIndex(theme);
                   });
                 },
                 child: Container(
                   width: 40, height: 40,
                   decoration: BoxDecoration(
                     gradient: theme.gradient,
-                    border: selectedTheme == themeType ? Border.all(
-                      color: themeType != ThemeType.black ? Colors.white : Colors.red,
+                    border: selectedTheme == ColorThemes.getIndex(theme) ? Border.all(
+                      color: ColorThemes.getIndex(theme) != ColorThemes.getIndex(ColorThemes.black) ? Colors.white : Colors.red,
                       width: 3.0,
                     ) : null,
                     borderRadius: BorderRadius.circular(10)
@@ -113,8 +112,8 @@ class _CreateProgramTemplateState extends State<CreateProgramTemplate> {
 
 class ImageCapture extends StatefulWidget {
   final TextEditingController imagePathController;
-  final ThemeType overlayTheme;
-  ImageCapture({this.imagePathController, this.overlayTheme=ThemeType.red});
+  final int overlayTheme;
+  ImageCapture({this.imagePathController, this.overlayTheme=1});
   @override
   _ImageCaptureState createState() => _ImageCaptureState();
 }
@@ -144,7 +143,7 @@ class _ImageCaptureState extends State<ImageCapture> {
 
   @override
   Widget build(BuildContext context) {
-    theme = ColorTheme.getTheme(widget.overlayTheme);
+    theme = ColorThemes.getThemeByIndex(widget.overlayTheme);
 
     return GestureDetector(
       onTap: () async {

@@ -8,7 +8,7 @@ class ProgramDecal extends StatelessWidget {
   ProgramDecal(this.program, {this.width = 160});
   @override
   Widget build(BuildContext context) {
-    ColorTheme theme = program != null ? program.theme ?? BlackTheme() : BlackTheme();
+    ColorTheme theme = program != null ? program.theme ?? ColorThemes.black : ColorThemes.black;
     return program != null ? Padding(
       padding: const EdgeInsets.only(right: 20.0),
       child: SizedBox(

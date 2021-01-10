@@ -13,7 +13,7 @@ class DeadCustomizer extends StatefulWidget {
 
 class _DeadCustomizerState extends State<DeadCustomizer> {
   final Deadlift lift;
-  final ColorTheme theme = ColorTheme.getLiftTheme(LiftTheme.deadlift);
+  final ColorTheme theme = LiftThemes.deadlift;
   _DeadCustomizerState(this.lift);
   @override
   Widget build(BuildContext context) {

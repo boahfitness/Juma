@@ -41,7 +41,12 @@ class RecommendedSection extends StatelessWidget {
                           child: ShaderMask(
                             blendMode: BlendMode.color,
                             shaderCallback: (bounds) {
-                              return program.theme.gradient.createShader(bounds);
+                              var cardGradient = LinearGradient(
+                                begin: Alignment.topLeft, end: Alignment.bottomRight,
+                                colors: program.theme.gradient.colors,
+                                stops: program.theme.gradient.stops
+                              );
+                              return cardGradient.createShader(bounds);
                             },
                             child: ShaderMask(
                               shaderCallback: (bounds) {

@@ -82,7 +82,7 @@ class _AuraPickerState extends State<AuraPicker> {
               child: ShaderMask(
                 blendMode: widget.theme == null ? BlendMode.dst : BlendMode.srcIn,
                 shaderCallback: (bounds) {
-                  return widget.theme == null ? RedTheme().gradient.createShader(bounds) : widget.theme.gradient.createShader(bounds);
+                  return widget.theme == null ? ColorThemes.red.gradient.createShader(bounds) : widget.theme.gradient.createShader(bounds);
                 },
                 child: FlareActor(
                   'assets/animations/Aura.flr',

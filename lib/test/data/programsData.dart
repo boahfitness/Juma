@@ -52,7 +52,7 @@ List<ProgramTemplate> testPrograms =
     ),
     description: "One goal and one goal only: Become the monolith of strength.",
     pathToMedia: "assets/photos/russ.png",
-    theme: ColorThemes.red,
+    theme: ColorThemes.blue,
     trainingBlocks: []
   ),
 
@@ -65,7 +65,7 @@ List<ProgramTemplate> testPrograms =
     ),
     description: "For the beginner lifter. Skyrocket your training by starting off on the right foot.",
     pathToMedia: "assets/photos/sageNaruto.jpg",
-    theme: ColorThemes.black,
+    theme: ColorThemes.orange,
     trainingBlocks: []
   ),
 

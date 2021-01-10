@@ -24,10 +24,7 @@ class ProgramDescriptor {
     this.pathToMedia = data['pathToMedia'] is String ? data['pathToMedia'] : null;
 
     int themeIndex = data['theme'] is int ? data['theme'] : null;
-    if (themeIndex != null && themeIndex >= 0  && themeIndex < ThemeType.values.length)
-      this.theme = ColorTheme.getTheme(ThemeType.values[themeIndex]);
-    else
-      this.theme = null;
+    this.theme = ColorThemes.getThemeByIndex(themeIndex);
   }
 }
 
@@ -119,10 +116,7 @@ abstract class Program {
     p.pathToMedia = data['pathToMedia'] is String ? data['pathToMedia'] : null;
 
     int themeIndex = data['theme'] is int ? data['theme'] : null;
-    if (themeIndex != null && themeIndex >= 0  && themeIndex < ThemeType.values.length)
-      p.theme = ColorTheme.getTheme(ThemeType.values[themeIndex]);
-    else
-      p.theme = null;
+    p.theme = ColorThemes.getThemeByIndex(themeIndex);
 
     if (data['trainingBlocks'] is List) {
       List tbs = data['trainingBlocks'];
@@ -147,7 +141,7 @@ abstract class Program {
       'author': author != null ? author.toMap() : null,
       'description': description,
       'pathToMedia': pathToMedia,
-      'theme': theme != null ? theme.type.index : null,
+      'theme': theme != null ? ColorThemes.getIndex(theme) : null,
       'trainingBlocks': trainingBlocks != null ? trainingBlocks.map<Map<String, dynamic>>((tb) => tb.toMap(includeHistory)).toList() : null
     };
   }
