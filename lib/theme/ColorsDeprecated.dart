@@ -168,7 +168,9 @@ class BlackTheme implements ColorTheme {
     return LinearGradient(
       begin: Alignment.bottomLeft,
       end: Alignment.topRight,
-      colors: [Color(0xFF0d0d0c), Color(0xe60d0d0c), Color(0x000d0d0c)],
+      colors: [Color(0xFF0d0d0c), 
+      Color(0xe60d0d0c), 
+      Color(0x000d0d0c)],
       stops: [0.0, 0.4, 0.6]
     );
   }

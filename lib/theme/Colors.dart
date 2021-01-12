@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 //https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=00E676
+//https://github.com/davidkrantz/Colorfy
 
 class JumaColors {
   // Constant Brand Colors
@@ -16,11 +17,11 @@ class JumaColors {
 
   static LinearGradient get redOrangeGradient {
     return LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [JumaColors.darkRed, JumaColors.boahOrange, JumaColors.lightOrange],
-            stops: [0.0, 0.5, 0.9],
-          );
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [JumaColors.darkRed, JumaColors.boahOrange, JumaColors.lightOrange],
+      stops: [0.0, 0.5, 0.9],
+    );
   }
 
   static LinearGradient get lightGreyGradient {
@@ -120,8 +121,10 @@ abstract class ColorThemes {
     accent: Color(0xff0d0d0c),
     gradient: LinearGradient(
       begin: Alignment.bottomLeft, end: Alignment.topRight,
-      colors: [Color(0xFF0d0d0c), Color(0xe60d0d0c), Color(0x000d0d0c)],
-      stops: [0.0, 0.4, 0.6]
+      // colors: [Color(0xFF0d0d0c), Color(0xe60d0d0c), Color(0x000d0d0c)],
+      // stops: [0.0, 0.4, 0.6]
+      colors: [Color(0xe60d0d0c), Color(0xffe8f8f6)],
+      stops: [0.0, 0.85]
     )
   );
 
