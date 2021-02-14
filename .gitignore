@@ -10,6 +10,7 @@
 .svn/
 /devNotes/
 /ios/build
+/ios/Flutter/.last_build_id
 
 # IntelliJ related
 *.iml
