@@ -40,7 +40,7 @@ class _ProfileState extends State<Profile> {
             FlatButton(
               child: Text('CREATE PROGRAM TEST'),
               onPressed: () {
-                GoogleSheetsService gsService = GoogleSheetsService(); // google sheet service for creating the spreadhseet and stuff
+                //GoogleSheetsService gsService = GoogleSheetsService(); // google sheet service for creating the spreadhseet and stuff
                 var firebaseUser = user.firebase;
 
                 if (firebaseUser == null) {
