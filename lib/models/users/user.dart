@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:juma/models/lifting/personalRecords.dart';
 import 'package:juma/models/lifting/weight.dart';
 
 class User {
+  FirebaseUser _firebase;
+  FirebaseUser get firebase => _firebase;
+
   String get uid => identifier.uid;
   set uid(String val) {
     identifier.uid = val;
@@ -22,10 +26,11 @@ class User {
   Gender gender;
   Weight bodyweight;
 
-  User({String uid, String displayName, this.unitPreference=WeightUnit.pounds, this.gender=Gender.unspecified}) {
+  User({String uid, String displayName, this.unitPreference=WeightUnit.pounds, this.gender=Gender.unspecified, FirebaseUser firebaseUser}) {
     this.identifier = UserIdentifier();
     this.uid = uid; this.displayName = displayName;
     this.bodyweight ??= Weight();
+    this._firebase = firebaseUser;
   }
 
   bool addNewPR(PersonalRecord newPR) {
@@ -43,7 +48,7 @@ class User {
     }
   }
 
-  User.fromMap(Map<String, dynamic> data) {
+  User.fromMap(Map<String, dynamic> data, {FirebaseUser firebaseUser}) {
     this.identifier = UserIdentifier();
     this.uid = data['uid'] is String ? data['uid'] : null;
     this.displayName = data['displayName'] is String ? data['displayName'] : null;
@@ -64,6 +69,8 @@ class User {
         if (programId is String) this.programCatalog.add(programId);
       });
     }
+
+    _firebase = firebaseUser;
   }
 
   Map<String, dynamic> toMap() {
