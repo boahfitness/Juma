@@ -50,8 +50,9 @@ class UserProvider extends StatelessWidget {
   UserProvider({this.child});
   @override
   Widget build(BuildContext context) {
+    FirebaseUser fbUser = Provider.of<FirebaseUser>(context);
     return StreamProvider<User>.value(
-      value: UserService().user(Provider.of<FirebaseUser>(context) != null ? Provider.of<FirebaseUser>(context).uid : 'thisIsABadUserID'),
+      value: UserService().user(fbUser != null ? fbUser.uid : 'thisIsABadUserID', firebaseUser: fbUser),
       catchError: (context, object) {
         return null;
       },

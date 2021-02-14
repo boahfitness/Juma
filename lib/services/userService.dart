@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:juma/models/users/user.dart';
 import './personalRecordService.dart';
 
@@ -8,9 +9,9 @@ class UserService {
   /// stream for firebase user as Juma User class
   /// if the uid is not currently present, an auto-generated ID is used
   /// and a blank User class is returned.
-  Stream<User> user(String uid) {
+  Stream<User> user(String uid, {FirebaseUser firebaseUser}) {
     return _userCollection.document(uid).snapshots().map<User>((docSnap) {
-      User user = User.fromMap(docSnap.data);
+      User user = User.fromMap(docSnap.data, firebaseUser: firebaseUser);
       user.uid = uid;
       return user;
     });
